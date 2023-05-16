@@ -1,16 +1,14 @@
 "use client";
 
 import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../context/user';
+import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
 import { FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
-import { AiOutlineClose } from 'react-icons/ai';
-import CartItem from '../components/CartItem/CartItem';
-import { useStateCartContext } from '../context/cart';
-import WishItem from '../components/WishItem/WishItem';
-import OrderItem from '../components/OrderItem/OrderItem';
+import CartItem from '@/app/components/CartItem/CartItem';
+import { useStateCartContext } from '@/app/context/cart';
+import WishItem from '@/app/components/WishItem/WishItem';
+import OrderItem from '@/app/components/OrderItem/OrderItem';
 
 export default function User() {
 

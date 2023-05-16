@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useContext } from 'react';
-import { UserContext } from '../../context/user';
-import LoginForm from '../../components/LoginForm/LoginForm';
+import { UserContext } from '@/app/context/user';
+import LoginForm from '@/app/components/LoginForm/LoginForm';
 import { useRouter } from 'next/navigation';
 
 function Login() {

@@ -4,7 +4,7 @@ import Loader from '@/app/components/Loader/Loader';
 import { useRouter } from 'next/navigation';
 import { useEffect, useContext, useState } from 'react';
 
-import { UserContext } from '../../context/user';
+import { UserContext } from '@/app/context/user';
 
 export default function googleCallback({searchParams}) {
   const [error, setError] = useState();

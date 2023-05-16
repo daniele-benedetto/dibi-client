@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useContext } from 'react';
-import { UserContext } from '../../context/user';
+import { UserContext } from '@/app/components/context/user';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import RegisterForm from '@/app/components/RegisterForm/RegisterForm';
 
 function Register() {

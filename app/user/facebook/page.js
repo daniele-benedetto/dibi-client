@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useContext, useState } from 'react';
-import { UserContext } from '../../context/user';
+import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
 import Loader from '@/app/components/Loader/Loader';
 

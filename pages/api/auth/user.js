@@ -1,4 +1,4 @@
-import axios from '../../../app/lib/api';
+import axios from '@/app/lib/api';
 import cookie from 'cookie';
 
 export default async (req, res) => {

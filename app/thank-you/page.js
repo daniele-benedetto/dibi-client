@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { ImSmile } from "react-icons/im";
 import { useQuery } from "urql";
-import CardCategory from "../components/CardCategory/CardCategory";
+import CardCategory from "@/app/components/CardCategory/CardCategory";
 import { useStateCartContext } from "../context/cart";
-import { HOME_QUERY } from "../lib/query";
+import { HOME_QUERY } from "@/app/lib/query";
 
 export default function ThankYou() {
 

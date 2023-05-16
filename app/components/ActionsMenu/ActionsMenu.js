@@ -1,8 +1,8 @@
 "use client";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { useEffect, useState } from "react";
-import Button from "@/app/Button/Button";
-import ReorderMenu from "@/app/ReorderMenu/ReorderMenu";
+import Button from "@/app/components/Button/Button";
+import ReorderMenu from "@/app/components/ReorderMenu/ReorderMenu";
 
 export default function ActionsMenu({setSortType, setSidebarIsOpen, sortType, sidebarIsOpen}) {
 

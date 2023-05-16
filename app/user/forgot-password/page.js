@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useContext } from 'react';
-import { UserContext } from '../../context/user';
-import ForgotForm from '../../components/ForgotPassword/ForgotPassword';
+import { UserContext } from '@/app/context/user';
+import ForgotForm from '@/app/components/ForgotPassword/ForgotPassword';
 
 const forgotpassword = () => {
   const { checkLogin } = useContext(UserContext);

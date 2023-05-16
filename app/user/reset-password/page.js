@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useContext } from 'react';
-import useRouter from 'next/navigation';
-import { UserContext } from '../../context/user';
-import ResetForm from '../../components/ResetForm/ResetForm';
+import { UserContext } from '@/app/context/user';
+import ResetForm from '@/app/components/ResetForm/ResetForm';
 
 const resetpassword = () => {
 

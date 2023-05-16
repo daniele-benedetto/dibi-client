@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import axios from '../../../app/lib/api';
+import axios from '@/app/lib/api';
 
 export default async (req, res) => {
   if (req.method === 'POST') {

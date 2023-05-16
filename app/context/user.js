@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react';
 export const UserContext = createContext(null);
-import { linstance } from '../lib/api';
+import { linstance } from '@/app/lib/api';
 
 const UserProvider = ({ children }) => {
 

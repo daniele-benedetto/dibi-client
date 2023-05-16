@@ -2,9 +2,9 @@
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import Button from "../Button/Button";
-import FilterMenu from "../FilterMenu/FilterMenu";
-import FilterPrice from "../FilterPrice/filterPrice";
+import Button from "@/app/components/Button/Button";
+import FilterMenu from "@/app/components/FilterMenu/FilterMenu";
+import FilterPrice from "@/app/components/FilterPrice/filterPrice";
 import { usePathname } from 'next/navigation';
 
 export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebarIsOpen, filters, resetFilters}) {

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Button from "@/app/components/Button/Button";
 import FilterMenu from "@/app/components/FilterMenu/FilterMenu";
-import FilterPrice from "@/app/components/FilterPrice/filterPrice";
+import FilterPrice from "@/app/components/FilterPrice/FilterPrice";
 import { usePathname } from 'next/navigation';
 
 export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebarIsOpen, filters, resetFilters}) {

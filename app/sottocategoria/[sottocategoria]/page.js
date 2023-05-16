@@ -5,7 +5,7 @@ import Products from '@/app/components/Products/Products';
 import Sidebar from '@/app/components/Sidebar/Sidebar';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { PRODUCTS_SUBCATEGORY_QUERY } from '../../lib/query';
+import { PRODUCTS_SUBCATEGORY_QUERY } from '@/app/lib/query';
 import Loader from '@/app/components/Loader/Loader';
 import { useRouter } from 'next/navigation';
 import { popup } from '@/app/lib/const';

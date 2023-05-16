@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ImSmile } from "react-icons/im";
 import { useQuery } from "urql";
 import CardCategory from "@/app/components/CardCategory/CardCategory";
-import { useStateCartContext } from "../context/cart";
+import { useStateCartContext } from "@/app/context/cart";
 import { HOME_QUERY } from "@/app/lib/query";
 
 export default function ThankYou() {

@@ -2,8 +2,7 @@
 import { useCountdown } from "@/app/hooks/useCountDown";
 import { useLocalStorage } from "@/app/hooks/useLocalStorage";
 import { useState } from "react";
-
-import Counter from "../Counter/Counter";
+import Counter from "@/app/components/Counter/Counter";
 
 import { AiOutlineClose } from "react-icons/ai";
 

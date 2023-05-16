@@ -1,5 +1,4 @@
-import {useStateCartContext} from '../../context/cart';
-
+import {useStateCartContext} from '@/app/context/cart';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaShoppingCart } from 'react-icons/fa';
 import Button from '@/app/components/Button/Button';

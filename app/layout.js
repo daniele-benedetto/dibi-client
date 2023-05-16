@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-import { footerAbout, footerServizioClienti, footerSocial, navbar, topbar} from './lib/const';
+import { footerAbout, footerServizioClienti, footerSocial, navbar, topbar} from '@/app/lib/const';
 import { CartContext } from '@/app/context/cart';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
 import UserProvider from '@/app/context/user';

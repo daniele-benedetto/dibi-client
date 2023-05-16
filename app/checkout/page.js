@@ -7,7 +7,7 @@ import getStripe from '@/app/lib/getStripe';
 import ProductList from '@/app/components/ProductsList/ProductList';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { weigthPriceRange, distancePriceRange, unionEurope } from '../lib/const';
+import { weigthPriceRange, distancePriceRange, unionEurope } from '@/app/lib/const';
 import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
 

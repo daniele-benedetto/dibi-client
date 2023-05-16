@@ -6,7 +6,7 @@ import { useQuery } from 'urql';
 import CardCategory from '@/app/components/CardCategory/CardCategory';
 import Hero from '@/app/components/Hero/Hero';
 import Loader from '@/app/components/Loader/Loader';
-import { HOME_QUERY } from './lib/query';
+import { HOME_QUERY } from '@/app/lib/query';
 import { motion } from 'framer-motion';
 
 export default function Home() {

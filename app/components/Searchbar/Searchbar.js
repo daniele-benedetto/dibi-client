@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { useQuery } from "urql";
 import { PRODUCTS_QUERY } from "@/app/lib/query";
-import SearchItem from "../SearchItem/searchItem";
-import Loader from "../Loader/Loader";
+import SearchItem from "@/app/components/SearchItem/searchItem";
+import Loader from "@/app/components/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 

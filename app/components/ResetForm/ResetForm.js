@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { useForm, reset, set } from 'react-hook-form';
-import { UserContext } from '../../context/user';
+import { useForm } from 'react-hook-form';
+import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
 
 const ResetForm = () => {

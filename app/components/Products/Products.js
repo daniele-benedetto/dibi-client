@@ -1,5 +1,5 @@
 "use client";
-import Card from "../Card/Card";
+import Card from "@/app/components/Card/Card";
 export default function Products({products}) {
     return (
         <section className='flex flex-wrap w-full md:w-2/3'>

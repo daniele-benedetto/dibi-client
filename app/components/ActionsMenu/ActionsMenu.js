@@ -1,10 +1,8 @@
 "use client";
-import { useLockBodyScroll } from "@/app/hooks/useLockBodyScroll";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { useEffect, useState } from "react";
-
-import Button from "../Button/Button";
-import ReorderMenu from "../ReorderMenu/ReorderMenu";
+import Button from "@/app/Button/Button";
+import ReorderMenu from "@/app/ReorderMenu/ReorderMenu";
 
 export default function ActionsMenu({setSortType, setSidebarIsOpen, sortType, sidebarIsOpen}) {
 

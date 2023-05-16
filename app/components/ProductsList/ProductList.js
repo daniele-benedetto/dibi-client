@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Button from "../Button/Button";
-import CartItem from "../CartItem/CartItem";
+import Button from "@/app/components/Button/Button";
+import CartItem from "@/app/components/CartItem/CartItem";
 
 export default function ProductList({cartItems, totalPrice, action, onAdd, onRemove, totalPriceWithSale, setTotalPriceWithSale}) {
 

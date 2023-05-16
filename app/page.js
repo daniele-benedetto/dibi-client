@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import CardCategory from './components/CardCategory/CardCategory';
-import Hero from './components/Hero/Hero';
-import Loader from './components/Loader/Loader';
+import CardCategory from '@/app/components/CardCategory/CardCategory';
+import Hero from '@/app/components/Hero/Hero';
+import Loader from '@/app/components/Loader/Loader';
 import { HOME_QUERY } from './lib/query';
 import { motion } from 'framer-motion';
 

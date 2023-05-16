@@ -1,6 +1,6 @@
 "use client";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
-import Button from "../Button/Button";
+import Button from "@/app/components/Button/Button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

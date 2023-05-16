@@ -1,12 +1,12 @@
 "use client";
-import Popup from '../../components/Popup/Popup';
-import ActionsMenu from '../../components/ActionsMenu/ActionsMenu';
-import Products from '../../components/Products/Products';
-import Sidebar from '../../components/Sidebar/Sidebar';
+import Popup from '@/app/components/Popup/Popup';
+import ActionsMenu from '@/app/components/ActionsMenu/ActionsMenu';
+import Products from '@/app/components/Products/Products';
+import Sidebar from '@/app/components/Sidebar/Sidebar';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { PRODUCTS_CATEGORY_QUERY, PRODUCTS_QUERY } from '../../lib/query';
-import Loader from '../../components/Loader/Loader';
+import { PRODUCTS_CATEGORY_QUERY, PRODUCTS_QUERY } from '@/app/lib/query';
+import Loader from '@/app/components/Loader/Loader';
 import { useRouter } from 'next/navigation';
 import { popup } from '@/app/lib/const';
 

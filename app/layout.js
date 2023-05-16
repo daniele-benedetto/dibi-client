@@ -1,13 +1,13 @@
 "use client";
-import './globals.css';
+import '@/app/globals.css';
 import { Inter } from 'next/font/google';
-import Topbar from './components/Topbar/Topbar';
-import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer';
+import Topbar from '@/app/components/Topbar/Topbar';
+import Navbar from '@/app/components/Navbar/Navbar';
+import Footer from '@/app/components/Footer/Footer';
 import { footerAbout, footerServizioClienti, footerSocial, navbar, topbar} from './lib/const';
-import { CartContext } from './context/cart';
+import { CartContext } from '@/app/context/cart';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
-import UserProvider from './context/user';
+import UserProvider from '@/app/context/user';
 
 const inter = Inter({
     subsets: ['latin'],

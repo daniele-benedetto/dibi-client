@@ -1,14 +1,14 @@
 "use client";
 import {Elements} from '@stripe/react-stripe-js';
 import { useContext, useEffect, useState } from 'react';
-import { useStateCartContext } from '../context/cart';
-import CheckoutForm from '../components/CheckoutForm/CheckoutForm';
-import getStripe from '../lib/getStripe';
-import ProductList from '../components/ProductsList/ProductList';
+import { useStateCartContext } from '@/app/context/cart';
+import CheckoutForm from '@/app/components/CheckoutForm/CheckoutForm';
+import getStripe from '@/app/lib/getStripe';
+import ProductList from '@/app/components/ProductsList/ProductList';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { weigthPriceRange, distancePriceRange, unionEurope } from '../lib/const';
-import { UserContext } from '../context/user';
+import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
 
 const stripePromise = getStripe();

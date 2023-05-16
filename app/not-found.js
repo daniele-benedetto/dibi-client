@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { ImSad } from "react-icons/im";
 import { useQuery } from "urql";
-import CardCategory from "./components/CardCategory/CardCategory";
-import { HOME_QUERY } from "./lib/query";
+import CardCategory from "@/app/components/CardCategory/CardCategory";
+import { HOME_QUERY } from "@/app/lib/query";
 
 export default function NotFound() {
     const [products, setProducts] = useState([]);

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { PaymentElement, useStripe, useElements, LinkAuthenticationElement, AddressElement } from "@stripe/react-stripe-js"
 import { useStateCartContext } from "@/app/context/cart";
-import Button from "../Button/Button";
+import Button from "@/app/components/Button/Button";
 import { useRouter } from "next/navigation";
 
 export default function CheckoutForm({clientSecret, setCountry, weightPrice, distancePrice, totalPriceWithSale}) {

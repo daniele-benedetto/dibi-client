@@ -6,12 +6,12 @@ import { RiShoppingBagLine, RiShoppingBag3Line } from 'react-icons/ri';
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import VerticalMenu from "../VerticalMenu/VerticalMenu";
-import Searchbar from "../Searchbar/Searchbar";
-import CartMenu from "../CartMenu/CartMenu";
+import VerticalMenu from "@/app/components//VerticalMenu/VerticalMenu";
+import Searchbar from "@/app/components/Searchbar/Searchbar";
+import CartMenu from "@/app/components/CartMenu/CartMenu";
 import { useStateCartContext } from "@/app/context/cart";
 import { UserContext } from "@/app/context/user";
-import LoginForm from "../LoginForm/LoginForm";
+import LoginForm from "@/app/components/LoginForm/LoginForm";
 import { usePathname } from 'next/navigation';
 import { motion } from "framer-motion";
 

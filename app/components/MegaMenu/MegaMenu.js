@@ -3,7 +3,7 @@ import { CATEGORIES_QUERY } from '@/app/lib/query';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useQuery } from 'urql';
-import Loader from '../Loader/Loader';
+import Loader from '@/app/components/Loader/Loader';
 import { useRouter } from 'next/navigation';
 
 

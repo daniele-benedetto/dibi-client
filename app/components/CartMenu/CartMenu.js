@@ -2,9 +2,9 @@ import {useStateCartContext} from '../../context/cart';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaShoppingCart } from 'react-icons/fa';
-import Button from '../Button/Button';
+import Button from '@/app/components/Button/Button';
 import { useLockBodyScroll } from '@/app/hooks/useLockBodyScroll';
-import ProductList from '../ProductsList/ProductList';
+import ProductList from '@/app/components/ProductsList/ProductList';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { motion } from 'framer-motion';

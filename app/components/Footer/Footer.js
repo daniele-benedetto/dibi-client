@@ -1,5 +1,5 @@
 import Link from "next/link";
-import FooterCol from "./FooterCol";
+import FooterCol from "@/app/components/Footer/FooterCol";
 
 export default function Footer({footerServizioClienti, footerSocial, footerAbout}) {
     return (

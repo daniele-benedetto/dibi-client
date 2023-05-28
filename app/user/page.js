@@ -19,7 +19,7 @@ export default function User() {
     useEffect(() => {
         const checkUser = async () => {
             const res = await checkLogin();
-            if (res.status !== 200) {
+            if (res && res.status !== 200) {
                 router.push('/user/login');
                 return false;
             }

@@ -240,7 +240,7 @@ export default function Prodotto({params}) {
     useEffect(() => {
         const checkUser = async () => {
             const res = await checkLogin();
-            if (res.status === 200) {
+            if (res && res.status === 200) {
                 return true;
             }
             return false;

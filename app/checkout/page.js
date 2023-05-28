@@ -46,7 +46,7 @@ export default function App() {
     useEffect(() => {
         const checkUser = async () => {
             const res = await checkLogin();
-            if (res.status !== 200) {
+            if (res && res.status !== 200) {
                 return false;
             }
         }

@@ -28,12 +28,15 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       return
     }
 
+    console.log(elements);
+
     setIsLoading(true);
 
     await stripe.confirmPayment({
       elements,
       redirect: "if_required",
     }).then((result) => {
+      console.log(result)
       const products = [];
       cartItems.map((item) => {
           let index = item.selectedIndex;
@@ -47,7 +50,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
               variant_id: item.product_variants.data[index].id,
           });
       });
-      console.log(products)
+
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
         method: 'POST',
         mode: 'cors',

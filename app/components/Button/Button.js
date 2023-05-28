@@ -39,6 +39,7 @@ export default function Button({text, type, action, icon, color}) {
                 break;
             case "quad-active":
                 setButtonClasses("min-w-[32px] min-h-[32px] mr-2 flex justify-center items-center border-2 border-black p-1 uppercase");
+                setButtonStyles({backgroundColor: color});
                 break;
             case "disable":
                 setButtonClasses("bg-gray-300 text-white flex items-center justify-center p-2 uppercase w-full font-black");

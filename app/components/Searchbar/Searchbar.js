@@ -44,7 +44,6 @@ export default function Searchbar({setSearchIsOpen}) {
     }
     }, [prodotti]);
 
-    if(fetching) return <Loader />;
     if(error) return router.push('/error');
     
     return (

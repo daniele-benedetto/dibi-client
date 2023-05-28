@@ -10,7 +10,7 @@ const resetpassword = () => {
   useEffect(() => {
     const check = async () => {
       const res = await checkLogin();
-      if (res.status === 200) {
+      if (res && res.status === 200) {
       }
     }
     check();

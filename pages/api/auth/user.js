@@ -18,6 +18,7 @@ export default async (req, res) => {
             email: response.data.email,
             id: response.data.id,
             products: response.data.products,
+            orders: response.data.orders,
             });
         })
         .catch((error) => {

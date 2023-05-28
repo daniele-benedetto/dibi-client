@@ -1,6 +1,7 @@
 import { useState, createContext } from 'react';
 export const UserContext = createContext(null);
-import { linstance } from '@/app/lib/api';
+import instance, { linstance } from '@/app/lib/api';
+import axios from 'axios';
 
 const UserProvider = ({ children }) => {
 
@@ -50,7 +51,6 @@ const UserProvider = ({ children }) => {
   }
 
   async function doRegister(values) {
-    var ret = ['niente'];
     try {
       const resp = await linstance.post('/api/auth/register', values);
       return ['OK', resp.data.message];
@@ -70,12 +70,16 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  const doUpdate = async (values) => {
-    const resp = await linstance.put('/api/auth/update', values, {
-      method: 'PUT',
-      });
-    if (resp.data.message == 'success') {
-      console.log('update success');
+  const doWishList = async (values) => {
+    let body = {
+      products: values,
+      id: id
+    };
+    try {
+      const resp = await linstance.put('/api/auth/wishlist', body);
+      return resp;
+    } catch (error) {
+      return error.response;
     }
   };
 
@@ -86,6 +90,7 @@ const UserProvider = ({ children }) => {
       setEmail(resp.data.email);
       setId(resp.data.id);
       setUserWishList(resp.data.products);
+      setUserOrder(resp.data.orders);
       return resp;
     } catch (error) {
       return error.response;
@@ -98,15 +103,19 @@ const UserProvider = ({ children }) => {
   const [jwt, setJwt] = useState();
   const [userWishlist, setUserWishList] = useState();
   const [loggingIn, setLoggingIn] = useState(false);
+  const [userOrder, setUserOrder] = useState();
+
   const useract = {
     user: user,
     setUser: setUser,
     userWishlist: userWishlist,
     setUserWishList: setUserWishList,
+    userOrder: userOrder,
+    setUserOrder: setUserOrder,
     loggingIn: loggingIn,
     doLogout: doLogout,
     doLogin: doLogin,
-    doUpdate: doUpdate,
+    doWishList: doWishList,
     setLoggingIn: setLoggingIn,
     checkLogin: checkLogin,
     jwt: jwt,

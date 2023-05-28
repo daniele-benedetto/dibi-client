@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 
-const WishItem = ({item}) => {
+const WishItem = ({item, action}) => {
     return (
         <div className="flex justify-between items-center w-full h-26 border-b border-gray-200 relative">
             <Link href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/prodotto/${item.slug}`} className="flex items-center mb-5">
@@ -12,7 +12,7 @@ const WishItem = ({item}) => {
                     <h5 className="text-lg font-bold">{item.name}</h5>
                 </div>
             </Link>
-            <AiOutlineClose size={16} className='absolute top-0 right-0' />
+            <AiOutlineClose onClick={action} size={16} className='absolute top-0 right-0 cursor-pointer' />
         </div>
     );
 }

@@ -32,12 +32,11 @@ export default function Prodotto({params}) {
     const [stock, setStock] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
-    const [wishlist, setWishlist] = useState([]);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [sale, setSale] = useState(0);
 
     const {onAdd, cartItems} = useStateCartContext();
-    const { checkLogin, userWishlist, doUpdate  } = useContext(UserContext);
+    const { checkLogin, userWishlist, doWishList, user  } = useContext(UserContext);
 
     const size = useWindowSize();
     const router = useRouter();
@@ -50,19 +49,27 @@ export default function Prodotto({params}) {
     }
 
     const toogleFavorite = async () => {
+        if(!user) {
+            setIsNotUser(true);
+            return;
+        }
+        const newUserWishlist = [...userWishlist];
         if(isFavorite)  {
             setIsFavorite(false);
-            setWishlist(wishlist.filter((item) => item.id !== product.id));
+            newUserWishlist.map((wish, idx) => {
+                if(wish.id == product.id) {
+                    newUserWishlist.splice(idx, 1);
+                }
+            });
         } else {
             setIsFavorite(true);
-            setWishlist([...wishlist, product]);
+            newUserWishlist.push(product);
         }
 
-
-        const resp = await doUpdate({products: wishlist});
-        if(resp.data.message == 'success') {
+        const response = await doWishList(newUserWishlist);
+        if(response && response.status === 200) {
             setToastFavorite(true);
-        };
+        }
     }
 
     const onAddProduct = () => {
@@ -187,7 +194,6 @@ export default function Prodotto({params}) {
             userWishlist.map((wish) => {
                 if(wish.id == product.id) {
                     setIsFavorite(true);
-                    setWishlist([...wishlist, wish]);
                 }
             });
         }
@@ -269,11 +275,11 @@ export default function Prodotto({params}) {
                     <div className='flex flex-col w-full md:w-1/3 mt-10'>
                         <h2 className='text-3xl font-black mb-3'>{product && product.name}</h2>
                         {sale > 0 && product && <div className='flex items-center'>
-                            <span className='font-black text-2xl line-through text-red-700'>{product.price.toFixed(2)}$</span>
-                            <span className='font-black text-2xl ml-2'>{(product.price - sale).toFixed(2)}$</span>
+                            <span className='font-black text-2xl line-through text-red-700'>{product.price.toFixed(2)}€</span>
+                            <span className='font-black text-2xl ml-2'>{(product.price - sale).toFixed(2)}€</span>
                         </div> }
                         {sale == 0 && product && <div className='flex items-center'>
-                                <span className='font-black text-2xl'>{product.price.toFixed(2)}$</span>
+                                <span className='font-black text-2xl'>{product.price.toFixed(2)}€</span>
                         </div> }
                         <ProductDetailWrapper title="Colore">
                             {product && product.colors.map((color, idx) => (
@@ -306,7 +312,7 @@ export default function Prodotto({params}) {
                             </div>
                             <div className='flex flex-col mt-10'>
                                 { stock > 0 && <Button text='Aggiungi al carrello' type="filled" action={onAddProduct} /> }
-                                { stock == 0 && <Button text='Prodotto esaurito' type="disable" /> }
+                                { stock == 0 && <Button text={!selectedColor ? 'Seleziona un colore' : !selectedSize ? 'Seleziona una taglia' : 'Non disponibile'} type="disable" /> }
                                 <div onClick={toogleFavorite} className='flex flex-row items-center mt-3 cursor-pointer'>
                                     { !isFavorite ? <AiOutlineHeart /> : <AiFillHeart /> }
                                     <Button text={!isFavorite ? "Aggiungi alla wishlist" : "Presente nella wishlist"} type="underline" />
@@ -314,7 +320,7 @@ export default function Prodotto({params}) {
                             </div>
                         </div>
                         <div className='flex mt-10 items-center'>
-                            <ProductFocus title={'Spedizione gratuita'} text={'su tutti gli ordini a partitre da 70$'} icon={<BsBoxSeam className='text-4xl' />} />
+                            <ProductFocus title={'Spedizione gratuita'} text={'su tutti gli ordini a partitre da 70€'} icon={<BsBoxSeam className='text-4xl' />} />
                             <ProductFocus title={'Reso gratuito'} text={'entro 14 giorni dalla consegna'} icon={<FiRotateCw className='text-4xl' />} />
                             <ProductFocus title={'Pagamento sicuro'} text={'con carta di credito o paypal'} icon={<BsCreditCard2Back className='text-4xl' />} />
                         </div>

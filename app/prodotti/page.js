@@ -8,7 +8,10 @@ import { useQuery } from 'urql';
 import { PRODUCTS_QUERY } from '@/app/lib/query';
 import Loader from '@/app/components/Loader/Loader';
 import { useRouter } from 'next/navigation';
-import { popup } from '@/app/lib/const';
+import Topbar from '@/app/components/Topbar/Topbar';
+import Navbar from '@/app/components/Navbar/Navbar';
+import Footer from '@/app/components/Footer/Footer';
+
 
 export default function Prodotti() {
 
@@ -113,8 +116,11 @@ export default function Prodotti() {
     if(error) return router.push('/error');
 
     return (
+      <>
+        {prodotti?.general?.data.attributes.top_bar && <Topbar topbar={prodotti.general.data.attributes.top_bar} />}
+        {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} />}
         <main className='bg-white p-5'>
-          <Popup popup={popup} />
+          {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
           <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />
           <div className='flex flex-wrap container m-auto'>
             { data && <Sidebar products={prodotti.products.data} filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} /> }
@@ -126,5 +132,7 @@ export default function Prodotti() {
             </section> }
           </div>
         </main>
+        {prodotti?.general?.data.attributes.footer && <Footer footerServizioClienti={prodotti.general.data.attributes.footer.footerServizioClienti} footerAbout={prodotti.general.data.attributes.footer.footerAbout} footerSocial={prodotti.general.data.attributes.footer.footerSocial} />}
+      </>
     );
 };

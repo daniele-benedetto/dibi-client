@@ -10,6 +10,12 @@ import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { weigthPriceRange, distancePriceRange, unionEurope } from '@/app/lib/const';
 import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
+import Topbar from '@/app/components/Topbar/Topbar';
+import Navbar from '@/app/components/Navbar/Navbar';
+import Footer from '@/app/components/Footer/Footer';
+import Loader from '../components/Loader/Loader';
+import { GENERAL_QUERY } from '../lib/query';
+import { useQuery } from 'urql';
 
 const stripePromise = getStripe();
 
@@ -107,68 +113,82 @@ export default function App() {
         "client-id" : "AT-bzXqJdHw3GSBE1yv4ReworPiDFoqO7-zOYvkHCQFSdvlLaTMg2Li67XZZ0peMFUh2ZB1tsfeD9UkQ", 
     } ; 
 
+    const [results] = useQuery({
+        query: GENERAL_QUERY,
+    });
+  
+      const { data, fetching, error } = results;
+
+      if(fetching) return <Loader />;
+      if(error) return router.push('/error');
+
     return (
-        <main className='bg-white p-5'>
-            <section className='container m-auto flex flex-wrap'>
-                <div className='flex justify-center w-full md:w-2/3'>
-                    <div className='w-full max-w-lg'>
-                        {clientSecret && (
-                            <>
-                                <Elements options={stripeOptions} stripe={stripePromise}>
-                                    <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
-                                </Elements>
-                                <div className='py-5'>
-                                    <p className='text-center text-xs font-thin'>Oppure paga con:</p>
-                                    <PayPalScriptProvider options={paypalOptions}>
-                                        <PayPalButtons 
-                                            style={{
-                                                color: "gold",
-                                                layout: "horizontal",
-                                                height: 40,
-                                                tagline: false,
-                                             }} 
-                                            createOrder={(data, actions) => {
-                                                return actions.order.create({
-                                                    purchase_units: [
-                                                        {
-                                                            amount: {
-                                                                value: totalPriceWithSale > 0 ? totalPriceWithSale + weightPrice + distancePrice : totalPrice + weightPrice + distancePrice,
+        <>
+            {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            <main className='bg-white p-5'>
+                <section className='container m-auto flex flex-wrap'>
+                    <div className='flex justify-center w-full md:w-2/3'>
+                        <div className='w-full max-w-lg'>
+                            {clientSecret && (
+                                <>
+                                    <Elements options={stripeOptions} stripe={stripePromise}>
+                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
+                                    </Elements>
+                                    <div className='py-5'>
+                                        <p className='text-center text-xs font-thin'>Oppure paga con:</p>
+                                        <PayPalScriptProvider options={paypalOptions}>
+                                            <PayPalButtons 
+                                                style={{
+                                                    color: "gold",
+                                                    layout: "horizontal",
+                                                    height: 40,
+                                                    tagline: false,
+                                                }} 
+                                                createOrder={(data, actions) => {
+                                                    return actions.order.create({
+                                                        purchase_units: [
+                                                            {
+                                                                amount: {
+                                                                    value: totalPriceWithSale > 0 ? totalPriceWithSale + weightPrice + distancePrice : totalPrice + weightPrice + distancePrice,
+                                                                },
                                                             },
-                                                        },
-                                                    ],
-                                                });
-                                            }}
-                                            onApprove={async (data, actions) => {
-                                                const order = await actions.order.capture(); 
-                                                handleApprove(data.orderID);
-                                              }}
-                                            onError={(err) => {
-                                                //verify error
-                                            }}
-                                            onCancel={() => {
-                                                // Display cancel message, modal or redirect user to cancel page or back to cart
-                                            }}
-                                            onClick={(data, actions) => {
-                                                //verify conditions
-                                            }}
-                                        />
-                                    </PayPalScriptProvider>
+                                                        ],
+                                                    });
+                                                }}
+                                                onApprove={async (data, actions) => {
+                                                    const order = await actions.order.capture(); 
+                                                    handleApprove(data.orderID);
+                                                }}
+                                                onError={(err) => {
+                                                    //verify error
+                                                }}
+                                                onCancel={() => {
+                                                    // Display cancel message, modal or redirect user to cancel page or back to cart
+                                                }}
+                                                onClick={(data, actions) => {
+                                                    //verify conditions
+                                                }}
+                                            />
+                                        </PayPalScriptProvider>
+                                    </div>
+                                </>
+                            )}
+                            {!clientSecret && (
+                                <div className="flex justify-center items-center h-screen">
+                                    <div className="flex flex-col justify-center items-center">
+                                        <BiLoaderAlt color={'black'} size={120} />
+                                    </div>
                                 </div>
-                            </>
-                        )}
-                        {!clientSecret && (
-                            <div className="flex justify-center items-center h-screen">
-                                <div className="flex flex-col justify-center items-center">
-                                    <BiLoaderAlt color={'black'} size={120} />
-                                </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div className='flex justify-center w-full md:w-1/3'>
-                    {cartItems.length > 0 && <ProductList cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} totalPriceWithSale={totalPriceWithSale} setTotalPriceWithSale={setTotalPriceWithSale} />}
-                </div>
-            </section>
-        </main>
+                    <div className='flex justify-center w-full md:w-1/3'>
+                        {cartItems.length > 0 && <ProductList cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} totalPriceWithSale={totalPriceWithSale} setTotalPriceWithSale={setTotalPriceWithSale} />}
+                    </div>
+                </section>
+            </main>
+            {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
+        </>
    );
 };

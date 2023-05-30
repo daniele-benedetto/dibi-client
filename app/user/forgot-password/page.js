@@ -2,6 +2,13 @@
 import React, { useEffect, useContext } from 'react';
 import { UserContext } from '@/app/context/user';
 import ForgotForm from '@/app/components/ForgotPassword/ForgotPassword';
+import { useRouter } from "next/navigation";
+import { useQuery } from "urql";
+import { GENERAL_QUERY } from "@/app/lib/query";
+import Topbar from '@/app/components/Topbar/Topbar';
+import Navbar from '@/app/components/Navbar/Navbar';
+import Footer from '@/app/components/Footer/Footer';
+import Loader from '@/app/components/Loader/Loader';
 
 const forgotpassword = () => {
   const { checkLogin } = useContext(UserContext);
@@ -15,11 +22,26 @@ const forgotpassword = () => {
     check();
   }, []);
 
+  const router = useRouter();
+  const [results] = useQuery({
+      query: GENERAL_QUERY,
+  });
+
+  const { data, fetching, error } = results;
+
+  if(fetching) return <Loader />;
+  if(error) return router.push('/error');
+
   return (
-    <div className="w-full h-screen bg-white pt-20 flex flex-col justify-center items-center">
-      <h1 className="text-center text-2xl font-bold">Forgot Password</h1>
-      <ForgotForm /> 
-    </div>
+    <>
+      {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
+      {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+      <main className="w-full h-screen bg-white pt-20 flex flex-col justify-center items-center">
+        <h1 className="text-center text-2xl font-bold">Password dimenticata</h1>
+        <ForgotForm /> 
+      </main>
+      {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
+    </>
   );
 }
 

@@ -24,16 +24,16 @@ export default function Card({product}) {
                 setStock(magazzino);
             });
 
-            if(product.category.data.attributes.sale.data) {
-                categorySale = product.category.data.attributes.sale.data.attributes.amount;
+            if(product.category.data.attributes.sale?.data) {
+                categorySale = product.category.data.attributes.sale?.data.attributes.amount;
             }
 
-            if(product.subcategory.data.attributes.sale.data) {
-                subCategorySale = product.subcategory.data.attributes.sale.data.attributes.amount;
+            if(product.subcategory.data.attributes.sale?.data) {
+                subCategorySale = product.subcategory.data.attributes.sale?.data.attributes.amount;
             }
 
-            if(product.sale.data) {
-                productSale = product.sale.data.attributes.amount;
+            if(product.sale?.data) {
+                productSale = product.sale?.data.attributes.amount;
             }
 
             setSale(Math.max(categorySale, subCategorySale, productSale));

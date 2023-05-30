@@ -82,6 +82,22 @@ export const PRODUCTS_QUERY = `
                     }
                 }
             }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
         }
     }
 `;
@@ -175,6 +191,22 @@ export const PRODUCT_QUERY = `
                     }
                 }
             }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
         }
     }
 `;
@@ -198,7 +230,24 @@ export const CATEGORIES_QUERY = `
                     slug
                 }
             }
-        }               
+        }, 
+        
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
+        }
     }
 `;
 
@@ -222,6 +271,22 @@ export const HOME_QUERY = `
                             }
                         }
                     },
+                }
+            }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
                 }
             }
         }
@@ -301,6 +366,22 @@ query getProductCategory($slug: String!) {
                     }
                 }
             }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
         }
     }
 `;
@@ -376,6 +457,43 @@ query getProductCategory($slug: String!) {
                             }
                         }
                     }
+                }
+            }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
+        }
+    }
+`;
+
+export const GENERAL_QUERY = `
+    query {
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
                 }
             }
         }

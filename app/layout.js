@@ -1,10 +1,6 @@
 "use client";
 import '@/app/globals.css';
 import { Inter } from 'next/font/google';
-import Topbar from '@/app/components/Topbar/Topbar';
-import Navbar from '@/app/components/Navbar/Navbar';
-import Footer from '@/app/components/Footer/Footer';
-import { footerAbout, footerServizioClienti, footerSocial, navbar, topbar} from '@/app/lib/const';
 import { CartContext } from '@/app/context/cart';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
 import UserProvider from '@/app/context/user';
@@ -27,10 +23,7 @@ export default function RootLayout({ children }) {
                 <Provider value={client}>
                     <UserProvider>
                         <CartContext>
-                                <Topbar topbar={topbar} />
-                                <Navbar navbar={navbar} />
                                 {children}
-                                <Footer footerServizioClienti={footerServizioClienti} footerSocial={footerSocial} footerAbout={footerAbout} />
                         </CartContext>
                     </UserProvider>
                 </Provider>

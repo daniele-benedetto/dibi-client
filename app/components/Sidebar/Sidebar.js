@@ -43,14 +43,17 @@ export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebar
         };
 
         const getColors = () => {
+            if(products.length === 0) return;
             setColors(products[0].attributes.colors);
         };
 
         const getSizes = () => {
+            if(products.length === 0) return;
             setSizes(products[0].attributes.sizes);
         };
 
         const getRange = () => {
+            if(products.length === 0) return;
             const prices = products.map((product) => {
                 return product.attributes.price;
             });

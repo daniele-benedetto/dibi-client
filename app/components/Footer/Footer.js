@@ -7,7 +7,7 @@ export default function Footer({footerServizioClienti, footerSocial, footerAbout
             <div className="container grid grid-cols-1 m-auto gap-5 p-5 md:grid-cols-5 md:p-0">
 
                 <FooterCol title={"Servizio clienti"}>
-                    {footerServizioClienti.map(item => (
+                    {footerServizioClienti && footerServizioClienti.length > 0 && footerServizioClienti.map(item => (
                         <li className="my-1" key={item.id}>
                             <Link href={item.link}>{item.text}</Link>
                         </li>
@@ -15,7 +15,7 @@ export default function Footer({footerServizioClienti, footerSocial, footerAbout
                 </FooterCol>
 
                 <FooterCol title={"About"}>
-                    {footerAbout.map(item => (
+                    {footerAbout && footerAbout.length > 0 && footerAbout.map(item => (
                         <li className="my-1" key={item.id}>
                             <Link href={item.link}>{item.text}</Link>
                         </li>
@@ -23,7 +23,7 @@ export default function Footer({footerServizioClienti, footerSocial, footerAbout
                 </FooterCol>
 
                 <FooterCol title={"Social"}>
-                    {footerSocial.map((item, index) => (
+                    {footerSocial && footerSocial.length > 0 && footerSocial.map((item, index) => (
                         <li className="my-1" key={item.id}>
                             <Link href={item.link}>{item.text}</Link>
                         </li>

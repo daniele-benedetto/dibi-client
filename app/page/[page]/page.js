@@ -48,14 +48,16 @@ export default function Page({params}) {
                 <section className='max-w-6xl mx-auto mt-10'>
                     {data?.pages?.data[0]?.attributes?.content}
                 </section>
-                <section className='max-w-6xl mx-auto my-10'>
+                {data?.pages.data[0]?.attributes?.faq && <section className='max-w-6xl mx-auto my-10'>
                     <h3 className='text-3xl font-bold my-5'>Le domande più frequenti</h3>
-                    <Accordion />
-                </section>
-                <section className='max-w-6xl mx-auto'>
+                    {data.pages.data[0].attributes.faq.map((item, index) => {
+                        return <Accordion key={index} title={item.title} content={item.content} />
+                    })}
+                </section> }
+                {data?.pages?.data[0]?.attributes?.contact_form && <section className='max-w-6xl mx-auto'>
                     <h3 className='text-3xl font-bold my-5'>Contattaci per qualunque necessità</h3>
                     <ContactForm />
-                </section>
+                </section> }
             </main>
             {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
         </>

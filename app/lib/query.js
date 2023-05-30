@@ -520,6 +520,11 @@ export const PAGE_QUERY = `
                                 url
                             }
                         }
+                    },
+                    contact_form,
+                    faq {
+                        title,
+                        content
                     }
                 }
             }

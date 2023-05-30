@@ -18,7 +18,7 @@ export default function Error() {
       const { data, fetching, error } = results;
 
       if(fetching) return <Loader />;
-      if(error) return router.push('/error');
+      if(error) return router.push('/errore');
 
     return(
         <>

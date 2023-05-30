@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { CartContext } from '@/app/context/cart';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
 import UserProvider from '@/app/context/user';
+import Whatsapp from './components/Whatsapp/Whatsapp';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
                         </CartContext>
                     </UserProvider>
                 </Provider>
+                <Whatsapp />
             </body>
         </html>
     );

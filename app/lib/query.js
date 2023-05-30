@@ -499,3 +499,46 @@ export const GENERAL_QUERY = `
         }
     }
 `;
+
+
+export const PAGE_QUERY = `
+    query getPage($slug: String!) {
+        pages(filters: {
+            slug: {
+                eq: $slug
+            }
+        }) {
+            data {
+                attributes {
+                    title,
+                    subtitle
+                    slug,
+                    content,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
+        }
+    }
+`;

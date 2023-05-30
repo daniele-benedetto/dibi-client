@@ -7,7 +7,6 @@ import getStripe from '@/app/lib/getStripe';
 import ProductList from '@/app/components/ProductsList/ProductList';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { weigthPriceRange, distancePriceRange, unionEurope } from '@/app/lib/const';
 import { UserContext } from '@/app/context/user';
 import { useRouter } from 'next/navigation';
 import Topbar from '@/app/components/Topbar/Topbar';
@@ -18,6 +17,8 @@ import { GENERAL_QUERY } from '../lib/query';
 import { useQuery } from 'urql';
 
 const stripePromise = getStripe();
+
+const unionEurope = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'];
 
 export default function App() {
 
@@ -32,6 +33,12 @@ export default function App() {
     const [distancePrice, setDistancePrice] = useState(0);
     const [totalPriceWithSale, setTotalPriceWithSale] = useState(0);
     const [paidFor, setPaidFor] = useState(false);
+
+    const [results] = useQuery({
+        query: GENERAL_QUERY,
+    });
+  
+    const { data, fetching, error } = results;
     
     const handleApprove = (orderId) => {
     // Call backend function to fulfill order
@@ -61,7 +68,7 @@ export default function App() {
 
     useEffect(() => {
         if (totalWeight > 0) {
-            weigthPriceRange.map((item) => {
+            data?.general?.data.weigthPriceRange.map((item) => {
                 if (totalWeight >= item.min && totalWeight <= item.max) {
                     setWeightPrice(item.price)
                 }
@@ -69,11 +76,11 @@ export default function App() {
         )};
         if (country) {
             if (country === 'IT') {
-                setDistancePrice(distancePriceRange[0].price)
+                setDistancePrice(data?.general?.data.distancePriceRange[0].price)
             } else if (unionEurope.includes(country)) {
-                setDistancePrice(distancePriceRange[1].price)
+                setDistancePrice(data?.general?.data.distancePriceRange[1].price)
             } else {
-                setDistancePrice(distancePriceRange[2].price)
+                setDistancePrice(data?.general?.data.distancePriceRange[2].price)
             }
         }
     }, [totalWeight, country]);
@@ -112,12 +119,6 @@ export default function App() {
     const  paypalOptions  =  { 
         "client-id" : "AT-bzXqJdHw3GSBE1yv4ReworPiDFoqO7-zOYvkHCQFSdvlLaTMg2Li67XZZ0peMFUh2ZB1tsfeD9UkQ", 
     } ; 
-
-    const [results] = useQuery({
-        query: GENERAL_QUERY,
-    });
-  
-      const { data, fetching, error } = results;
 
       if(fetching) return <Loader />;
       if(error) return router.push('/error');

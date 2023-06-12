@@ -47,7 +47,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
               size: item.selectedSize,
               quantity: item.quantity,
               price: item.price,
-              variant_id: item.product_variants.data[index].id,
+              variant_id: item.product_variant[index].id,
           });
       });
 

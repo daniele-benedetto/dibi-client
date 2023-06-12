@@ -11,7 +11,7 @@ export default function CartItem({item, onAdd, onRemove}) {
 
     useEffect(() => {
         const selectedColor = item.selectedColor;
-        const idx = item.product_variants.data.findIndex(variante => variante.attributes.color == selectedColor);
+        const idx = item.product_variant.findIndex(variante => variante.attributes.color == selectedColor);
         setIndex(idx);
     }, [item]);
 
@@ -40,7 +40,7 @@ export default function CartItem({item, onAdd, onRemove}) {
     return(
         <div key={item.id} className="flex justify-between items-center w-full h-26 border-b border-gray-200">
             <div className="flex items-center">
-                <Image src={item.product_variants.data[index] ? item.product_variants.data[index].attributes.gallery.data.attributes.gallery.data[0].attributes.url : ''} alt="product image" width={80} height={100} />
+                <Image src={item.product_variant[index] ? item.product_variant[index].gallery.data[0].attributes.url : ''} alt="product image" width={80} height={100} />
                 <div className="flex flex-col justify-between items-start ml-4">
                     <h5 className="text-lg font-bold">{item.name}</h5>
                     <p className="text-sm text-gray-500">{item.quantity} x {sale > 0 ? item.price - sale : item.price}€</p>

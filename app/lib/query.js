@@ -49,25 +49,15 @@ export const PRODUCTS_QUERY = `
                             }
                         }
                     },
-                    product_variants {
-                        data {
-                            id,
-                            attributes {
-                                stock,
-                                color,
-                                size,
-                                gallery {
-                                    data {
-                                        attributes {
-                                            gallery {
-                                                data {
-                                                    attributes {
-                                                        url
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                    product_variant {
+                        id,
+                        color,
+                        size,
+                        stock,
+                        gallery {
+                            data {
+                                attributes {
+                                    url
                                 }
                             }
                         }
@@ -158,25 +148,15 @@ export const PRODUCT_QUERY = `
                             }
                         }
                     },
-                    product_variants {
-                        data {
-                            id,
-                            attributes {
-                                stock,
-                                color,
-                                size,
-                                gallery {
-                                    data {
-                                        attributes {
-                                            gallery {
-                                                data {
-                                                    attributes {
-                                                        url
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                    product_variant {
+                        id,
+                        color,
+                        size,
+                        stock,
+                        gallery {
+                            data {
+                                attributes {
+                                    url
                                 }
                             }
                         }
@@ -341,29 +321,19 @@ query getProductCategory($slug: String!) {
                             }
                         }
                     },
-                    product_variants {
-                        data {
-                            id,
-                            attributes {
-                                stock,
-                                color,
-                                size,
-                                gallery {
-                                    data {
-                                        attributes {
-                                            gallery {
-                                                data {
-                                                    attributes {
-                                                        url
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                    product_variant {
+                        id,
+                        color,
+                        size,
+                        stock,
+                        gallery {
+                            data {
+                                attributes {
+                                    url
                                 }
                             }
                         }
-                    }
+                    },
                 }
             }
         },
@@ -434,29 +404,19 @@ query getProductCategory($slug: String!) {
                             }
                         }
                     },
-                    product_variants {
-                        data {
-                            id,
-                            attributes {
-                                stock,
-                                color,
-                                size,
-                                gallery {
-                                    data {
-                                        attributes {
-                                            gallery {
-                                                data {
-                                                    attributes {
-                                                        url
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                    product_variant {
+                        id,
+                        color,
+                        size,
+                        stock,
+                        gallery {
+                            data {
+                                attributes {
+                                    url
                                 }
                             }
                         }
-                    }
+                    },
                 }
             }
         },

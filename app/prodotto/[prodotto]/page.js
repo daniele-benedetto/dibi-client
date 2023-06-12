@@ -100,12 +100,12 @@ export default function Prodotto({params}) {
         let i = 0
         let variantStock = 0;
 
-        product.product_variants.data.map((variante, idx) => {
-            if(variante.attributes.color == color) {
+        product.product_variant.map((variante, idx) => {
+            if(variante.color == color) {
                 i = idx;
             }
-            if(color && selectedSize && variante.attributes.color == color && variante.attributes.size == selectedSize) {
-                variantStock = variante.attributes.stock;
+            if(color && selectedSize && variante.color == color && variante.size == selectedSize) {
+                variantStock = variante.stock;
             }
         });
 
@@ -125,9 +125,9 @@ export default function Prodotto({params}) {
     const onSelectedSize = (size) => {
         let variantStock = 0;
 
-        product.product_variants.data.map((variante) => {
-            if(size && selectedColor && variante.attributes.size == size && variante.attributes.color == selectedColor) {
-                variantStock = variante.attributes.stock;
+        product.product_variant.map((variante) => {
+            if(size && selectedColor && variante.size == size && variante.color == selectedColor) {
+                variantStock = variante.stock;
             }
         });
 
@@ -219,23 +219,23 @@ export default function Prodotto({params}) {
                     && item.selectedColor == product.selectedColor
                     && item.selectedSize == product.selectedSize
                 ) {
-                    data.products.data[0].attributes.product_variants.data.map((variante, idx) => {
-                        if(variante.attributes.color == selectedColor && variante.attributes.size == selectedSize) {
-                            setStock(data.products.data[0].attributes.product_variants.data[idx].attributes.stock - item.quantity);
+                    data.products.data[0].attributes.product_variant.map((variante, idx) => {
+                        if(variante.color == selectedColor && variante.size == selectedSize) {
+                            setStock(data.products.data[0].attributes.product_variant[idx].stock - item.quantity);
                             setProduct({
                                 ...product,
-                                product_variants: {
-                                    ...data.products.data[0].attributes.product_variants,
+                                product_variant: {
+                                    ...data.products.data[0].attributes.product_variant,
                                     data: [
-                                        ...data.products.data[0].attributes.product_variants.data.slice(0, idx),
+                                        ...data.products.data[0].attributes.product_variant.slice(0, idx),
                                         {
-                                            ...data.products.data[0].attributes.product_variants.data[idx],
+                                            ...data.products.data[0].attributes.product_variant[idx],
                                             attributes: {
-                                                ...data.products.data[0].attributes.product_variants.data[idx].attributes,
-                                                stock: data.products.data[0].attributes.product_variants.data[idx].attributes.stock - item.quantity
+                                                ...data.products.data[0].attributes.product_variant[idx],
+                                                stock: data.products.data[0].attributes.product_variant[idx].stock - item.quantity
                                             }
                                         },
-                                        ...data.products.data[0].attributes.product_variants.data.slice(idx + 1)
+                                        ...data.products.data[0].attributes.product_variant.slice(idx + 1)
                                     ]
                                 }
                             });
@@ -272,8 +272,8 @@ export default function Prodotto({params}) {
                     <div className='flex flex-wrap'>
                         <div className='w-full md:w-2/3'>
                             <div className='flex flex-wrap'>
-                                { size.width < 768 && product && product.product_variants.data[index] && <ProductPrimaryImage image={product.product_variants.data[index].attributes.gallery.data.attributes.gallery.data[selectedImageIndex].attributes.url} /> }
-                                {product && product.product_variants.data[index] && product.product_variants.data[index].attributes.gallery.data.attributes.gallery.data.map((image, idx) => (
+                                { size.width < 768 && product && product.product_variant[index] && <ProductPrimaryImage image={product.product_variant[index].gallery.data[selectedImageIndex].attributes.url} /> }
+                                {product && product.product_variant[index] && product.product_variant[index].gallery.data.map((image, idx) => (
                                     <ProductSingleImage handleClick={handleClick} key={idx} idx={idx} image={image.attributes.url} name={product.name} />
                                 ))}
                             </div>

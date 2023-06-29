@@ -8,9 +8,9 @@ const Accordion = ({title, content}) => {
 
     return (
         <>
-            <div onClick={() => setVisible(!visible)} className='flex w-full justify-between p-2 mt-2 rounded bg-black cursor-pointer'>
+            <div onClick={() => setVisible(!visible)} className='flex w-full justify-between p-2 mt-2 rounded background-first-color cursor-pointer'>
                 <div className='flex'>
-                    <div className='text-white font-bold'>{title}</div>
+                    <div className='text-black font-bold'>{title}</div>
                 </div>
                 <div className="flex items-center justify-center">
                     { visible ? <BsArrowDown color="white" size={20} /> : <BsArrowUp color="white" size={20} /> }

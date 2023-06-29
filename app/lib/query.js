@@ -109,8 +109,13 @@ export const PRODUCT_QUERY = `
                     description,
                     sizes,
                     colors,
-                    materials,
                     weight,
+                    modello,
+                    marchio,
+                    genere,
+                    confezione_originale,
+                    condizioni,
+                    funzionante,
                     category {
                         data {
                             attributes {
@@ -193,24 +198,33 @@ export const PRODUCT_QUERY = `
 
 export const CATEGORIES_QUERY = `
     query {
-
-        categories {
+        categories(filters: {
+            in_evidence: {
+                eq: true
+            }
+        }) {
             data {
                 attributes {
                     name,
-                    slug
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
                 }
             }
         },
-
-        subcategories {
-            data {
-                attributes {
-                    name,
-                    slug
-                }
-            }
-        }, 
         
         general {
             data {
@@ -272,6 +286,47 @@ export const HOME_QUERY = `
         }
     }
 `;
+
+export const HOME_2_QUERY = `
+    query {
+        products(pagination: {
+            limit: 4
+        }) {
+            data {
+                attributes {
+                    empty_visible,
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                }
+            }
+        },
+        general {
+            data {
+                attributes {
+                    navbar,
+                    top_bar,
+                    pop_up {
+                        title,
+                        time,
+                        text
+                    },
+                    weight_price,
+                    distance_price,
+                    footer
+                }
+            }
+        }
+    }
+`;
+
+
 
 export const PRODUCTS_CATEGORY_QUERY = `
 query getProductCategory($slug: String!) {

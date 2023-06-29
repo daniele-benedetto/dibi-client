@@ -24,8 +24,6 @@ export default function Page({params}) {
 
     const { data, fetching, error } = results;
 
-    console.log(data)
-
     if(fetching) return <Loader />;
     if(error) return router.push('/errore');
     

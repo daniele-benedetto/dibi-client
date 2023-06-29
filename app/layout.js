@@ -1,14 +1,20 @@
 "use client";
 import '@/app/globals.css';
-import { Inter } from 'next/font/google';
+import { Lato, Lora } from 'next/font/google';
 import { CartContext } from '@/app/context/cart';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
 import UserProvider from '@/app/context/user';
 import Whatsapp from './components/Whatsapp/Whatsapp';
 
-const inter = Inter({
+const lato = Lato({
     subsets: ['latin'],
     weight: ['300', '400', '700', '900'],
+    display: 'swap'
+});
+
+const lora = Lora({
+    subsets: ['latin'],
+    weight: ['400', '700'],
     display: 'swap'
 });
 
@@ -20,7 +26,7 @@ const client = new Client({
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={lato.className}>
                 <Provider value={client}>
                     <UserProvider>
                         <CartContext>

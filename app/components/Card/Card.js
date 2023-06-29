@@ -19,8 +19,6 @@ export default function Card({product}) {
 
             setVisible(product.empty_visible);
 
-            console.log(product)
-
             product.product_variant.map((variant) => {
                 magazzino += variant.stock;
                 setStock(magazzino);

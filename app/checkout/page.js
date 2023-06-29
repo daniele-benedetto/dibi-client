@@ -68,7 +68,7 @@ export default function App() {
 
     useEffect(() => {
         if (totalWeight > 0) {
-            data?.general?.data.weigthPriceRange.map((item) => {
+            data?.general?.data?.weight_price.map((item) => {
                 if (totalWeight >= item.min && totalWeight <= item.max) {
                     setWeightPrice(item.price)
                 }

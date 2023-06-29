@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/*global colors*/
+:root {
+  --first-color: #8DCEFF;
+  --second-color: #F5A713;
+}
+
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 html {
-  font-family: Inter, sans-serif;
+  font-family: Lora, sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -17,7 +24,7 @@ html {
 
 body {
   margin: 0;
-  font-family: Inter, sans-serif;
+  font-family: Lora, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -111,4 +118,48 @@ input[type=range]::-moz-range-progress{
 .no-scroll {
   height: 100%;
   overflow: hidden;
+}
+
+.itemMenu{
+  position: relative;
+}
+
+.itemMenu::before {
+  content: ' ';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 5px;
+  background-color: var(--first-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.itemMenu:hover::before {
+  width: 100%;
+}
+
+.min-w-6xl {
+  min-width: 1140px;
+}
+
+.first-color {
+  color: var(--first-color);
+}
+
+.second-color {
+  color: var(--second-color);
+}
+
+.background-first-color {
+  background-color: var(--first-color);
+}
+
+.background-second-color {
+  background-color: var(--second-color);
+}
+
+.logo-white {
+  -webkit-filter: invert(1);
+  filter: invert(1);
 }

@@ -78,7 +78,7 @@ function RegisterForm() {
                 {errors.repeatpassword && <p>{errors.repeatpassword.message}</p>}
                 <button
                     type="submit"
-                    className="bg-black text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"
+                    className="background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"
                     disabled={isSubmitting}
                 >
                     {isSubmitting && 'Registrazione in corso...'}
@@ -90,7 +90,7 @@ function RegisterForm() {
             <p className="text-gray-700 font-bold  rounded-md text-xs mt-2">
                 Hai già un account?
             </p>
-            <Link onClick={() => setUserMenuIsOpen(false)} href={"/user/login"} className="text-center text-sm uppercase bg-yellow-400 shadow text-white font-bold flex items-center justify-center p-3 rounded-md">
+            <Link onClick={() => setUserMenuIsOpen(false)} href={"/user/login"} className="text-center text-sm uppercase background-second-color shadow text-white font-bold flex items-center justify-center p-3 rounded-md">
                 Accedi
             </Link>
         </div>

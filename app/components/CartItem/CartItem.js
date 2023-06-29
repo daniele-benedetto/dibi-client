@@ -10,9 +10,7 @@ export default function CartItem({item, onAdd, onRemove}) {
     const [sale, setSale] = useState(0);
 
     useEffect(() => {
-        const selectedColor = item.selectedColor;
-        const idx = item.product_variant.findIndex(variante => variante.attributes.color == selectedColor);
-        setIndex(idx);
+        setIndex(item.selectedIndex);
     }, [item]);
 
     useEffect(() => {

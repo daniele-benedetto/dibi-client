@@ -1,64 +1,37 @@
 "use client";
-import { CATEGORIES_QUERY } from '@/app/lib/query';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useQuery } from 'urql';
-import Loader from '@/app/components/Loader/Loader';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
-
-const MegaMenu = ({onMouseLeave}) => {
-
-    const rounter = useRouter();
-
-    const [results] = useQuery({
-        query: CATEGORIES_QUERY,
-    });
-
-    const [categories, setCategories] = useState([]);
-    const [subcategories, setSubcategories] = useState([]);
-  
-    const { data:categorie, fetching, error } = results;
-
-    useEffect(() => {
-        if(categorie) {
-            setCategories(categorie.categories.data);
-            setSubcategories(categorie.subcategories.data);
-        }
-    }, [categorie]);
-    
-        if(fetching) return <Loader />;
-        if(error) return router.push('/error');
-
+const MegaMenu = ({categories}) => {
     return (
-        <div onMouseLeave={onMouseLeave} className="absolute top-20 left-0 w-full bg-white z-10 p-10 shadow">
-            <div className="flex flex-col justify-between items-center w-full h-full">
-                <div className="flex flex-row items-center w-full">
-                    <h3 className="text-xl font-bold w-96 border-r-2">Categorie</h3>
-                    <ul className="flex flex-row flex-wrap w-full">
-                        {categories.map((category, idx) => (
-                            <li key={idx} className="flex flex-row justify-center items-center px-5">
-                                <Link className="text-md font-bold" href={`/categoria/${category.attributes.slug}`}>
-                                    {category.attributes.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="flex flex-row items-center w-full">
-                    <h3 className="text-xl font-bold w-96 border-r-2">Sotto Categorie</h3>
-                    <ul className="flex flex-row flex-wrap w-full">
-                        {subcategories.map((subcategory, idx) => (
-                            <li key={idx} className="flex flex-row justify-center items-center px-5">
-                                <Link className="text-md font-bold" href={`/categoria/${subcategory.attributes.slug}`}>
-                                    {subcategory.attributes.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <motion.div 
+            animate={{opacity: 1}}
+            initial={{opacity: 0}}
+            transition={{ease: 'linear', duration: 0.5}}
+            className="absolute bottom-0 left-1/2 w-full max-w-7xl bg-white z-10 p-10 shadow -translate-x-1/2 translate-y-full flex flex-wrap justify-around"
+        >
+            {categories.map((category, idx) => {
+                return (
+                    <div key={idx} className="flex flex-col text-center justify-center items-center w-1/6">
+                        <Image src={category.attributes.image.data.attributes.url} alt={category.attributes.name} width={180} height={180} />
+                        <h4 className="text-xl font-bold mt-2 mb-2 itemMenuCategory second-color">
+                            <Link href={`/categoria/${category.attributes.slug}`}>{category.attributes.name}</Link>
+                        </h4>
+                        <ul className="flex flex-col">
+                            {category.attributes.subcategories.data.map((subcategory, idx) => {
+                                return (
+                                    <li key={idx} className="text-md font-bold mb-2">
+                                        <Link href={`/sottocategoria/${subcategory.attributes.slug}`}>{subcategory.attributes.name}</Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                );
+            })}
+        </motion.div>
     );
 };
 

@@ -42,7 +42,7 @@ const ForgotForm = () => {
                 {errors.email && <p>{errors.email.message}</p>}
                 <button
                     type="submit"
-                    className="bg-black text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"
+                    className="background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"
                     disabled={isSubmitting}
                 >
                     {isSubmitting && 'Registering...'}

@@ -19,7 +19,7 @@ export default function Button({text, type, action, icon, color}) {
                 setButtonClasses("flex items-center justify-between p-2");
                 break;
             case "filled":
-                setButtonClasses("bg-black text-white flex items-center justify-center p-2 uppercase w-full font-black");
+                setButtonClasses("background-first-color text-black flex items-center justify-center p-2 uppercase w-full font-black");
                 break;
             case "top-right":
                 setButtonClasses("absolute right-0 top-0 cursor-pointer");

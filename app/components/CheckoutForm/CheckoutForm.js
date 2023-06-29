@@ -28,8 +28,6 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       return
     }
 
-    console.log(elements);
-
     setIsLoading(true);
 
     await stripe.confirmPayment({

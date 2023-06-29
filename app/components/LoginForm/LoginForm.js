@@ -21,7 +21,9 @@ function LoginForm({setUserMenuIsOpen}) {
             setAlert(res);
         } else {
             setUser(res.message.username);
-            setUserMenuIsOpen(false);
+            if(setUserMenuIsOpen) {
+                setUserMenuIsOpen(false);
+            }
         }
         setLoggingIn(false);
     };
@@ -48,7 +50,7 @@ function LoginForm({setUserMenuIsOpen}) {
                     })}
                 />
                 <button
-                    className='bg-black text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2'
+                    className='background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2'
                     type='submit'
                 >
                     {loggingIn ? 'Logging in...' : 'Login'}
@@ -70,7 +72,7 @@ function LoginForm({setUserMenuIsOpen}) {
             <p className="text-gray-700 font-bold  rounded-md text-xs mt-2">
                 Non hai un account?
             </p>
-            <Link onClick={() => setUserMenuIsOpen(false)} href={"/user/register"} className="text-center text-sm uppercase bg-yellow-400 shadow font-bold flex items-center justify-center p-3 rounded-md">
+            <Link onClick={() => setUserMenuIsOpen(false)} href={"/user/register"} className="text-center text-sm uppercase background-second-color shadow font-bold flex items-center justify-center p-3 rounded-md">
                 Registrati
             </Link>
         </motion.div>

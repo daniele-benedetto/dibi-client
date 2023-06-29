@@ -14,6 +14,12 @@ import { UserContext } from "@/app/context/user";
 import LoginForm from "@/app/components/LoginForm/LoginForm";
 import { usePathname } from 'next/navigation';
 import { motion } from "framer-motion";
+import Image from "next/image";
+import logoImage from "../../../public/images/logo_cianfrusalia.png";
+import MegaMenu from "../MegaMenu/MegaMenu";
+import { useQuery } from 'urql';
+import { useRouter } from 'next/navigation';
+import { CATEGORIES_QUERY } from '@/app/lib/query';
 
 export default function Navbar({navbar}) {
 
@@ -22,18 +28,20 @@ export default function Navbar({navbar}) {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
     const [searchIsOpen, setSearchIsOpen] = useState(false);
     const [userMenuIsOpen, setUserMenuIsOpen] = useState(false);
-    const [megaMenuIsVisible, setMegaMenuIsVisible] = useState(false);
+    const [megaMenuVisible, setMegaMenuVisible] = useState(false);
+    const [categories, setCategories] = useState([]);
 
     const { totalQty, setShowCart, showCart} = useStateCartContext();
     const { checkLogin, user, email } = useContext(UserContext);
     
     const size = useWindowSize();
+    const router = useRouter();
 
     const openMenu = () => {
         setSearchIsOpen(false);
         setShowCart(false);
         setMenuIsOpen(!menuIsOpen);
-    }
+    };
 
     const openCart = () => {
         if(pathname !== '/checkout') {
@@ -41,21 +49,35 @@ export default function Navbar({navbar}) {
             setMenuIsOpen(false);
             setShowCart(!showCart);
         }
-    }
+    };
 
     const openSearch = () => {
         setShowCart(false);
         setMenuIsOpen(false);
         setSearchIsOpen(!searchIsOpen);
-    }
+    };
 
-    const onClickMenuItem = () => {
-        setMegaMenuIsVisible(true);
-    }
+    const hoverItemMenu = (item) => {
+        if(item.children) {
+            setMegaMenuVisible(true);
+        } else {
+            setMegaMenuVisible(false);
+        }
+    };
 
-    const onMouseLeave = () => {
-        setMegaMenuIsVisible(false);
-    }
+    const [results] = useQuery({
+        query: CATEGORIES_QUERY,
+    });
+  
+    const { data:categorie, fetching, error } = results;
+
+    useEffect(() => {
+        if(categorie) {
+            setCategories(categorie.categories.data);
+        }
+    }, [categorie]);
+    
+    if(error) return router.push('/error');
 
     useEffect(() => {
         const checkUser = async () => {
@@ -91,36 +113,41 @@ export default function Navbar({navbar}) {
                     </div>
                     { searchIsOpen && <Searchbar setSearchIsOpen={setSearchIsOpen} /> }
                 </nav>
-                { menuIsOpen && <VerticalMenu setMenuIsOpen={setMenuIsOpen} navbar={navbar} /> }
+                { menuIsOpen && <VerticalMenu setMenuIsOpen={setMenuIsOpen} navbar={navbar} categories={categories} email={email} user={user} /> }
                 { showCart && <CartMenu setShowCart={setShowCart} mobile={true} /> }
             </>    
         ) : ( 
-            <nav className="flex justify-between items-center h-20 bg-white text-black relative shadow-sm px-10 ">
-                <div className="flex items-center w-32">
+            <nav className="flex justify-between flex-wrap items-center bg-white text-black relative shadow-sm px-10 ">
+                <div className="flex items-center w-full justify-center p-2">
                     <Link href="/">
-                        <BsFillCartCheckFill size={40} />
+                        <Image src={logoImage} alt="Logo di Cianfrusalia" width={200} height={200} />
                     </Link>
                 </div>
-                <div className="flex items-center justify-center w-full">
-                    <ul className="flex w-full max-w-xl justify-between text-md uppercase font-black">
+                <div onMouseLeave={() => setMegaMenuVisible(false)} className="flex items-center justify-center w-full p-2 ">
+                    <ul className="flex w-full max-w-xl justify-between text-md uppercase font-black text-lg relative">
                         {navbar.map(item => {
                             return (
-                                <li key={item.id}>
+                                <li 
+                                    onMouseEnter={() => hoverItemMenu(item)}
+                                    className="itemMenu" 
+                                    key={item.id}
+                                >
                                     <Link href={item.link}>{item.text}</Link>
                                 </li> 
                             );
                         })}
                     </ul>
+                    { megaMenuVisible && <MegaMenu categories={categories} /> }
                 </div>
-                <div className="flex items-center justify-between w-32">
+                <div className="flex items-center justify-between w-32 absolute top-10 right-10">
                     <BsSearch onClick={() => setSearchIsOpen(!searchIsOpen)} size={20} className="cursor-pointer" />
                     <div className="relative">
                         <RiShoppingBagLine onClick={openCart} size={24} className="cursor-pointer" />
                         { totalQty > 0 && <motion.span animate={{scale: 1}} initial={{scale: 0}} className="absolute -top-2 -left-2 -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">{totalQty}</motion.span> }
                     </div>
-                    <div className="static">
+                    <div className="relative">
                         <FaUserAlt onClick={() => setUserMenuIsOpen(!userMenuIsOpen)} size={24} className="cursor-pointer" />
-                        { userMenuIsOpen && <div className="absolute top-full translate-y-3 right-3 bg-white shadow-md rounded-md p-5 w-full max-w-md z-10">
+                        { userMenuIsOpen && <div className="absolute top-full translate-y-3 right-3 bg-white shadow-md rounded-md p-5 w-72 max-w-md z-10">
                             <AiOutlineClose onClick={() => setUserMenuIsOpen(false)} size={16} className="cursor-pointer absolute top-1 right-1" />
                             { !user  && <LoginForm /> }
                             { user && <div className="flex mt-5 flex-wrap">
@@ -142,7 +169,7 @@ export default function Navbar({navbar}) {
                     </div>
                 </div>
                 { searchIsOpen && <Searchbar setSearchIsOpen={setSearchIsOpen} />}
-                { showCart && <CartMenu setShowCart={setShowCart} mobile={false} /> }                            
+                { showCart && <CartMenu setShowCart={setShowCart} mobile={false} /> }    
             </nav>
         )
     );

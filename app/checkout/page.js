@@ -20,7 +20,7 @@ const stripePromise = getStripe();
 
 const unionEurope = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'];
 
-export default function App() {
+export default function Checkout() {
 
     const { checkLogin, id  } = useContext(UserContext);
     const router = useRouter();
@@ -41,20 +41,8 @@ export default function App() {
     const { data, fetching, error } = results;
     
     const handleApprove = (orderId) => {
-    // Call backend function to fulfill order
-
-    // if response is success
-    setPaidFor(true);
-    // Refresh user's account or subscription status
-
-    // if response is error
-    // alert("Your payment was processed successfully. However, we are unable to fulfill your purchase. Please contact us at support@designcode.io for assistance.");
+        setPaidFor(true);
     };
-
-    if (paidFor) {
-    // Display success message, modal or redirect user to success page
-    alert("Thank you for your purchase!");
-    }
 
     useEffect(() => {
         const checkUser = async () => {
@@ -67,20 +55,22 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-        if (totalWeight > 0) {
-            data?.general?.data?.weight_price.map((item) => {
-                if (totalWeight >= item.min && totalWeight <= item.max) {
-                    setWeightPrice(item.price)
+        if(general?.data?.attributes?.spedizione_gratuita >= totalPrice) {
+            if (totalWeight > 0) {
+                data?.general?.data?.attributes.weight_price.map((item) => {
+                    if (totalWeight >= item.min && totalWeight <= item.max) {
+                        setWeightPrice(item.price)
+                    }
                 }
-            }
-        )};
-        if (country) {
-            if (country === 'IT') {
-                setDistancePrice(data?.general?.data.distancePriceRange[0].price)
-            } else if (unionEurope.includes(country)) {
-                setDistancePrice(data?.general?.data.distancePriceRange[1].price)
-            } else {
-                setDistancePrice(data?.general?.data.distancePriceRange[2].price)
+            )};
+            if (country) {
+                if (country === 'IT') {
+                    setDistancePrice(data?.general?.data.attributes.distance_price[0].price)
+                } else if (unionEurope.includes(country)) {
+                    setDistancePrice(data?.general?.data.attributes.distance_price[1].price)
+                } else {
+                    setDistancePrice(data?.general?.data.attributes.distance_price[2].price)
+                }
             }
         }
     }, [totalWeight, country]);
@@ -118,6 +108,7 @@ export default function App() {
 
     const  paypalOptions  =  { 
         "client-id" : "AT-bzXqJdHw3GSBE1yv4ReworPiDFoqO7-zOYvkHCQFSdvlLaTMg2Li67XZZ0peMFUh2ZB1tsfeD9UkQ", 
+        "currency" : "EUR",
     } ; 
 
       if(fetching) return <Loader />;
@@ -125,18 +116,15 @@ export default function App() {
 
     return (
         <>
-            {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data?.attributes?.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
+            {data?.general?.data?.attributes?.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
             <main className='bg-white p-5'>
                 <section className='container m-auto flex flex-wrap'>
                     <div className='flex justify-center w-full md:w-2/3'>
                         <div className='w-full max-w-lg'>
                             {clientSecret && (
                                 <>
-                                    <Elements options={stripeOptions} stripe={stripePromise}>
-                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
-                                    </Elements>
-                                    <div className='py-5'>
+                                    <div className='py-5 max-w-xs m-auto'>
                                         <p className='text-center text-xs font-thin'>Oppure paga con:</p>
                                         <PayPalScriptProvider options={paypalOptions}>
                                             <PayPalButtons 
@@ -151,6 +139,7 @@ export default function App() {
                                                         purchase_units: [
                                                             {
                                                                 amount: {
+                                                                    currency_code: "EUR",
                                                                     value: totalPriceWithSale > 0 ? totalPriceWithSale + weightPrice + distancePrice : totalPrice + weightPrice + distancePrice,
                                                                 },
                                                             },
@@ -159,20 +148,20 @@ export default function App() {
                                                 }}
                                                 onApprove={async (data, actions) => {
                                                     const order = await actions.order.capture(); 
-                                                    handleApprove(data.orderID);
+                                                    handleApprove(data.orderID, order);
                                                 }}
                                                 onError={(err) => {
-                                                    //verify error
+                                                    alert('Errore durante il pagamento, riprova più tardi')
                                                 }}
-                                                onCancel={() => {
-                                                    // Display cancel message, modal or redirect user to cancel page or back to cart
-                                                }}
-                                                onClick={(data, actions) => {
-                                                    //verify conditions
+                                                onCancel={(data) => {
+                                                    alert('Pagamento annullato')
                                                 }}
                                             />
                                         </PayPalScriptProvider>
                                     </div>
+                                    <Elements options={stripeOptions} stripe={stripePromise}>
+                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
+                                    </Elements>
                                 </>
                             )}
                             {!clientSecret && (

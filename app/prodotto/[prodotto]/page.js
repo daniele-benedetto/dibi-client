@@ -323,11 +323,11 @@ export default function Prodotto({params}) {
                         <div className='flex flex-col w-full md:w-1/3 mt-10'>
                             <h2 className='text-3xl font-black mb-3'>{product && product.name}</h2>
                             { product?.description && <p className="text-md">{product.description}</p> }
-                            { sale > 0 && product && <div className='flex items-center'>
-                                <span className='font-black text-2xl line-through text-red-700'>{product.price.toFixed(2)}€</span>
+                            { sale > 0 && product && product.price && <div className='flex items-center'>
+                                <span className='font-black text-2xl line-through text-red-700'>{product?.price?.toFixed(2)}€</span>
                                 <span className='font-black text-2xl ml-2'>{(product.price - sale).toFixed(2)}€</span>
                             </div> }
-                            { sale == 0 && product && <div className='flex items-center'>
+                            { sale == 0 && product && product.price && <div className='flex items-center'>
                                     <span className='font-black text-2xl'>{product.price.toFixed(2)}€</span>
                             </div> }
                             { product?.modello && <div className='flex items-center mt-5'>

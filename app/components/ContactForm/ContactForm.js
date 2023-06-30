@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Toast from '@/app/components/Toast/Toast';
+import { useRouter } from "next/navigation";
 
 function ContactForm() {
 
@@ -9,6 +10,8 @@ function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [alert, setAlert] = useState(['', '']);
     const [toast, setToast] = useState(false);
+
+    const router = useRouter();
 
     const onSubmit = async (values) => {
         setIsSubmitting(true);

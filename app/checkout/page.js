@@ -25,10 +25,10 @@ export default function Checkout() {
     const { checkLogin, id  } = useContext(UserContext);
     const router = useRouter();
 
-    const { cartItems, paymentIntent, setPaymentIntent, onAdd, onRemove } = useStateCartContext();
+    const { cartItems, paymentIntent, setPaymentIntent, onAdd, onRemove, setTotalQty } = useStateCartContext();
     const [clientSecret, setClientSecret] = useState("");
-    const { totalPrice, totalWeight } = useStateCartContext();
-    const [country, setCountry] = useState("");
+    const { totalPrice, totalWeight, setTotalPrice } = useStateCartContext();
+    const [country, setCountry] = useState("IT");
     const [weightPrice, setWeightPrice] = useState(0);
     const [distancePrice, setDistancePrice] = useState(0);
     const [totalPriceWithSale, setTotalPriceWithSale] = useState(0);
@@ -40,8 +40,46 @@ export default function Checkout() {
   
     const { data, fetching, error } = results;
     
-    const handleApprove = (orderId) => {
+    const handleApprove = (order, cartItems) => {
         setPaidFor(true);
+
+        const products = [];
+        cartItems.map((item) => {
+            let index = item.selectedIndex;
+            products.push({
+                id: item.id,
+                name: item.name,
+                color: item.selectedColor,
+                size: item.selectedSize,
+                quantity: item.quantity,
+                price: item.price,
+                variant_id: item.product_variant[index].id,
+            });
+        });
+        
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({ 
+              data:{
+                name: order.purchase_units[0].shipping.name.full_name,
+                email: order.payer.email_address,
+                address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code,
+                products: products,
+                total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+              }
+            })
+        }).then((result) => {
+            setTotalQty(0);
+            setTotalPrice(0);
+            return router.push('/thank-you');
+        }).catch((error) => {
+            console.log(error);
+            router.push('/error');
+        }).catch((error) => {
+            console.log(error);
+        });
     };
 
     useEffect(() => {
@@ -55,7 +93,7 @@ export default function Checkout() {
     }, []);
 
     useEffect(() => {
-        if(general?.data?.attributes?.spedizione_gratuita >= totalPrice) {
+        if(data?.general?.data?.attributes?.spedizione_gratuita >= totalPrice) {
             if (totalWeight > 0) {
                 data?.general?.data?.attributes.weight_price.map((item) => {
                     if (totalWeight >= item.min && totalWeight <= item.max) {
@@ -73,14 +111,13 @@ export default function Checkout() {
                 }
             }
         }
-    }, [totalWeight, country]);
+    }, [totalWeight, country, data]);
 
     useEffect(() => {
         if(cartItems && cartItems.length < 1) {
             router.push('/');
-        } else {
-            
         }
+
         fetch("/api/stripe/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -91,15 +128,15 @@ export default function Checkout() {
             }),
         })
         .then((res) => {
-            return res.json()
+            return res.json();
         })
         .then((data) => {
-            setClientSecret(data.paymentIntent.client_secret)
-            setPaymentIntent(data.paymentIntent.id)
+            setClientSecret(data.paymentIntent.client_secret);
+            setPaymentIntent(data.paymentIntent.id);
         })
         .catch((err) => {
-            console.log(err)
-        })
+            console.log(err);
+        });
     }, [cartItems, weightPrice, distancePrice, totalPrice]);
 
     const stripeOptions = {
@@ -124,7 +161,7 @@ export default function Checkout() {
                         <div className='w-full max-w-lg'>
                             {clientSecret && (
                                 <>
-                                    <div className='py-5 max-w-xs m-auto'>
+                                    {data?.general?.data?.attributes && <div className='py-5 max-w-xs m-auto'>
                                         <p className='text-center text-xs font-thin'>Oppure paga con:</p>
                                         <PayPalScriptProvider options={paypalOptions}>
                                             <PayPalButtons 
@@ -148,17 +185,17 @@ export default function Checkout() {
                                                 }}
                                                 onApprove={async (data, actions) => {
                                                     const order = await actions.order.capture(); 
-                                                    handleApprove(data.orderID, order);
+                                                    handleApprove(order, cartItems);
                                                 }}
                                                 onError={(err) => {
                                                     alert('Errore durante il pagamento, riprova più tardi')
                                                 }}
                                                 onCancel={(data) => {
-                                                    alert('Pagamento annullato')
+                                                    console.log('cancellato')
                                                 }}
                                             />
                                         </PayPalScriptProvider>
-                                    </div>
+                                    </div> }
                                     <Elements options={stripeOptions} stripe={stripePromise}>
                                         <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
                                     </Elements>

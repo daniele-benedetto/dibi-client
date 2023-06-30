@@ -301,6 +301,8 @@ export default function Prodotto({params}) {
 
     if(fetching) return <Loader />;
     if(error) return router.push('/not-found');
+
+    console.log(product);
     
     return (
         <>

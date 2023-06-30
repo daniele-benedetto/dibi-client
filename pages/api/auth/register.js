@@ -1,14 +1,14 @@
 import axios from '@/app/lib/api';
 export default async (req, res) => {
     if (req.method === 'POST') {
-        resp = await axios.post('/api/auth/local/register', req.body, {
+        const resp = await axios.post('/api/auth/local/register', req.body, {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
         .then((response) => {
             return res.status(200).json({
-                message: `Check your email (${req.body.email}) and follow the instructions to confirm your account.`,
+                message: `Ti abbiamo inviato una mail all'indirizzo ${req.body.email} per confermare la tua registrazione, clicca sul link per attivare il tuo account.`,
             });
         })
         .catch((error) => {

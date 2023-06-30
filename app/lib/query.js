@@ -85,7 +85,8 @@ export const PRODUCTS_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -189,7 +190,8 @@ export const PRODUCT_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -238,7 +240,8 @@ export const CATEGORIES_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -280,7 +283,8 @@ export const HOME_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -319,7 +323,8 @@ export const HOME_2_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -404,7 +409,8 @@ query getProductCategory($slug: String!) {
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -487,7 +493,8 @@ query getProductCategory($slug: String!) {
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -508,7 +515,8 @@ export const GENERAL_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }
@@ -556,7 +564,8 @@ export const PAGE_QUERY = `
                     },
                     weight_price,
                     distance_price,
-                    footer
+                    footer,
+                    spedizione_gratuita
                 }
             }
         }

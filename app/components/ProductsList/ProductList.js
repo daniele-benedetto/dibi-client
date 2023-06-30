@@ -11,15 +11,15 @@ export default function ProductList({cartItems, totalPrice, action, onAdd, onRem
             let subCategorySale = 0;
             let productSale = 0;
     
-            if(item.category.data.attributes.sale.data) {
+            if(item?.category?.data?.attributes?.sale?.data) {
                 categorySale = item.category.data.attributes.sale.data.attributes.amount;
             }
     
-            if(item.subcategory.data.attributes.sale.data) {
+            if(item?.subcategory?.data?.attributes?.sale?.data) {
                 subCategorySale = item.subcategory.data.attributes.sale.data.attributes.amount;
             }
     
-            if(item.sale.data) {
+            if(item?.sale?.data) {
                 productSale = item.sale.data.attributes.amount;
             }
             

@@ -34,7 +34,6 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       elements,
       redirect: "if_required",
     }).then((result) => {
-      console.log(result)
       const products = [];
       cartItems.map((item) => {
           let index = item.selectedIndex;
@@ -60,7 +59,8 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
             address: result.paymentIntent.shipping.address.line1 +' ' + result.paymentIntent.shipping.address.city + ' ' + result.paymentIntent.shipping.address.postal_code + ' ' + result.paymentIntent.shipping.address.country,
             products: products,
             total: (parseFloat(result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
-        }})
+          }
+        })
         }).then((result) => {
           setIsLoading(false);
           setTotalQty(0);

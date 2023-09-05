@@ -104,7 +104,7 @@ export default function Prodotto({params}) {
     const onSelectedColor = (color) => {
         let i = 0
         let variantStock = 0;
-
+        
         product.product_variant.map((variante, idx) => {
             if(variante.color == color) {
                 i = idx;
@@ -356,7 +356,7 @@ export default function Prodotto({params}) {
                             </div> }
                             { product?.colors && <ProductDetailWrapper title="Colore">
                                 {product && product.colors && (product.colors.split(',')).map((color, idx) => (
-                                    <Button key={idx} color={color} type={selectedColor === color ? 'quad-active' : 'quad'} action={() => onSelectedColor(color)} />
+                                    <Button key={idx} text={color} type={selectedColor === color ? 'quad-active' : 'quad'} action={() => onSelectedColor(color)} />
                                 ))}
                             </ProductDetailWrapper> }
                             { product?.sizes && <ProductDetailWrapper title="Taglia">

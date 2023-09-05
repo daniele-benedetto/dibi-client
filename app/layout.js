@@ -26,7 +26,7 @@ const client = new Client({
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className={lato.className}>
+            <body className={lora.className}>
                 <Provider value={client}>
                     <UserProvider>
                         <CartContext>

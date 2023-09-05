@@ -11,9 +11,8 @@ import { motion } from 'framer-motion';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-import Image from "next/image";
-import heroImage from "../public/images/hero.jpg";
-import Link from 'next/link';
+import CardBg from './components/CardBg/CardBg';
+import Alert from './components/Alert/Alert';
 
 export default function Home() {
 
@@ -27,6 +26,11 @@ export default function Home() {
 
     const [products, setProducts] = useState([]);
     const [products2, setProducts2] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [message, setMessage] = useState({
+        "messaggio": "",
+        "messaggio_attivo": false
+    });
 
     const router = useRouter();
 
@@ -36,9 +40,14 @@ export default function Home() {
     useEffect(() => {
         if(data) {
             setProducts(data.products.data);
+            setMessage({
+                "messaggio": data.general.data.attributes.messaggio,
+                "messaggio_attivo": data.general.data.attributes.messaggio_attivo
+            });
         }
         if(data2) {
             setProducts2(data2.products.data);
+            setCategories(data2.categories.data);
         }
     }, [data, data2]);
 
@@ -48,10 +57,17 @@ export default function Home() {
 
     return (
         <>
+            {message.messaggio_attivo && <Alert messaggio={message.messaggio} />}
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
             {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
             <main className='bg-gray-100'>
-                <Hero />
+                <Hero
+                    title="Esplora il fascino del vintage"
+                    subtitle="Trova i tesori usati nel nostro negozio online"
+                    description="Esplora il fascino senza tempo del vintage nel nostro negozio online. Trova pezzi unici con storie uniche, dalla moda ai mobili. Rinnova il passato e crea una casa con carattere."
+                    cta="Scopri i prodotti"
+                    link="/prodotti"
+                />
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
                     <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3>
                     <div className="mx-auto pt-5 flex flex-wrap">
@@ -62,20 +78,20 @@ export default function Home() {
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
                     <div className="mx-auto pt-5 flex flex-wrap items-center">
-                        <div className="w-full md:w-1/2 p-5">
-                            <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-xl font-black pt-5 border-b border-b-black">Esplora il Fascino del Vintage: La Passione per Oggetti Unici con Storia</motion.h3>
-                            <div className="pt-5 pb-5">
-                                <p>
-                                    Benvenuti nel mondo del vintage, dove il tempo si ferma e ogni oggetto ha una storia da raccontare. Siamo affascinati dai pezzi d'epoca che portano con sé l'autenticità e il fascino di un'epoca passata. Nel nostro negozio online, ti invitiamo a scoprire un'eclettica collezione di oggetti vintage, dai mobili alle decorazioni, dagli accessori moda agli articoli da collezione. Ogni pezzo è stato scelto con cura per la sua qualità e la sua capacità di trasportarti in un'atmosfera retro unica. Sperimenta il piacere di possedere oggetti unici che parlano di un passato ricco di emozioni e storie. Esplora il nostro negozio e immergiti nel fascino senza tempo del vintage.
-                                </p>
-                            </div>
-                            <Link href="/chi-sono" className="background-second-color text-white font-bold px-5 py-2 mt-5 shadow rounded-md text-lg">
-                                Scopri di più
-                            </Link>
-                        </div>
-                        <div className="w-full md:w-1/2 p-5">
-                            <Image src={heroImage} objectFit="cover" alt="hero of my web site" />
-                        </div>
+                        <Hero
+                            title="La passione per oggetti unici con storia"
+                            description="Benvenuti nel mondo del vintage, dove il tempo si ferma e ogni oggetto ha una storia da raccontare. Siamo affascinati dai pezzi d'epoca che portano con sé l'autenticità e il fascino di un'epoca passata."                
+                            cta="Scopri di più"
+                            link="/chi-sono"
+                        />
+                    </div>
+                </section>
+                <section className="w-full bg-gray-100 p-5 container mx-auto">
+                    <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie preferite</motion.h3>
+                    <div className="mx-auto pt-5 flex flex-wrap">
+                        {categories.map((product, idx) => (
+                            <CardBg key={idx} category={product.attributes} size='1/3' />
+                        ))}
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
@@ -84,10 +100,6 @@ export default function Home() {
                         {products2.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />
                         ))}
-                    </div>
-                </section>
-                <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    <div className="mx-auto pt-5 flex flex-wrap items-center container border">
                     </div>
                 </section>
             </main>

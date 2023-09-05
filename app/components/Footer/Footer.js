@@ -5,12 +5,12 @@ import logoImage from "../../../public/images/logo_cianfrusalia.png";
 
 export default function Footer({footerServizioClienti, footerSocial, footerAbout}) {
     return (
-        <footer className="bg-black text-white text-xs p-5">
+        <footer className=" text-xs p-5 background-first-color">
             <div className="container grid grid-cols-1 m-auto gap-5 p-5 md:grid-cols-5 md:p-0">
 
                 <div className="flex items-center w-full justify-center p-2">
                     <Link href="/">
-                        <Image className="logo-white" src={logoImage} alt="Logo di Cianfrusalia" width={200} height={200} />
+                        <Image src={logoImage} alt="Logo di Cianfrusalia" width={200} height={200} />
                     </Link>
                 </div>
 

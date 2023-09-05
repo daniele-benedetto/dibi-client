@@ -1,7 +1,7 @@
 
 export const PRODUCTS_QUERY = `
     query {
-        products {
+        products (sort: "createdAt:desc", pagination: { limit: 100 }) {
             data {
                 attributes {
                     empty_visible,
@@ -281,6 +281,8 @@ export const HOME_QUERY = `
                         time,
                         text
                     },
+                    messaggio,
+                    messaggio_attivo,
                     weight_price,
                     distance_price,
                     footer,
@@ -293,9 +295,31 @@ export const HOME_QUERY = `
 
 export const HOME_2_QUERY = `
     query {
-        products(pagination: {
-            limit: 4
+        categories(filters: {
+            in_home: {
+                eq: true
+            }
         }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                }
+            }
+        },
+        products(
+            pagination: {
+                limit: 4,
+            },
+            sort: "createdAt:desc"
+        ) {
             data {
                 attributes {
                     empty_visible,

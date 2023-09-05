@@ -4,8 +4,8 @@
 
 /*global colors*/
 :root {
-  --first-color: #8DCEFF;
-  --second-color: #F5A713;
+  --first-color: #7BBDB3;
+  --second-color: #F68129;
 }
 
 
@@ -162,4 +162,12 @@ input[type=range]::-moz-range-progress{
 .logo-white {
   -webkit-filter: invert(1);
   filter: invert(1);
+}
+
+.border-custom-first-color {
+  border: 5px solid var(--first-color);
+}
+
+.border-custom-second-color {
+  border: 5px solid var(--second-color);
 }

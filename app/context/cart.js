@@ -94,8 +94,6 @@ export const CartContext = ({ children }) => {
 
     }
 
-    console.log(getCartFromLocalStorage());
-
     useEffect(() => {
         console.log('useEffect')
         const storedCartData = getCartFromLocalStorage();

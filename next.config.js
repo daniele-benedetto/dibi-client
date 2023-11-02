@@ -1,3 +1,5 @@
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -15,6 +17,13 @@ const nextConfig = {
       },
     ],
   },
-}
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins.push(new NodePolyfillPlugin());
+    }
 
-module.exports = nextConfig
+    return config;
+  },
+};
+
+module.exports = nextConfig;

@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
+import Error from 'next/error';
 
 export default function ProdottiCategoria({params}) {
 
@@ -75,12 +76,12 @@ export default function ProdottiCategoria({params}) {
               setData(prod);
             } else if(filter.title === 'Colore') {
               prod = prod.filter((product) => {
-                return product.attributes.colors.includes(filter.item);
+                return product.attributes.colors === filter.item;
               });
               setData(prod);
             } else if(filter.title === 'Taglia') {
               prod = prod.filter((product) => {
-                return product.attributes.sizes.includes(filter.item);
+                return product.attributes.sizes === filter.item;
               });
               setData(prod);
             } else if(filter.title === 'Prezzo') {
@@ -116,7 +117,7 @@ export default function ProdottiCategoria({params}) {
     }, [prodotti]);
 
     if(fetching) return <Loader />;
-    if(error) return router.push('/error');
+    if(error) return Error();
 
     return (
       <>

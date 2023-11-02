@@ -44,12 +44,30 @@ export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebar
 
         const getColors = () => {
             if(products.length === 0) return;
-            setColors(products[0].attributes.colors);
+            const allCalors = [];
+            products.map((product) => {
+                allCalors.push(product.attributes.colors);
+            });
+            const colors = allCalors.filter((color, index, self) => {
+                return self.indexOf(color) === index;
+            }).map((color) => {
+                return color;
+            });
+            setColors(colors);
         };
 
         const getSizes = () => {
             if(products.length === 0) return;
-            setSizes(products[0].attributes.sizes);
+            const allSizes = [];
+            products.map((product) => {
+                allSizes.push(product.attributes.sizes);
+            });
+            const sizes = allSizes.filter((size, index, self) => {
+                return self.indexOf(size) === index;
+            }).map((size) => {
+                return size;
+            });
+            setSizes(sizes);
         };
 
         const getRange = () => {

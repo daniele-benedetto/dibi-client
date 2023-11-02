@@ -45,7 +45,7 @@ const CardBg = ({ category, size }) => {
           }}
         />
         <Image
-          src={category.image.data.attributes.url}
+          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${category.image.data.attributes.url}`}
           alt={category.name}
           width={800}
           height={800}

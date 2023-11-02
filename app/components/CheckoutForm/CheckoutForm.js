@@ -11,6 +11,14 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
     const stripe = useStripe();
     const elements = useElements();
     const [isLoading, setIsLoading] = useState(false);
+    const [fattura, setFattura] = useState(false);
+    const [fatturaData, setFatturaData] = useState({
+      ragione_sociale: '',
+      indirizzo: '',
+      codice_postale: '',
+      codice_fiscale: '',
+      codice_univoco_sdi: '',
+    });
 
     const { cartItems, setTotalQty, totalPrice, setTotalPrice } = useStateCartContext();
 
@@ -28,6 +36,10 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       return
     }
 
+    if(fattura && Object.values(fatturaData).some((value) => value === '')) {
+      return alert('Compila tutti i campi per richiedere la fatturazione');
+    }
+
     setIsLoading(true);
 
     await stripe.confirmPayment({
@@ -36,15 +48,11 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
     }).then((result) => {
       const products = [];
       cartItems.map((item) => {
-          let index = item.selectedIndex;
           products.push({
               id: item.id,
               name: item.name,
-              color: item.selectedColor,
-              size: item.selectedSize,
               quantity: item.quantity,
               price: item.price,
-              variant_id: item.product_variant[index].id,
           });
       });
 
@@ -59,6 +67,12 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
             address: result.paymentIntent.shipping.address.line1 +' ' + result.paymentIntent.shipping.address.city + ' ' + result.paymentIntent.shipping.address.postal_code + ' ' + result.paymentIntent.shipping.address.country,
             products: products,
             total: (parseFloat(result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+            fattura: fattura,
+            indirizzo: fatturaData.indirizzo,
+            codice_postale: fatturaData.codice_postale,
+            codice_fiscale: fatturaData.codice_fiscale,
+            codice_univoco_sdi: fatturaData.codice_univoco_sdi,
+            ragione_sociale: fatturaData.ragione_sociale,
           }
         })
         }).then((result) => {
@@ -68,7 +82,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
           return router.push('/thank-you');
         }).catch((error) => {
             console.log(error);
-            router.push('/error');
+            Error();
         });
       }).catch((error) => {
         setIsLoading(false);
@@ -83,6 +97,18 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       <AddressElement onChange={(e) => setCountry(e.value.address.country)} options={{mode: 'shipping'}} />
       <LinkAuthenticationElement />
       <PaymentElement />
+      <div className="w-full flex items-center my-3">
+          <input type="checkbox" className="mr-2 w-5 h-5" onChange={(e) => setFattura(e.target.checked)} />
+          <p className="text-sm">Richiedi fattura</p>
+      </div>
+      { fattura && Object.keys(fatturaData).map((key, index) => {
+        return (
+          <div className="w-full flex flex-col" key={index}>
+            <label htmlFor={key} className="text-sm">{key.replace(/_/g, ' ')}</label>
+            <input type="text" id={key} className="p-2 border border-gray-300 rounded-md" onChange={(e) => setFatturaData({...fatturaData, [key]: e.target.value})} />
+          </div>
+        )
+      })}
       <div className="w-full flex h-12 items-baseline">
           <p className="text-lg font-bold">Totale:</p>
           <p className="text-lg font-bold">{ totalPriceWithSale > 0 ? (totalPriceWithSale + distancePrice + weightPrice).toFixed(2) : (totalPrice + distancePrice + weightPrice).toFixed(2)}€</p>

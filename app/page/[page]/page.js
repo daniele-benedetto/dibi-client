@@ -3,18 +3,15 @@
 import Accordion from "@/app/components/Accordion/Accordion";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
 import Image from "next/image";
-import heroImage from '../../../public/images/hero.jpg';
 import { useQuery } from "urql";
 import Loader from "@/app/components/Loader/Loader";
 import { PAGE_QUERY } from "@/app/lib/query";
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-import { useRouter } from "next/navigation";
 
 export default function Page({params}) { 
 
-    const router = useRouter();
     const [results] = useQuery({
         query: PAGE_QUERY,
         variables: {
@@ -25,7 +22,6 @@ export default function Page({params}) {
     const { data, fetching, error } = results;
 
     if(fetching) return <Loader />;
-    if(error) return router.push('/errore');
     
     return (
         <>
@@ -35,7 +31,7 @@ export default function Page({params}) {
                 <section className='max-w-6xl mx-auto'>
                     <div style={{position: 'relative', height: '40vh', width: '100%', clipPath: 'inset(0 0 0 0)'}}>
                         <div className="fixed h-full w-full left-0 top-0">
-                            <Image src={data?.pages?.data[0]?.attributes?.image.data.attributes.url} layout="fill" objectFit="cover" sizes="100vw" alt="hero of my web site" priority />
+                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${data?.pages?.data[0]?.attributes?.image.data.attributes.url}`} layout="fill" objectFit="cover" sizes="100vw" alt="hero of my web site" priority />
                         </div>
                         <div className="absolute h-full w-full left-0 top-0 flex flex-col justify-center items-center text-center bg-black bg-opacity-25">
                             <h1 className='text-5xl font-bold my-5 text-white'>{data?.pages?.data[0]?.attributes?.title}</h1>

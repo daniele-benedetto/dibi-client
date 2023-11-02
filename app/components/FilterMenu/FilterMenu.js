@@ -47,7 +47,6 @@ export default function FilterMenu({title, items, setFilters, filters}) {
         }
     }, [filters]);
             
-
     return (
         <div className='flex flex-col border-b pb-3 mt-10'>
             <div onClick={() => setOpen(!open)} className='flex justify-between items-center cursor-pointer'>

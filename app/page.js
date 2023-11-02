@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 import CardCategory from '@/app/components/CardCategory/CardCategory';
@@ -13,6 +12,7 @@ import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 import CardBg from './components/CardBg/CardBg';
 import Alert from './components/Alert/Alert';
+import Error from 'next/error';
 
 export default function Home() {
 
@@ -27,12 +27,6 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [products2, setProducts2] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [message, setMessage] = useState({
-        "messaggio": "",
-        "messaggio_attivo": false
-    });
-
-    const router = useRouter();
 
     const {data, fetching, error} = results;
     const {data: data2, fetching: fetching2, error: error2} = results2;
@@ -40,10 +34,6 @@ export default function Home() {
     useEffect(() => {
         if(data) {
             setProducts(data.products.data);
-            setMessage({
-                "messaggio": data.general.data.attributes.messaggio,
-                "messaggio_attivo": data.general.data.attributes.messaggio_attivo
-            });
         }
         if(data2) {
             setProducts2(data2.products.data);
@@ -53,11 +43,10 @@ export default function Home() {
 
 
     if(fetching) return <Loader />;
-    if(error) return router.push('/error');
-
+    if(error) return Error();
     return (
         <>
-            {message.messaggio_attivo && <Alert messaggio={message.messaggio} />}
+            {data?.general?.data.attributes.message?.active && <Alert message={data?.general?.data.attributes.message} />}
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
             {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
             <main className='bg-gray-100'>

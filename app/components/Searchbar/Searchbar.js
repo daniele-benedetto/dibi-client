@@ -5,9 +5,9 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useQuery } from "urql";
 import { PRODUCTS_QUERY } from "@/app/lib/query";
 import SearchItem from "@/app/components/SearchItem/SearchItem";
-import Loader from "@/app/components/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Error from "next/error";
 
 export default function Searchbar({setSearchIsOpen}) {
 
@@ -35,17 +35,17 @@ export default function Searchbar({setSearchIsOpen}) {
     const [results] = useQuery({
         query: PRODUCTS_QUERY,
     });
-  
+
     const { data:prodotti, fetching, error } = results;
-  
+
     useEffect(() => {
     if(prodotti) {
         setProducts(prodotti.products.data);
     }
     }, [prodotti]);
 
-    if(error) return router.push('/error');
-    
+    if(error) return Error();
+
     return (
         <motion.div animate={{opacity: 1}} initial={{opacity: 0}} exit={{opacity: 0}} className="flex items-center flex-wrap w-full max-w-6xl absolute -bottom-2 right-1/2 translate-x-2/4 translate-y-full p-10 bg-white shadow-xl z-30">
             <input type="text" className="w-full h-10 rounded-lg border-2 border-gray-300 bg-white pl-10 pr-10 text-sm outline-none focus:outline-none focus:ring-2 focus:border-transparent" placeholder="Cerca" onChange={handleSearch} />

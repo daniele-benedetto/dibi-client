@@ -15,7 +15,7 @@ const MegaMenu = ({categories}) => {
             {categories.map((category, idx) => {
                 return (
                     <div key={idx} className="flex flex-col text-center justify-center items-center w-1/6">
-                        <Image src={category.attributes.image.data.attributes.url} alt={category.attributes.name} width={180} height={180} />
+                        <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${category.attributes.image.data.attributes.url}`} alt={category.attributes.name} width={180} height={180} />
                         <h4 className="text-xl font-bold mt-2 mb-2 itemMenuCategory second-color">
                             <Link href={`/categoria/${category.attributes.slug}`}>{category.attributes.name}</Link>
                         </h4>

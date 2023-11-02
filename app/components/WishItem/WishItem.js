@@ -7,7 +7,7 @@ const WishItem = ({item, action}) => {
     return (
         <div className="flex justify-between items-center w-full h-26 border-b border-gray-200 relative">
             <Link href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/prodotto/${item.slug}`} className="flex items-center mb-5">
-                <Image src={item.image.url} alt="product image" width={80} height={100} />
+                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.image.url}`} alt="product image" width={80} height={100} />
                 <div className="flex flex-col justify-between items-start ml-4">
                     <h5 className="text-lg font-bold">{item.name}</h5>
                 </div>

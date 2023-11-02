@@ -7,10 +7,10 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 import { PRODUCTS_QUERY } from '@/app/lib/query';
 import Loader from '@/app/components/Loader/Loader';
-import { useRouter } from 'next/navigation';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
+import Error from 'next/error';
 
 
 export default function Prodotti() {
@@ -20,8 +20,6 @@ export default function Prodotti() {
     const [filters, setFilters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-
-    const router = useRouter();
 
     const resetFilters = () => {
       setData(prodotti.products.data);
@@ -76,12 +74,12 @@ export default function Prodotti() {
               setData(prod);
             } else if(filter.title === 'Colore') {
               prod = prod.filter((product) => {
-                return product.attributes.colors.includes(filter.item);
+                return product.attributes.colors === filter.item;
               });
               setData(prod);
             } else if(filter.title === 'Taglia') {
               prod = prod.filter((product) => {
-                return product.attributes.sizes.includes(filter.item);
+                return product.attributes.sizes === filter.item;
               });
               setData(prod);
             } else if(filter.title === 'Prezzo') {
@@ -113,7 +111,7 @@ export default function Prodotti() {
     }, [prodotti]);
 
     if(fetching) return <Loader />;
-    if(error) return router.push('/error');
+    if(error) return Error();
 
     return (
       <>

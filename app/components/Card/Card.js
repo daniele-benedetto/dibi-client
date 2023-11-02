@@ -18,11 +18,7 @@ export default function Card({product}) {
             let productSale = 0;
 
             setVisible(product.empty_visible);
-
-            product.product_variant.map((variant) => {
-                magazzino += variant.stock;
-                setStock(magazzino);
-            });
+            setStock(product.stock);
 
             if(product.category.data.attributes.sale?.data) {
                 categorySale = product.category.data.attributes.sale?.data.attributes.amount;
@@ -43,7 +39,7 @@ export default function Card({product}) {
     if(stock > 0) return (
         <article className='w-1/2 md:w-1/3 lg:w-1/3 p-2'>
             <Link href={`prodotto/${product.slug}`}>
-                <Image src={product.image.data.attributes.url} alt="product image" width={350} height={425} />
+                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image.data.attributes.url}`} alt="product image" width={350} height={425} />
                 <h3 className='text-sm uppercase leading-3 mt-3'>{product.name}</h3>
                 {sale > 0 ? (
                     <div className='flex items-center'>
@@ -60,7 +56,7 @@ export default function Card({product}) {
     if(visible && stock === 0) return (
         <article className='w-1/2 md:w-1/3 lg:w-1/3 p-2 relative'>
             <Link href={`prodotto/${product.slug}`}>
-                <Image src={product.image.data.attributes.url} alt="product image" width={350} height={425} />
+                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image.data.attributes.url}`} alt="product image" width={350} height={425} />
                 <h3 className='text-sm uppercase leading-3'>{product.name}</h3>
                 <span className='text-xs font-bold'>{product.price.toFixed(2)}€</span>
                 <div className='absolute top-1/2 left-0 w-full bg-red-600  flex justify-center items-centes -rotate-45'>

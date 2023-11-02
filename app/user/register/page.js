@@ -9,6 +9,7 @@ import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 import Loader from '@/app/components/Loader/Loader';
+import Error from 'next/error';
 
 function Register() {
     const { user, checkLogin } = useContext(UserContext);
@@ -32,11 +33,11 @@ function Register() {
     const [results] = useQuery({
         query: GENERAL_QUERY,
     });
-  
+
     const { data, fetching, error } = results;
-  
+
     if(fetching) return <Loader />;
-    if(error) return router.push('/error');
+    if(error) return Error();
     
     return (
         <>

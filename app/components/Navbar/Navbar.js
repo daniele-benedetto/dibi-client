@@ -18,7 +18,6 @@ import Image from "next/image";
 import logoImage from "../../../public/images/logo_cianfrusalia.png";
 import MegaMenu from "../MegaMenu/MegaMenu";
 import { useQuery } from 'urql';
-import { useRouter } from 'next/navigation';
 import { CATEGORIES_QUERY } from '@/app/lib/query';
 
 export default function Navbar({navbar}) {
@@ -35,7 +34,6 @@ export default function Navbar({navbar}) {
     const { checkLogin, user, email } = useContext(UserContext);
     
     const size = useWindowSize();
-    const router = useRouter();
 
     const openMenu = () => {
         setSearchIsOpen(false);
@@ -68,8 +66,8 @@ export default function Navbar({navbar}) {
     const [results] = useQuery({
         query: CATEGORIES_QUERY,
     });
-  
-    const { data:categorie, fetching, error } = results;
+
+    const { data:categorie } = results;
 
     useEffect(() => {
         if(categorie) {
@@ -77,8 +75,6 @@ export default function Navbar({navbar}) {
         }
     }, [categorie]);
     
-    if(error) return router.push('/error');
-
     useEffect(() => {
         const checkUser = async () => {
             const res = await checkLogin();

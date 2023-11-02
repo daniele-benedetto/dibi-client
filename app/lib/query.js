@@ -11,6 +11,14 @@ export const PRODUCTS_QUERY = `
                     description,
                     sizes,
                     colors,
+                    stock,
+                    gallery {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }                    
                     materials,
                     category {
                         data {
@@ -49,19 +57,6 @@ export const PRODUCTS_QUERY = `
                             }
                         }
                     },
-                    product_variant {
-                        id,
-                        color,
-                        size,
-                        stock,
-                        gallery {
-                            data {
-                                attributes {
-                                    url
-                                }
-                            }
-                        }
-                    },
                     sale {
                         data {
                             attributes {
@@ -78,11 +73,6 @@ export const PRODUCTS_QUERY = `
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,
@@ -110,6 +100,14 @@ export const PRODUCT_QUERY = `
                     description,
                     sizes,
                     colors,
+                    stock,
+                    gallery {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }                   
                     weight,
                     modello,
                     marchio,
@@ -154,19 +152,6 @@ export const PRODUCT_QUERY = `
                             }
                         }
                     },
-                    product_variant {
-                        id,
-                        color,
-                        size,
-                        stock,
-                        gallery {
-                            data {
-                                attributes {
-                                    url
-                                }
-                            }
-                        }
-                    },
                     sale {
                         data {
                             attributes {
@@ -183,11 +168,6 @@ export const PRODUCT_QUERY = `
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,
@@ -226,24 +206,6 @@ export const CATEGORIES_QUERY = `
                     }
                 }
             }
-        },
-        
-        general {
-            data {
-                attributes {
-                    navbar,
-                    top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
-                    weight_price,
-                    distance_price,
-                    footer,
-                    spedizione_gratuita
-                }
-            }
         }
     }
 `;
@@ -276,13 +238,11 @@ export const HOME_QUERY = `
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
+                    message {
                         title,
-                        time,
-                        text
-                    },
-                    messaggio,
-                    messaggio_attivo,
+                        text,
+                        active
+                    }
                     weight_price,
                     distance_price,
                     footer,
@@ -340,11 +300,6 @@ export const HOME_2_QUERY = `
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,
@@ -374,6 +329,14 @@ query getProductCategory($slug: String!) {
                     price,
                     description,
                     sizes,
+                    stock,
+                    gallery {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
                     colors,
                     materials,
                     category {
@@ -405,19 +368,6 @@ query getProductCategory($slug: String!) {
                             }
                         }
                     },
-                    product_variant {
-                        id,
-                        color,
-                        size,
-                        stock,
-                        gallery {
-                            data {
-                                attributes {
-                                    url
-                                }
-                            }
-                        }
-                    },
                 }
             }
         },
@@ -426,11 +376,6 @@ query getProductCategory($slug: String!) {
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,
@@ -459,7 +404,14 @@ query getProductCategory($slug: String!) {
                     description,
                     sizes,
                     colors,
-                    materials,
+                    stock,
+                    gallery {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }                    materials,
                     category {
                         data {
                             attributes {
@@ -489,19 +441,6 @@ query getProductCategory($slug: String!) {
                             }
                         }
                     },
-                    product_variant {
-                        id,
-                        color,
-                        size,
-                        stock,
-                        gallery {
-                            data {
-                                attributes {
-                                    url
-                                }
-                            }
-                        }
-                    },
                 }
             }
         },
@@ -510,11 +449,6 @@ query getProductCategory($slug: String!) {
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,
@@ -532,11 +466,6 @@ export const GENERAL_QUERY = `
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,
@@ -581,11 +510,6 @@ export const PAGE_QUERY = `
                 attributes {
                     navbar,
                     top_bar,
-                    pop_up {
-                        title,
-                        time,
-                        text
-                    },
                     weight_price,
                     distance_price,
                     footer,

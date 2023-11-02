@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/components/Button/Button";
-import ProductDetail from "@/app/components/ProductDetail/ProductDetail";
 import ProductDetailWrapper from "@/app/components/ProductDetailWrapper/ProductDetailWrapper";
 import ProductFocus from "@/app/components/ProductFocus/ProductFocus";
 import ProductSingleImage from "@/app/components/ProductSingleImage/ProductSingleImage";
@@ -16,19 +15,16 @@ import Toast from "@/app/components/Toast/Toast";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { UserContext } from "@/app/context/user";
 import useWindowSize from "@/app/hooks/useWindowSize";
-import { useRouter } from "next/navigation";
 import ProductPrimaryImage from "@/app/components/ProductPrimaryImage/ProductPrimaryImage";
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
+import Error from "next/error";
 
 export default function Prodotto({params}) {
 
-    const [selectedSize, setSelectedSize] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [product, setProduct] = useState(null);
-    const [index, setIndex] = useState(0);
     const [toastProduct, setToastProduct] = useState(false);
     const [toastFavorite, setToastFavorite] = useState(false);
     const [isNotUser, setIsNotUser] = useState(false);
@@ -42,8 +38,6 @@ export default function Prodotto({params}) {
     const { checkLogin, userWishlist, doWishList, user  } = useContext(UserContext);
 
     const size = useWindowSize();
-    const router = useRouter();
-
 
     const handleClick = (idx) => {
         if(size.width < 768) {
@@ -56,6 +50,7 @@ export default function Prodotto({params}) {
             setIsNotUser(true);
             return;
         }
+        
         const newUserWishlist = [...userWishlist];
         if(isFavorite)  {
             setIsFavorite(false);
@@ -78,16 +73,6 @@ export default function Prodotto({params}) {
     const onAddProduct = () => {
         setErrorMessage('');
         setToastProduct(false);
-        
-        if(product.colors && !selectedColor) {
-            setErrorMessage('Seleziona prima un colore');
-            return;
-        }
-
-        if(product.sizes && !selectedSize) {
-            setErrorMessage('Seleziona prima una taglia');
-            return;
-        }
 
         if(stock == 0) {
             setErrorMessage('Prodotto non disponibile');
@@ -101,51 +86,6 @@ export default function Prodotto({params}) {
 
     }
 
-    const onSelectedColor = (color) => {
-        let i = 0
-        let variantStock = 0;
-        
-        product.product_variant.map((variante, idx) => {
-            if(variante.color == color) {
-                i = idx;
-            }
-            if(color && selectedSize && variante.color == color && variante.size == selectedSize) {
-                variantStock = variante.stock;
-            }
-        });
-
-        setSelectedColor(color);
-        setErrorMessage('');
-        setIndex(i);
-        setStock(variantStock);
-        setQuantity(1);
-        setProduct({
-            ...product,
-            selectedColor: color,
-            selectedStock: variantStock,            
-        });
-    }
-
-    const onSelectedSize = (size) => {
-        let variantStock = 0;
-
-        product.product_variant.map((variante) => {
-            if(size && selectedColor && variante.size == size && variante.color == selectedColor) {
-                variantStock = variante.stock;
-            }
-        });
-
-        setSelectedSize(size);
-        setErrorMessage('');
-        setStock(variantStock);
-        setQuantity(1);
-        setProduct({
-            ...product,
-            selectedSize: size,
-            selectedStock: variantStock
-        });
-    }
-
     const [results] = useQuery({
         query: PRODUCT_QUERY,
         variables: {
@@ -156,28 +96,7 @@ export default function Prodotto({params}) {
     const {data, fetching, error} = results;
 
     useEffect(() => {
-        if(data) {
-            const colors = data.products.data[0].attributes.colors 
-            ? data.products.data[0].attributes.colors.split(',') 
-            : null;
-
-            const sizes = data.products.data[0].attributes.sizes
-            ? data.products.data[0].attributes.sizes.split(',')
-            : null;
-
-            setProduct({
-                ...data.products.data[0].attributes,
-                selectedColor: colors ? colors[0] : '',
-                selectedSize: sizes ? sizes[0] : '',
-                selectedIndex: 0,
-                selectedStock: data.products.data[0].attributes.product_variant[0].stock,
-                id: data.products.data[0].id,
-            })
-            setSelectedColor(colors ? colors[0] : '');
-            setSelectedSize(sizes ? sizes[0] : '');
-        
-            setStock(data.products.data[0].attributes.product_variant[0].stock);
-            
+        if(data) {                  
             let categorySale = 0;
             let subCategorySale = 0;
             let productSale = 0;
@@ -195,6 +114,21 @@ export default function Prodotto({params}) {
             }
 
             setSale(Math.max(categorySale, subCategorySale, productSale));
+
+            if(cartItems.length > 0) {
+                cartItems.map((item) => {
+                    if(item.id == data.products.data[0].id) {
+                        setStock(data.products.data[0].attributes.stock - item.quantity);
+                    }
+                });
+            } else {
+                setStock(data.products.data[0].attributes.stock);
+            }
+            
+            setProduct({
+                ...data.products.data[0].attributes,
+                id: data.products.data[0].id,
+            })
         }
     
     }, [data]);
@@ -204,9 +138,9 @@ export default function Prodotto({params}) {
             setToastProduct(false);
             setToastFavorite(false);
             setIsNotUser(false);
-          }, 3000);
-      
-         return () => clearTimeout(timeout);
+        }, 3000);
+
+        return () => clearTimeout(timeout);
     }, [toastProduct, toastFavorite, setIsNotUser]);
 
     useEffect(() => {
@@ -220,73 +154,14 @@ export default function Prodotto({params}) {
     }, [userWishlist]);
 
     useEffect(() => {
-        if(product) {
-            setProduct({
-                ...product,
-                selectedIndex: index
-            });
-        }
-    }, [index]);
-
-    useEffect(() => {
         if(product && cartItems.length > 0) {
             cartItems.map((item) => {
-                if(
-                    item.id == product.id
-                    && item.selectedColor == product.selectedColor
-                    && item.selectedSize == product.selectedSize
-                ) {
-                    data.products.data[0].attributes.product_variant.map((variante, idx) => {
-                        if(variante.color == selectedColor && variante.size == selectedSize) {
-                            setStock(data.products.data[0].attributes.product_variant[idx].stock - item.quantity);
-                            setProduct({
-                                ...product,
-                                product_variant: {
-                                    ...data.products.data[0].attributes.product_variant,
-                                    data: [
-                                        ...data.products.data[0].attributes.product_variant.slice(0, idx),
-                                        {
-                                            ...data.products.data[0].attributes.product_variant[idx],
-                                            attributes: {
-                                                ...data.products.data[0].attributes.product_variant[idx],
-                                                stock: data.products.data[0].attributes.product_variant[idx].stock - item.quantity
-                                            }
-                                        },
-                                        ...data.products.data[0].attributes.product_variant.slice(idx + 1)
-                                    ]
-                                }
-                            });
-                        }
-                    });
+                if(item.id == product.id) {
+                    setStock(product.stock - item.quantity);
                 }
-            });
-        } else {
-            if(data) {
-                setStock(data.products.data[0].attributes.product_variant[0].stock);
-                setProduct({
-                    ...product,
-                    selectedColor: data.products.data[0].attributes.colors ? data.products.data[0].attributes.colors.split(',')[0] : '',
-                    selectedSize: data.products.data[0].attributes.sizes ? data.products.data[0].attributes.sizes.split(',')[0] : '',
-                    selectedIndex: 0,
-                    selectedStock: data.products.data[0].attributes.product_variant[0].stock,
-                    product_variant: {
-                        ...data.products.data[0].attributes.product_variant,
-                        data: [
-                            ...data.products.data[0].attributes.product_variant.slice(0, 0),
-                            {
-                                ...data.products.data[0].attributes.product_variant[0],
-                                attributes: {
-                                    ...data.products.data[0].attributes.product_variant[0],
-                                    stock: data.products.data[0].attributes.product_variant[0].stock
-                                }
-                            },
-                            ...data.products.data[0].attributes.product_variant.slice(0 + 1)
-                        ]
-                    }
-                });
             }
-        }
-    }, [cartItems, selectedColor, selectedSize, quantity]);
+        )};
+    }, [cartItems]);
 
     useEffect(() => {
         const checkUser = async () => {
@@ -300,7 +175,7 @@ export default function Prodotto({params}) {
     }, []);
 
     if(fetching) return <Loader />;
-    if(error) return router.push('/not-found');
+    if(error) return Error();
     
     return (
         <>
@@ -314,8 +189,8 @@ export default function Prodotto({params}) {
                     <div className='flex flex-wrap'>
                         <div className='w-full md:w-2/3'>
                             <div className='flex flex-wrap'>
-                                { size.width < 768 && product && product.product_variant[index] && <ProductPrimaryImage image={product.product_variant[index].gallery.data[selectedImageIndex].attributes.url} /> }
-                                {product && product.product_variant[index] && product.product_variant[index].gallery.data.map((image, idx) => (
+                                { size.width < 768 && product && <ProductPrimaryImage image={product.gallery.data[selectedImageIndex].attributes.url} name={product.name} /> }
+                                {product && product.gallery.data.map((image, idx) => (
                                     <ProductSingleImage handleClick={handleClick} key={idx} idx={idx} image={image.attributes.url} name={product.name} />
                                 ))}
                             </div>
@@ -354,16 +229,14 @@ export default function Prodotto({params}) {
                                 <span className='font-bold text-sm'>Funzionamento: </span>
                                 <span className='font-normal text-sm ml-2'>{product.funzionante ? 'Si' : 'No'}</span>
                             </div> }
-                            { product?.colors && <ProductDetailWrapper title="Colore">
-                                {product && product.colors && (product.colors.split(',')).map((color, idx) => (
-                                    <Button key={idx} text={color} type={selectedColor === color ? 'quad-active' : 'quad'} action={() => onSelectedColor(color)} />
-                                ))}
-                            </ProductDetailWrapper> }
-                            { product?.sizes && <ProductDetailWrapper title="Taglia">
-                                {product && product.sizes && (product.sizes.split(',')).map((size, idx) => (
-                                    <Button key={idx} text={size} type={selectedSize === size ? 'quad-active' : 'quad'} action={() => onSelectedSize(size)} />
-                                ))}
-                            </ProductDetailWrapper> }
+                            {product?.colors && <div className='flex items-center mt-5'>
+                                <span className='font-bold text-sm'>Colore: </span>
+                                <span className='font-normal text-sm ml-2'>{product.colors}</span>
+                            </div> }
+                            {product?.sizes && <div className='flex items-center mt-5'>
+                                <span className='font-bold text-sm'>Taglia: </span>
+                                <span className='font-normal text-sm ml-2'>{product.sizes}</span>
+                            </div> }
                             <ProductDetailWrapper title="Quantità">
                                 <div className='flex flex-col'>
                                     <div className='flex flex-row'>
@@ -377,11 +250,6 @@ export default function Prodotto({params}) {
                             <div className='flex flex-col mt-5'>
                                 { errorMessage && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
                                     <span className="block sm:inline">{errorMessage}</span> 
-                                </div> }
-                                {(product?.colors || product?.sizes ) && <div className='flex flex-col mt-10'>
-                                    <h5 className="mb-3 font-bold text-xs">Combinazione selezionata:</h5>
-                                    {product?.colors && <div className='font-bold text-sm'>Colore: <span className='font-normal uppercase'>{selectedColor}</span></div> }
-                                    {product?.size && <div className='font-bold text-sm'>Taglia: <span className='font-normal uppercase'>{selectedSize}</span></div> }
                                 </div> }
                                 <div className='flex flex-col mt-10'>
                                     {stock > 0 && <Button text='Aggiungi al carrello' type="filled" action={onAddProduct} /> }

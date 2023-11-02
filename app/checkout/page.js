@@ -15,6 +15,7 @@ import Footer from '@/app/components/Footer/Footer';
 import Loader from '../components/Loader/Loader';
 import { GENERAL_QUERY } from '../lib/query';
 import { useQuery } from 'urql';
+import Error from 'next/error';
 
 const stripePromise = getStripe();
 
@@ -37,7 +38,7 @@ export default function Checkout() {
     const [results] = useQuery({
         query: GENERAL_QUERY,
     });
-  
+
     const { data, fetching, error } = results;
     
     const handleApprove = (order, cartItems) => {
@@ -45,15 +46,11 @@ export default function Checkout() {
 
         const products = [];
         cartItems.map((item) => {
-            let index = item.selectedIndex;
             products.push({
                 id: item.id,
                 name: item.name,
-                color: item.selectedColor,
-                size: item.selectedSize,
                 quantity: item.quantity,
                 price: item.price,
-                variant_id: item.product_variant[index].id,
             });
         });
         
@@ -62,13 +59,13 @@ export default function Checkout() {
             mode: 'cors',
             headers: { "Content-Type": "application/json"},
             body: JSON.stringify({ 
-              data:{
-                name: order.purchase_units[0].shipping.name.full_name,
-                email: order.payer.email_address,
-                address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code,
-                products: products,
-                total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
-              }
+                data:{
+                    name: order.purchase_units[0].shipping.name.full_name,
+                    email: order.payer.email_address,
+                    address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code,
+                    products: products,
+                    total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+                }
             })
         }).then((result) => {
             setTotalQty(0);
@@ -76,7 +73,7 @@ export default function Checkout() {
             return router.push('/thank-you');
         }).catch((error) => {
             console.log(error);
-            router.push('/error');
+            return Error();
         }).catch((error) => {
             console.log(error);
         });
@@ -103,11 +100,11 @@ export default function Checkout() {
             )};
             if (country) {
                 if (country === 'IT') {
-                    setDistancePrice(data?.general?.data.attributes.distance_price[0].price)
+                    setDistancePrice(data?.general?.data.attributes.distance_price[0])
                 } else if (unionEurope.includes(country)) {
-                    setDistancePrice(data?.general?.data.attributes.distance_price[1].price)
+                    setDistancePrice(data?.general?.data.attributes.distance_price[1])
                 } else {
-                    setDistancePrice(data?.general?.data.attributes.distance_price[2].price)
+                    setDistancePrice(data?.general?.data.attributes.distance_price[2])
                 }
             }
         }
@@ -148,8 +145,8 @@ export default function Checkout() {
         "currency" : "EUR",
     } ; 
 
-      if(fetching) return <Loader />;
-      if(error) return router.push('/error');
+    if(fetching) return <Loader />;
+    if(error) return Error();
 
     return (
         <>

@@ -7,6 +7,10 @@ const UserProvider = ({ children }) => {
   async function doLogin(values) {
     try {
       const resp = await linstance.post('/api/auth/login', values);
+      if(resp.data.jwt && resp.data.id) {
+        localStorage.setItem('token', resp.data.jwt);
+        localStorage.setItem('id', resp.data.id);
+      }
       return resp.data;
     } catch (error) {
       return ['alert', error.response.data.message];
@@ -66,6 +70,8 @@ const UserProvider = ({ children }) => {
       setUser('');
       setEmail('');
       setId('');
+      localStorage.removeItem('token');
+      localStorage.removeItem('id');
     }
   };
 
@@ -74,8 +80,14 @@ const UserProvider = ({ children }) => {
       products: values,
       id: id
     };
+    const token = localStorage.getItem('token');
     try {
-      const resp = await linstance.put('/api/auth/wishlist', body);
+      const resp = await linstance.put('/api/auth/wishlist', body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      
+      });
       return resp;
     } catch (error) {
       return error.response;
@@ -84,7 +96,12 @@ const UserProvider = ({ children }) => {
 
   async function checkLogin() {
     try {
-      const resp = await linstance.get('/api/auth/user');
+      const token = localStorage.getItem('token');
+      const resp = await linstance.get('/api/auth/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUser(resp.data.user);
       setEmail(resp.data.email);
       setId(resp.data.id);
@@ -99,7 +116,6 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [email, setEmail] = useState();
   const [id, setId] = useState();
-  const [jwt, setJwt] = useState();
   const [userWishlist, setUserWishList] = useState();
   const [loggingIn, setLoggingIn] = useState(false);
   const [userOrder, setUserOrder] = useState();
@@ -117,8 +133,6 @@ const UserProvider = ({ children }) => {
     doWishList: doWishList,
     setLoggingIn: setLoggingIn,
     checkLogin: checkLogin,
-    jwt: jwt,
-    setJwt: setJwt,
     email: email,
     setEmail: setEmail,
     id: id,

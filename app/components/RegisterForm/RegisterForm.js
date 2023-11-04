@@ -40,7 +40,7 @@ function RegisterForm() {
                     type="text"
                     className="border border-gray-300 rounded-md p-2 mb-2"
                     {...register('username', {
-                        required: 'Please choose a username',
+                        required: 'Per favore inserisci un username',
                     })}
                     placeholder="Username"
                 />
@@ -49,7 +49,7 @@ function RegisterForm() {
                     type="email"
                     className="border border-gray-300 rounded-md p-2 mb-2"
                     {...register('email', {
-                        required: 'Email is required',
+                        required: "Per favore inserisci un'email",
                         pattern:
                         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     })}
@@ -59,8 +59,8 @@ function RegisterForm() {
                 <input
                     type="password"
                     {...register('password', {
-                        required: 'You must specify a password',
-                        minLength: { value: 8, message: 'At least 8 character' },
+                        required: 'Per favore inserisci una password',
+                        minLength: { value: 8, message: 'La password deve essere lunga almeno 8 caratteri' },
                     })}
                     className="border border-gray-300 rounded-md p-2 mb-2"
                     placeholder="Password"
@@ -70,10 +70,10 @@ function RegisterForm() {
                     type="password"
                     {...register('repeatpassword', {
                     validate: (value) =>
-                        value === password.current || 'The passwords do not match',
+                        value === password.current || 'La password non corrisponde',
                     })}
                     className="border border-gray-300 rounded-md p-2 mb-2"
-                    placeholder="Repeat password"
+                    placeholder="Ripeti password"
                 />
                 {errors.repeatpassword && <p>{errors.repeatpassword.message}</p>}
                 <button

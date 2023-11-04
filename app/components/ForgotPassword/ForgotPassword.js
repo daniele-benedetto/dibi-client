@@ -20,7 +20,7 @@ const ForgotForm = () => {
         if (ret[0] === 'alert') {
             setAlert(ret);
         } else {
-            setAlert(['', `Please check your email (${values.email}) and follow the instructions to reset your password`]);
+            setAlert(['', `Ti abbiamo inviato una mail all'indirizzo ${values.email} per reimpostare la password`]);
             reset();
         }
         setIsSubmitting(false);
@@ -45,8 +45,8 @@ const ForgotForm = () => {
                     className="background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting && 'Registering...'}
-                    {!isSubmitting && 'Register'}
+                    {isSubmitting && 'Invio in corso...'}
+                    {!isSubmitting && 'Invia'}
                 </button>
                 {alert[1]}
             </form>

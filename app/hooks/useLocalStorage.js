@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const useLocalStorage = (key, initialValue, expirationInHours) => {
+export const useLocalStorage = (key, initialValue, expirationInHours = 24) => {
   const [storedValue, setStoredValue] = useState(() => {
     if (typeof window === "undefined") {
       return initialValue;

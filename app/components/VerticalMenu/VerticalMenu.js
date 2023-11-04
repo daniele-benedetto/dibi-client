@@ -10,8 +10,6 @@ export default function VerticalMenu({navbar, setMenuIsOpen, categories, email, 
     const [showSubMenu, setShowSubMenu] = useState(false);
     const [showSubSubmenu, setShowSubSubmenu] = useState(null);
 
-    console.log(email, user);
-
     useLockBodyScroll();
 
     return (

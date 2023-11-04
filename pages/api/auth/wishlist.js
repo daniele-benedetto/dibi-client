@@ -1,9 +1,8 @@
 import axios from '@/app/lib/api';
-import cookie from 'cookie';
 
 export default async (req, res) => {
     if (req.method === 'PUT') {
-        const { token } = cookie.parse(req.headers.cookie);
+        const token = req.headers.authorization;
         if (!token) {
             res.status(403).json({ message: 'not authorized' });
         }
@@ -11,7 +10,7 @@ export default async (req, res) => {
             "products": req.body.products
         }, {
             headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token,
             },
         }).then((response) => {
             res.status(200).json({

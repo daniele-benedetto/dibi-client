@@ -43,8 +43,8 @@ const ResetForm = () => {
         <input
             type="password"
             {...register('password', {
-                required: 'You must specify a password',
-                minLength: { value: 8, message: 'At least 8 character' },
+                required: 'Per favore inserisci una password',
+                minLength: { value: 8, message: 'La password deve essere di almeno 8 caratteri' },
             })}
             className="border border-gray-300 rounded-md p-2 mb-2"
             placeholder="Password"
@@ -54,10 +54,10 @@ const ResetForm = () => {
             type="password"
             {...register('repeatpassword', {
             validate: (value) =>
-                value === password.current || 'The passwords do not match',
+                value === password.current || 'Le password non coincidono',
             })}
             className="border border-gray-300 rounded-md p-2 mb-2"
-            placeholder="Repeat password"
+            placeholder="Ripeti password"
         />
         {errors.repeatpassword && <p>{errors.repeatpassword.message}</p>}
         <button
@@ -65,7 +65,7 @@ const ResetForm = () => {
             className="background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"
             disabled={isSubmitting}
         >
-            {isSubmitting && 'Reset...'}
+            {isSubmitting && 'Reset in corso...'}
             {!isSubmitting && 'Reset'}
         </button>
         {alert[1]}

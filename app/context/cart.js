@@ -95,9 +95,7 @@ export const CartContext = ({ children }) => {
     }
 
     useEffect(() => {
-        console.log('useEffect')
         const storedCartData = getCartFromLocalStorage();
-        console.log(storedCartData)
         if (storedCartData) {
             setCartItems(storedCartData.cartItems);
             setTotalQty(storedCartData.totalQty);

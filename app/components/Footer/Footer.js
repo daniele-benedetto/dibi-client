@@ -4,6 +4,7 @@ import Image from "next/image";
 import logoImage from "../../../public/images/logo_cianfrusalia.png";
 
 export default function Footer({footerServizioClienti, footerSocial, footerAbout}) {
+    const year = new Date().getFullYear();
     return (
         <footer className=" text-xs p-5 background-first-color">
             <div className="container grid grid-cols-1 m-auto gap-5 p-5 md:grid-cols-5 md:p-0">
@@ -37,6 +38,11 @@ export default function Footer({footerServizioClienti, footerSocial, footerAbout
                         </li>
                     ))}
                 </FooterCol>
+            </div>
+            <div className="flex items-center flex-col w-full justify-center p-2">
+                <p className="text-center text-sm">© {year} Cianfrusalia - Tutti i diritti riservati</p>
+                <p className="text-center text-sm">P.IVA: 04098340369 | Indirizzo della sede legale: Via Amareto 688 int.2 Selva di Serramazzoni 41028 Modena</p>
+                <p className="text-center text-sm">Telefono: 3716275760 | Email: test@test.it</p>
             </div>
         </footer>
     );

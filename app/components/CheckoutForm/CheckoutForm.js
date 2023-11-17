@@ -19,6 +19,9 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       codice_fiscale: '',
       codice_univoco_sdi: '',
     });
+    const [email, setEmail] = useState('')
+
+    console.log(elements)
 
     const { cartItems, setTotalQty, totalPrice, setTotalPrice } = useStateCartContext();
 
@@ -29,6 +32,8 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
   }, [stripe, clientSecret])
 
   const handleSubmit = async (e) => {
+
+    console.log(e.target)
 
     e.preventDefault();
 
@@ -46,6 +51,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       elements,
       redirect: "if_required",
     }).then((result) => {
+      console.log(result)
       const products = [];
       cartItems.map((item) => {
           products.push({
@@ -63,7 +69,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
         body: JSON.stringify({ 
           data:{
             name: result.paymentIntent.shipping.name,
-            email: result.paymentIntent.receipt_email,
+            email: email,
             address: result.paymentIntent.shipping.address.line1 +' ' + result.paymentIntent.shipping.address.city + ' ' + result.paymentIntent.shipping.address.postal_code + ' ' + result.paymentIntent.shipping.address.country,
             products: products,
             total: (parseFloat(result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
@@ -95,7 +101,10 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
   return (
     <form onSubmit={handleSubmit} id="payment-form">
       <AddressElement onChange={(e) => setCountry(e.value.address.country)} options={{mode: 'shipping'}} />
-      <LinkAuthenticationElement />
+      <div className="w-full flex flex-col mb-2">
+        <label htmlFor="email" className="text-sm">Email</label>
+        <input value={email} placeholder="email" type="text" id="email" className="p-2 border border-gray-300 rounded-md" onChange={(e) => setEmail(e.target.value)} />
+      </div>
       <PaymentElement />
       <div className="w-full flex items-center my-3">
           <input type="checkbox" className="mr-2 w-5 h-5" onChange={(e) => setFattura(e.target.checked)} />

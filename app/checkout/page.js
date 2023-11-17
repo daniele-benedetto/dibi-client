@@ -104,7 +104,7 @@ export default function Checkout() {
                 } else if (unionEurope.includes(country)) {
                     setDistancePrice(data?.general?.data.attributes.distance_price[1])
                 } else {
-                    setDistancePrice(data?.general?.data.attributes.distance_price[2])
+                    alert("Mi dispiace, non sono previste consegne fuori dall'unione Europea")
                 }
             }
         }
@@ -193,7 +193,7 @@ export default function Checkout() {
                                             />
                                         </PayPalScriptProvider>
                                     </div> }
-                                    <Elements options={stripeOptions} stripe={stripePromise}>
+                                    <Elements options={stripeOptions} stripe={stripePromise} >
                                         <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
                                     </Elements>
                                 </>

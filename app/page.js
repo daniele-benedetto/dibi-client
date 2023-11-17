@@ -51,9 +51,9 @@ export default function Home() {
             {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
             <main className='bg-gray-100'>
                 <Hero
-                    title="Esplora il fascino del vintage"
-                    subtitle="Trova i tesori usati nel nostro negozio online"
-                    description="Esplora il fascino senza tempo del vintage nel nostro negozio online. Trova pezzi unici con storie uniche, dalla moda ai mobili. Rinnova il passato e crea una casa con carattere."
+                    title="Un oggetto dopotutto, è ciò che rende privato l'infinito"
+                    subtitle="Cit. Losif Brodskij"
+                    description="Spulciando tra le nostre proposte riscoprirai tanti oggetti del tuo passato, pronti ad aprire il cassetto dei ricordi, dando un nuovo e e caldo colore alla tua casa."
                     cta="Scopri i prodotti"
                     link="/prodotti"
                 />
@@ -68,8 +68,8 @@ export default function Home() {
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
                     <div className="mx-auto pt-5 flex flex-wrap items-center">
                         <Hero
-                            title="La passione per oggetti unici con storia"
-                            description="Benvenuti nel mondo del vintage, dove il tempo si ferma e ogni oggetto ha una storia da raccontare. Siamo affascinati dai pezzi d'epoca che portano con sé l'autenticità e il fascino di un'epoca passata."                
+                            title="Passione, accuratezza nella ricerca, originalità fanno di Cian Frusalia il tuo vintage shop ideale"
+                            description=""                
                             cta="Scopri di più"
                             link="/chi-sono"
                         />

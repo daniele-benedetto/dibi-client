@@ -9,7 +9,7 @@ import { PAGE_QUERY } from "@/app/lib/query";
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-
+import { marked } from 'marked';
 export default function Page({params}) { 
 
     const [results] = useQuery({
@@ -22,7 +22,7 @@ export default function Page({params}) {
     const { data, fetching, error } = results;
 
     if(fetching) return <Loader />;
-    
+
     return (
         <>
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
@@ -40,16 +40,16 @@ export default function Page({params}) {
                     </div>
                 </section>
                 <section className='max-w-6xl mx-auto mt-10'>
-                    {data?.pages?.data[0]?.attributes?.content}
+                    <div dangerouslySetInnerHTML={{ __html: marked.parse(data?.pages?.data[0]?.attributes?.content) }} />
                 </section>
-                {data?.pages.data[0]?.attributes?.faq && <section className='max-w-6xl mx-auto my-10'>
+                {data?.pages.data[0]?.attributes?.faq && data?.pages.data[0]?.attributes?.faq.length > 0 && <section className='max-w-6xl mx-auto my-10'>
                     <h3 className='text-3xl font-bold my-5'>Le domande più frequenti</h3>
                     {data.pages.data[0].attributes.faq.map((item, index) => {
                         return <Accordion key={index} title={item.title} content={item.content} />
                     })}
                 </section> }
                 {data?.pages?.data[0]?.attributes?.contact_form && <section className='max-w-6xl mx-auto'>
-                    <h3 className='text-3xl font-bold my-5'>Contattaci per qualunque necessità</h3>
+                    <h3 className='text-3xl font-bold my-5'>Contattami per qualunque necessità</h3>
                     <ContactForm />
                 </section> }
             </main>

@@ -117,8 +117,12 @@ export default function Prodotto({params}) {
 
             if(cartItems.length > 0) {
                 cartItems.map((item) => {
+                    console.log(item.id, data.products.data[0].id )
                     if(item.id == data.products.data[0].id) {
+                        console.log('ciososoaoaoaaoao')
                         setStock(data.products.data[0].attributes.stock - item.quantity);
+                    } else {
+                        setStock(data.products.data[0].attributes.stock);
                     }
                 });
             } else {

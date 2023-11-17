@@ -1,16 +1,10 @@
 "use client";
 import '@/app/globals.css';
-import { Lato, Lora } from 'next/font/google';
+import { Lora } from 'next/font/google';
 import { CartContext } from '@/app/context/cart';
 import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
 import UserProvider from '@/app/context/user';
 import Whatsapp from './components/Whatsapp/Whatsapp';
-
-const lato = Lato({
-    subsets: ['latin'],
-    weight: ['300', '400', '700', '900'],
-    display: 'swap'
-});
 
 const lora = Lora({
     subsets: ['latin'],

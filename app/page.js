@@ -58,7 +58,7 @@ export default function Home() {
                     link="/prodotti"
                 />
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3>
+                    { products.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
                         {products.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />
@@ -76,7 +76,7 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie preferite</motion.h3>
+                    { categories.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie preferite</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
                         {categories.map((product, idx) => (
                             <CardBg key={idx} category={product.attributes} size='1/3' />
@@ -84,7 +84,7 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ultimi arrivi</motion.h3>
+                    {products2.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ultimi arrivi</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
                         {products2.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />

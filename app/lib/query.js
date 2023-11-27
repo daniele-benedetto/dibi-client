@@ -19,7 +19,6 @@ export const PRODUCTS_QUERY = `
                             }
                         }
                     }                    
-                    materials,
                     category {
                         data {
                             attributes {
@@ -338,7 +337,6 @@ query getProductCategory($slug: String!) {
                         }
                     }
                     colors,
-                    materials,
                     category {
                         data {
                             attributes {
@@ -411,7 +409,7 @@ query getProductCategory($slug: String!) {
                                 url
                             }
                         }
-                    }                    materials,
+                    },
                     category {
                         data {
                             attributes {

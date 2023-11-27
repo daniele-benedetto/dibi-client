@@ -18,10 +18,10 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       codice_postale: '',
       codice_fiscale: '',
       codice_univoco_sdi: '',
+      partita_iva: '',
     });
     const [email, setEmail] = useState('')
-
-    console.log(elements)
+    const [error, setError] = useState(false)
 
     const { cartItems, setTotalQty, totalPrice, setTotalPrice } = useStateCartContext();
 
@@ -32,17 +32,25 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
   }, [stripe, clientSecret])
 
   const handleSubmit = async (e) => {
-
-    console.log(e.target)
-
     e.preventDefault();
 
+    setError(false)
+
     if (!stripe || !elements) {
+      setError(true)
+      return
+    }
+
+    let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!email || regexEmail.test(email)) {
+      setError(true)
       return
     }
 
     if(fattura && Object.values(fatturaData).some((value) => value === '')) {
-      return alert('Compila tutti i campi per richiedere la fatturazione');
+      setError(true)
+      return;
     }
 
     setIsLoading(true);
@@ -51,7 +59,6 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       elements,
       redirect: "if_required",
     }).then((result) => {
-      console.log(result)
       const products = [];
       cartItems.map((item) => {
           products.push({
@@ -79,6 +86,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
             codice_fiscale: fatturaData.codice_fiscale,
             codice_univoco_sdi: fatturaData.codice_univoco_sdi,
             ragione_sociale: fatturaData.ragione_sociale,
+            partita_iva: fatturaData.partita_iva
           }
         })
         }).then((result) => {
@@ -88,6 +96,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
           return router.push('/thank-you');
         }).catch((error) => {
             console.log(error);
+            alert('Ci dispiace, il tuo pagamento è stato rifiutato. Per favore, verifica i dettagli del pagamento e riprova. Se il problema persiste, contatta il nostro servizio clienti per assistenza.')
             Error();
         });
       }).catch((error) => {
@@ -103,7 +112,8 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       <AddressElement onChange={(e) => setCountry(e.value.address.country)} options={{mode: 'shipping'}} />
       <div className="w-full flex flex-col mb-2">
         <label htmlFor="email" className="text-sm">Email</label>
-        <input value={email} placeholder="email" type="text" id="email" className="p-2 border border-gray-300 rounded-md" onChange={(e) => setEmail(e.target.value)} />
+        <input value={email} placeholder="email" type="text" id="email" className={`p-2 border-2 rounded-md ${error && !email ? 'border-red-500' : 'border-gray-300'}`} onChange={(e) => setEmail(e.target.value)} />
+        { error && !email && <p className="text-red-500 text-sm">Inserisci la tua email oppure correggila</p> }
       </div>
       <PaymentElement />
       <div className="w-full flex items-center my-3">
@@ -114,7 +124,8 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
         return (
           <div className="w-full flex flex-col" key={index}>
             <label htmlFor={key} className="text-sm">{key.replace(/_/g, ' ')}</label>
-            <input type="text" id={key} className="p-2 border border-gray-300 rounded-md" onChange={(e) => setFatturaData({...fatturaData, [key]: e.target.value})} />
+            <input value={fatturaData[key]} placeholder={key.replace(/_/g, " ")} type="text" id={key} className={`p-2 border-2 rounded-md ${error && !fatturaData[key] ? 'border-red-500' : 'border-gray-300'}`} onChange={(e) => setFatturaData({...fatturaData, [key]: e.target.value})} />
+            { error && !fatturaData[key] && <p className="text-red-500 text-sm">Se desideri la fattura, il campo {key.replace(/_/g, " ")} è obbligatorio</p> }
           </div>
         )
       })}

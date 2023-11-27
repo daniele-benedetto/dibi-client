@@ -31,7 +31,7 @@ export default function Page({params}) {
                 <section className='max-w-6xl mx-auto'>
                     <div style={{position: 'relative', height: '40vh', width: '100%', clipPath: 'inset(0 0 0 0)'}}>
                         <div className="fixed h-full w-full left-0 top-0">
-                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${data?.pages?.data[0]?.attributes?.image.data.attributes.url}`} layout="fill" objectFit="cover" sizes="100vw" alt="hero of my web site" priority />
+                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${data?.pages?.data[0]?.attributes?.image.data.attributes.url}`} layout="fill" objectFit="cover" sizes="100vw" alt="hero of my web site" priority={true} />
                         </div>
                         <div className="absolute h-full w-full left-0 top-0 flex flex-col justify-center items-center text-center bg-black bg-opacity-25">
                             <h1 className='text-5xl font-bold my-5 text-white'>{data?.pages?.data[0]?.attributes?.title}</h1>

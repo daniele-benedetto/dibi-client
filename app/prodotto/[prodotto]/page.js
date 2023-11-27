@@ -20,6 +20,7 @@ import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 import Error from "next/error";
+import FsLightbox from "fslightbox-react";
 
 export default function Prodotto({params}) {
 
@@ -31,19 +32,14 @@ export default function Prodotto({params}) {
     const [stock, setStock] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [sale, setSale] = useState(0);
+    const [toggler, setToggler] = useState(false);
+    const [images, setImages] = useState([]);
 
     const {onAdd, cartItems} = useStateCartContext();
     const { checkLogin, userWishlist, doWishList, user  } = useContext(UserContext);
 
     const size = useWindowSize();
-
-    const handleClick = (idx) => {
-        if(size.width < 768) {
-            setSelectedImageIndex(idx);
-        }
-    }
 
     const toogleFavorite = async () => {
         if(!user) {
@@ -117,9 +113,7 @@ export default function Prodotto({params}) {
 
             if(cartItems.length > 0) {
                 cartItems.map((item) => {
-                    console.log(item.id, data.products.data[0].id )
                     if(item.id == data.products.data[0].id) {
-                        console.log('ciososoaoaoaaoao')
                         setStock(data.products.data[0].attributes.stock - item.quantity);
                     } else {
                         setStock(data.products.data[0].attributes.stock);
@@ -134,7 +128,7 @@ export default function Prodotto({params}) {
                 id: data.products.data[0].id,
             })
         }
-    
+
     }, [data]);
 
     useEffect(() => {
@@ -168,6 +162,18 @@ export default function Prodotto({params}) {
     }, [cartItems]);
 
     useEffect(() => {
+
+        if (product?.gallery?.data && product.gallery.data.length > 0) {
+            let images = [];
+            product.gallery.data.map((item) => {
+                const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${item.attributes.url}`
+                images.push(url);
+            }); 
+            setImages(images);
+        }
+    }, [product]);
+
+    useEffect(() => {
         const checkUser = async () => {
             const res = await checkLogin();
             if (res && res.status === 200) {
@@ -189,13 +195,17 @@ export default function Prodotto({params}) {
                 { toastProduct && <Toast type={'success'} text={'Prodotto aggiunto al carrello'} setToast={setToastProduct} /> }
                 { toastFavorite && <Toast type={isFavorite ? 'success' : 'alert'} text={isFavorite ? 'Prodotto aggiunto alla tua wishlist' : 'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} /> }
                 { isNotUser && <Toast type={'danger'} text={'Devi essere loggato per aggiungere un prodotto alla tua wishlist'} setToast={setIsNotUser} /> }
+                <FsLightbox
+                    toggler={toggler}
+                    sources={images}
+                />
                 <div className='m-auto w-full max-w-[1400px]'>
                     <div className='flex flex-wrap'>
                         <div className='w-full md:w-2/3'>
                             <div className='flex flex-wrap'>
-                                { size.width < 768 && product && <ProductPrimaryImage image={product.gallery.data[selectedImageIndex].attributes.url} name={product.name} /> }
+                                { size.width < 768 && product && <ProductPrimaryImage image={product.gallery.data[0].attributes.url} name={product.name} /> }
                                 {product && product.gallery.data.map((image, idx) => (
-                                    <ProductSingleImage handleClick={handleClick} key={idx} idx={idx} image={image.attributes.url} name={product.name} />
+                                    <ProductSingleImage handleClick={() => setToggler((prevState) => !toggler)} key={idx} idx={idx} image={image.attributes.url} name={product.name} />
                                 ))}
                             </div>
                         </div>

@@ -102,10 +102,13 @@ const UserProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      const filteredProducts = resp.data.products.filter(product => product.stock > 0);
+
       setUser(resp.data.user);
       setEmail(resp.data.email);
       setId(resp.data.id);
-      setUserWishList(resp.data.products);
+      setUserWishList(filteredProducts);
       setUserOrder(resp.data.orders);
       return resp;
     } catch (error) {

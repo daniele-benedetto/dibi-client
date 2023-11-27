@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link'
 import { useForm } from 'react-hook-form';
 import Toast from '@/app/components/Toast/Toast';
 
@@ -83,6 +84,18 @@ function ContactForm() {
                     placeholder="Messaggio"
                     rows={5}
                 />
+                <div className="flex items-center w-full">
+                    <input 
+                        type="checkbox"
+                        {...register('privacy', {
+                        validate: (value) =>
+                            value === true || 'Devi accettare la privacy policy per registrarti',
+                        })}
+                        className="border border-gray-300 rounded-md p-2 mb-2 w-5 h-5"
+                    />
+                    <p className="mb-3 ml-3">Accetta la <Link href="/page/privacy-policy">privacy policy</Link> per registrarti</p>
+                </div>
+                {errors.privacy && <p>{errors.privacy.message}</p>}
                 <button
                     type="submit"
                     className="background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2"

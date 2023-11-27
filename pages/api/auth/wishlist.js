@@ -17,7 +17,7 @@ export default async (req, res) => {
                 products: response.data.products,
             });
         }).catch((error) => {
-            res.status(403).json({ message: 'not authorized', body: req.body });
+            res.status(403).json({ message: 'not authorized', body: req.body, });
         });
     }
 };

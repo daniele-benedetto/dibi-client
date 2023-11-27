@@ -93,7 +93,7 @@ export default function Navbar({navbar}) {
                     <div className="flex items-center w-24">
                         <BsSearch size={20} onClick={openSearch} />
                     </div>
-                    <div className="flex items-center justify-center w-full ">
+                    <div className="flex items-center justify-center w-full capitalize">
                         <Link href='/'>
                             <Image src={logoImage} alt="Logo di Cianfrusalia" width={100} height={100} />
                         </Link>

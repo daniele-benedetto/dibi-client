@@ -53,6 +53,8 @@ export default function Checkout() {
                 price: item.price,
             });
         });
+
+        console.log(order);
         
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
             method: 'POST',
@@ -65,6 +67,13 @@ export default function Checkout() {
                     address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code,
                     products: products,
                     total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+                    fattura: fattura,
+                    indirizzo: fatturaData.indirizzo,
+                    codice_postale: fatturaData.codice_postale,
+                    codice_fiscale: fatturaData.codice_fiscale,
+                    codice_univoco_sdi: fatturaData.codice_univoco_sdi,
+                    ragione_sociale: fatturaData.ragione_sociale,
+                    partita_iva: fatturaData.partita_iva
                 }
             })
         }).then((result) => {

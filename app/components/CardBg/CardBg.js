@@ -58,7 +58,7 @@ const CardBg = ({ category, size }) => {
         }`}
       >
         <motion.h3 
-            className={`text-white p-4 rounded-lg text-2xl font-bold`}
+            className={`text-white p-4 rounded-lg text-2xl font-bold capitalize`}
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{ ease: 'linear', duration: 0.75, delay: 0.5 }}

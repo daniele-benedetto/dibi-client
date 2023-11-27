@@ -4,7 +4,7 @@ import cookie from 'cookie';
 export default async (req, res) => {
   if (req.method === 'POST') {
     await axios
-      .get(`/api/auth/facebook/callback?access_token=${req.body.access_token}`)
+      .get(`/backend/api/auth/facebook/callback?access_token=${req.body.access_token}`)
       .then((response) => {
         const jwt = response.data.jwt;
         const id = response.data.user.id;

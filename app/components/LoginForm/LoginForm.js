@@ -61,7 +61,7 @@ function LoginForm({setUserMenuIsOpen}) {
             <button onClick={() => (window.location = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/connect/google`)} className="text-center text-sm uppercase text-white bg-red-700 font-bold flex items-center justify-center p-3 rounded-md my-2">
                 <BsGoogle size={20} color={'white'} className='pr-1' />Accedi con Google
             </button>
-            <button  onClick={() =>(window.location = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/connect/facebook`)} className="text-center text-sm uppercase text-white bg-blue-700 font-bold flex items-center justify-center p-3 rounded-md mb-2">
+            <button  onClick={() =>(window.location = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/connect/facebook/callback`)} className="text-center text-sm uppercase text-white bg-blue-700 font-bold flex items-center justify-center p-3 rounded-md mb-2">
                 <BsFacebook size={20} color={'white'} className='pr-1' />Accedi con Facebook
             </button>
             <hr />

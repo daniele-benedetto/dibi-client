@@ -17,7 +17,7 @@ export default function Hero({title, subtitle, description, cta, link}) {
                 <h2 className="text-2xl md:text-3xl font-bold">
                     {subtitle}
                 </h2>
-                <p className="text- md:text-2xl mt-5 max-w-4xl">
+                <p className="md:text-2xl mt-5 max-w-4xl font-bold">
                     {description}
                 </p>
                 <Link href={link} className="background-second-color text-white font-bold px-5 py-2 mt-5 shadow rounded-md text-lg">

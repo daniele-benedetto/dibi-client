@@ -18,13 +18,13 @@ const MegaMenu = ({categories}) => {
                     <div className="min-h-[180px]">
                         <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${category.attributes.image.data.attributes.url}`} alt={category.attributes.name} width={180} height={180} objectFit='contain' priority={true} />
                     </div>
-                        <h4 className="text-xl font-bold mt-2 mb-2 itemMenuCategory second-color">
+                        <h4 className="text-xl font-bold mt-2 mb-2 itemMenuCategory second-color capitalize">
                             <Link href={`/categoria/${category.attributes.slug}`}>{category.attributes.name}</Link>
                         </h4>
                         <ul className="flex flex-col">
                             {category.attributes.subcategories.data.map((subcategory, idx) => {
                                 return (
-                                    <li key={idx} className="text-md font-bold mb-2">
+                                    <li key={idx} className="text-md font-bold mb-2 capitalize">
                                         <Link href={`/sottocategoria/${subcategory.attributes.slug}`}>{subcategory.attributes.name}</Link>
                                     </li>
                                 );

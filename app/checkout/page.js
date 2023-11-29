@@ -160,7 +160,7 @@ export default function Checkout() {
     return (
         <>
             {data?.general?.data?.attributes?.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data?.attributes?.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
             <main className='bg-white p-5'>
                 <section className='container m-auto flex flex-wrap'>
                     <div className='flex justify-center w-full md:w-2/3'>

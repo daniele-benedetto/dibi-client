@@ -42,7 +42,7 @@ function Register() {
     return (
         <>
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
             <main className="w-full h-screen bg-white p-5 pt-20">
                 <div className='max-w-6xl m-auto flex flex-col items-center flex-center p-1'>
                     <h5 className='text-center text-md font-thin uppercase'>Compila il form e registrati</h5>

@@ -20,28 +20,15 @@ export default function Home() {
         query: HOME_QUERY,
     });
 
-    const [products, setProducts] = useState([]);
-    const [products2, setProducts2] = useState([]);
-    const [categories, setCategories] = useState([]);
 
     const {data, fetching, error} = results;
-
-    useEffect(() => {
-        if(data) {
-            setProducts(data.products.data);
-            setProducts2(data.products2.data);
-            setCategories(data.categories.data);
-        }
-    }, [data]);
-
-
     if(fetching) return <Loader />;
     if(error) return Error();
     return (
         <>
             {data?.general?.data.attributes.message?.active && <Alert message={data?.general?.data.attributes.message} />}
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} /> }
             <main className='bg-gray-100'>
                 <Hero
                     title="Un oggetto dopotutto, è ciò che rende privato l'infinito"
@@ -51,9 +38,9 @@ export default function Home() {
                     link="/prodotti"
                 />
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    { products.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3> }
+                    { data.products.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
-                        {products.map((product, idx) => (
+                        {data.products.data.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />
                         ))}
                     </div>
@@ -69,17 +56,17 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    { categories.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie</motion.h3> }
+                    { data.categories.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
-                        {categories.map((product, idx) => (
+                        {data.categories.data.map((product, idx) => (
                             <CardBg key={idx} category={product.attributes} size='1/3' />
                         ))}
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    {products2.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ultimi arrivi</motion.h3> }
+                    {data.products2.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ultimi arrivi</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
-                        {products2.map((product, idx) => (
+                        {data.products2.data.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />
                         ))}
                     </div>

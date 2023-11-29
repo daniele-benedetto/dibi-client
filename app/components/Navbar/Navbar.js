@@ -17,10 +17,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import logoImage from "../../../public/images/logo_cianfrusalia.png";
 import MegaMenu from "../MegaMenu/MegaMenu";
-import { useQuery } from 'urql';
-import { CATEGORIES_QUERY } from '@/app/lib/query';
 
-export default function Navbar({navbar}) {
+export default function Navbar({navbar, categories}) {
 
     const pathname = usePathname();
 
@@ -28,7 +26,6 @@ export default function Navbar({navbar}) {
     const [searchIsOpen, setSearchIsOpen] = useState(false);
     const [userMenuIsOpen, setUserMenuIsOpen] = useState(false);
     const [megaMenuVisible, setMegaMenuVisible] = useState(false);
-    const [categories, setCategories] = useState([]);
 
     const { totalQty, setShowCart, showCart} = useStateCartContext();
     const { checkLogin, user, email } = useContext(UserContext);
@@ -62,18 +59,6 @@ export default function Navbar({navbar}) {
             setMegaMenuVisible(false);
         }
     };
-
-    const [results] = useQuery({
-        query: CATEGORIES_QUERY,
-    });
-
-    const { data:categorie } = results;
-
-    useEffect(() => {
-        if(categorie) {
-            setCategories(categorie.categories.data);
-        }
-    }, [categorie]);
     
     useEffect(() => {
         const checkUser = async () => {

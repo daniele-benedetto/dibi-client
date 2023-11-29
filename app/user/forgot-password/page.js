@@ -36,7 +36,7 @@ const forgotpassword = () => {
   return (
     <>
       {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-      {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+      {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
       <main className="w-full h-screen bg-white pt-20 flex flex-col ">
         <h1 className="text-center text-2xl font-bold">Password dimenticata</h1>
         <ForgotForm /> 

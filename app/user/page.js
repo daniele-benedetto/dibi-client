@@ -66,7 +66,7 @@ export default function User() {
     return (
         <>
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
             <main className='bg-white p-5'>
                 { toastFavorite && <Toast type={'success'} text={'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} /> }
                 <div className='flex flex-wrap container m-auto'>

@@ -78,7 +78,30 @@ export const PRODUCTS_QUERY = `
                     spedizione_gratuita
                 }
             }
-        }
+        },
+        categories: categories(filters: { in_home: { eq: true } }) {
+            data {
+              attributes {
+                name
+                slug
+                image {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                },
+                subcategories {
+                  data {
+                      attributes {
+                          name,
+                          slug
+                      }
+                  }
+                }
+              }
+            }
+          },
     }
 `;
 
@@ -173,7 +196,30 @@ export const PRODUCT_QUERY = `
                     spedizione_gratuita
                 }
             }
-        }
+        },
+        categories: categories(filters: { in_home: { eq: true } }) {
+            data {
+              attributes {
+                name
+                slug
+                image {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                },
+                subcategories {
+                  data {
+                      attributes {
+                          name,
+                          slug
+                      }
+                  }
+                }
+              }
+            }
+          },
     }
 `;
 
@@ -221,6 +267,14 @@ export const HOME_QUERY = `
               attributes {
                 url
               }
+            }
+          },
+          subcategories {
+            data {
+                attributes {
+                    name,
+                    slug
+                }
             }
           }
         }
@@ -440,7 +494,30 @@ export const GENERAL_QUERY = `
                     spedizione_gratuita
                 }
             }
-        }
+        },
+        categories: categories(filters: { in_home: { eq: true } }) {
+            data {
+              attributes {
+                name
+                slug
+                image {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                },
+                subcategories {
+                  data {
+                      attributes {
+                          name,
+                          slug
+                      }
+                  }
+                }
+              }
+            }
+          },
     }
 `;
 

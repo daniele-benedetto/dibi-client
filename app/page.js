@@ -5,7 +5,7 @@ import { useQuery } from 'urql';
 import CardCategory from '@/app/components/CardCategory/CardCategory';
 import Hero from '@/app/components/Hero/Hero';
 import Loader from '@/app/components/Loader/Loader';
-import { HOME_2_QUERY, HOME_QUERY } from '@/app/lib/query';
+import { HOME_QUERY } from '@/app/lib/query';
 import { motion } from 'framer-motion';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
@@ -20,26 +20,19 @@ export default function Home() {
         query: HOME_QUERY,
     });
 
-    const [results2] = useQuery({
-        query: HOME_2_QUERY,
-    });
-
     const [products, setProducts] = useState([]);
     const [products2, setProducts2] = useState([]);
     const [categories, setCategories] = useState([]);
 
     const {data, fetching, error} = results;
-    const {data: data2, fetching: fetching2, error: error2} = results2;
 
     useEffect(() => {
         if(data) {
             setProducts(data.products.data);
+            setProducts2(data.products2.data);
+            setCategories(data.categories.data);
         }
-        if(data2) {
-            setProducts2(data2.products.data);
-            setCategories(data2.categories.data);
-        }
-    }, [data, data2]);
+    }, [data]);
 
 
     if(fetching) return <Loader />;
@@ -53,7 +46,7 @@ export default function Home() {
                 <Hero
                     title="Un oggetto dopotutto, è ciò che rende privato l'infinito"
                     subtitle="Cit. Losif Brodskij"
-                    description="Spulciando tra le nostre proposte riscoprirai tanti oggetti del tuo passato, pronti ad aprire il cassetto dei ricordi, dando un nuovo e e caldo colore alla tua casa."
+                    description="Spulciando tra le nostre proposte riscoprirai tanti oggetti del tuo passato, pronti ad aprire il cassetto dei ricordi, dando un nuovo e caldo colore alla tua casa."
                     cta="Scopri i prodotti"
                     link="/prodotti"
                 />
@@ -76,7 +69,7 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    { categories.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie preferite</motion.h3> }
+                    { categories.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
                         {categories.map((product, idx) => (
                             <CardBg key={idx} category={product.attributes} size='1/3' />

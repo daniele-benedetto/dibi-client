@@ -14,7 +14,7 @@ export default function VerticalMenu({navbar, setMenuIsOpen, categories, email, 
 
     return (
         <motion.ul 
-            className="flex flex-col w-full text-2xl fixed top-0 left-0 font-bold bg-white h-screen z-10 pt-24 p-10"
+            className="flex flex-col w-full text-2xl fixed top-0 left-0 font-bold bg-white h-screen z-10 pt-24 p-10 mt-10 md:mt-0"
             initial={{x: "100%"}}
             animate={{x: "0"}}
             exit={{x: "100%"}}

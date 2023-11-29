@@ -1,7 +1,7 @@
 
 export const PRODUCTS_QUERY = `
     query {
-        products (sort: "createdAt:desc", pagination: { limit: 100 }) {
+        products (sort: "createdAt:desc", pagination: { limit: 1000 }) {
             data {
                 attributes {
                     empty_visible,
@@ -209,107 +209,77 @@ export const CATEGORIES_QUERY = `
     }
 `;
 
-
 export const HOME_QUERY = `
-    query {
-        products(filters: {
-            in_evidence: {
-                eq: true
-            }
-        }) {
+  query {
+    categories: categories(filters: { in_home: { eq: true } }) {
+      data {
+        attributes {
+          name
+          slug
+          image {
             data {
-                attributes {
-                    empty_visible,
-                    name,
-                    slug,
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                }
+              attributes {
+                url
+              }
             }
-        },
-        general {
-            data {
-                attributes {
-                    navbar,
-                    top_bar,
-                    message {
-                        title,
-                        text,
-                        active
-                    }
-                    weight_price,
-                    distance_price,
-                    footer,
-                    spedizione_gratuita
-                }
-            }
+          }
         }
-    }
-`;
-
-export const HOME_2_QUERY = `
-    query {
-        categories(filters: {
-            in_home: {
-                eq: true
-            }
-        }) {
+      }
+    },
+    products: products(filters: { in_evidence: { eq: true } }) {
+      data {
+        attributes {
+          empty_visible
+          name
+          slug
+          image {
             data {
-                attributes {
-                    name,
-                    slug,
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                }
+              attributes {
+                url
+              }
             }
-        },
-        products(
-            pagination: {
-                limit: 4,
-            },
-            sort: "createdAt:desc"
-        ) {
-            data {
-                attributes {
-                    empty_visible,
-                    name,
-                    slug,
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                }
-            }
-        },
-        general {
-            data {
-                attributes {
-                    navbar,
-                    top_bar,
-                    weight_price,
-                    distance_price,
-                    footer,
-                    spedizione_gratuita
-                }
-            }
+          }
         }
+      }
+    },
+    general: general {
+      data {
+        attributes {
+          navbar
+          top_bar
+          message {
+            title
+            text
+            active
+          }
+          weight_price
+          distance_price
+          footer
+          spedizione_gratuita
+        }
+      }
+    },
+    products2: products(
+      pagination: { limit: 4 }
+      sort: "createdAt:desc"
+    ) {
+      data {
+        attributes {
+          empty_visible
+          name
+          slug
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
     }
+  }
 `;
-
-
 
 export const PRODUCTS_CATEGORY_QUERY = `
 query getProductCategory($slug: String!) {

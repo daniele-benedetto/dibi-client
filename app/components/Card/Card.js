@@ -39,7 +39,7 @@ export default function Card({product}) {
     if(stock > 0) return (
         <article className='w-1/2 md:w-1/3 lg:w-1/3 p-2'>
             <Link href={`prodotto/${product.slug}`}>
-                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image.data.attributes.url}`} alt="product image" width={350} height={425} priority={true} />
+                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image.data.attributes.url}`} alt="product image" width={350} height={425} />
                 <h3 className='text-sm uppercase leading-3 mt-3'>{product.name}</h3>
                 {sale > 0 ? (
                     <div className='flex items-center'>

@@ -19,8 +19,14 @@ import Loader from '@/app/components/Loader/Loader';
 import Error from 'next/error';
 
 export default function User() {
-
-    const { checkLogin, user, email, userWishlist, userOrder, doWishList  } = useContext(UserContext);
+    const {
+        checkLogin,
+        user,
+        email,
+        userWishlist,
+        userOrder,
+        doWishList,
+    } = useContext(UserContext);
     const { cartItems, onAdd, onRemove } = useStateCartContext();
     const router = useRouter();
     const [wishList, setWishList] = useState([]);
@@ -30,13 +36,12 @@ export default function User() {
         const newWishlist = userWishlist.filter((item, index) => index !== idx);
 
         const response = await doWishList(newWishlist);
-        if(response && response.status === 200) {
+        if (response && response.status === 200) {
             setWishList(newWishlist);
             setToastFavorite(true);
         }
     };
 
-    
     useEffect(() => {
         const checkUser = async () => {
             const res = await checkLogin();
@@ -44,31 +49,45 @@ export default function User() {
                 router.push('/user/login');
                 return false;
             }
-        }
+        };
         checkUser();
     }, []);
 
     useEffect(() => {
-        if(userWishlist) {
+        if (userWishlist) {
             setWishList(userWishlist);
         }
     }, [userWishlist]);
 
     const [results] = useQuery({
         query: GENERAL_QUERY,
+        staleTime: 60000
     });
 
     const { data, fetching, error } = results;
 
-    if(fetching) return <Loader />;
-    if(error) return Error();
+    if (fetching) return <Loader />;
+    if (error) return Error();
+
+    const {
+        top_bar,
+        navbar,
+        categories,
+        general: { data: generalData },
+    } = data;
+
+    const { attributes: generalAttributes } = generalData.data;
+
+    const renderToastFavorite = () => (
+        toastFavorite && <Toast type={'success'} text={'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} />
+    );
 
     return (
         <>
-            {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
+            {top_bar && <Topbar topbar={top_bar} />}
+            {navbar && <Navbar navbar={navbar} categories={categories.data} />}
             <main className='bg-white p-5'>
-                { toastFavorite && <Toast type={'success'} text={'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} /> }
+                {renderToastFavorite()}
                 <div className='flex flex-wrap container m-auto'>
                     <div className='w-full md:w-1/3 flex flex-col p-10 justify-center items-center'>
                         <div className='flex flex-col justify-center items-center w-full'>
@@ -83,39 +102,48 @@ export default function User() {
                             <h1 className='text-2xl font-bold mb-5'>I tuoi ordini:</h1>
                             <div className='flex flex-wrap'>
                                 <div className='w-full'>
-                                    {userOrder && userOrder.length > 0 && userOrder.map((item, idx) => (
-                                        <OrderItem key={idx} item={item} />
-                                    ))}
-                                    {userOrder && userOrder.length === 0 && (
+                                    {userOrder && userOrder.length > 0 ? (
+                                        userOrder.map((item, idx) => (
+                                            <OrderItem key={idx} item={item} />
+                                        ))
+                                    ) : (
                                         <p className='text-md mb-5'>Non hai effettuato nessun ordine</p>
                                     )}
                                 </div>
-                            </div>  
-                        </div>  
+                            </div>
+                        </div>
                     </section>
                     <section className='flex flex-wrap w-full md:w-1/3'>
                         <div className='w-full p-2'>
                             <h1 className='text-2xl font-bold mb-5'>La lista dei tuoi desideri:</h1>
-                            {wishList && wishList.length > 0 && wishList.map((item, idx) => (
-                                <WishItem key={idx} item={item} action={() => removeProductFromWishList(idx)} />
-                            ))}
-                            {wishList && wishList.length === 0 && (
+                            {wishList && wishList.length > 0 ? (
+                                wishList.map((item, idx) => (
+                                    <WishItem key={idx} item={item} action={() => removeProductFromWishList(idx)} />
+                                ))
+                            ) : (
                                 <p className='text-md mb-5'>Non hai prodotti nella tua lista dei desideri</p>
                             )}
                         </div>
                         <div className='w-full p-2'>
                             <h1 className='text-2xl font-bold mb-5'>Il tuo carrello:</h1>
-                            {cartItems && cartItems.length > 0 && cartItems.map((item, idx) => (
-                                <CartItem key={idx} item={item} onAdd={onAdd} onRemove={onRemove} />
-                            ))}
-                            {cartItems && cartItems.length === 0 && (
+                            {cartItems && cartItems.length > 0 ? (
+                                cartItems.map((item, idx) => (
+                                    <CartItem key={idx} item={item} onAdd={onAdd} onRemove={onRemove} />
+                                ))
+                            ) : (
                                 <p className='text-md mb-5'>Non hai prodotti nel tuo carrello</p>
                             )}
                         </div>
                     </section>
                 </div>
             </main>
-            {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
+            {generalAttributes.footer && (
+                <Footer
+                    footerServizioClienti={generalAttributes.footer.footerServizioClienti}
+                    footerAbout={generalAttributes.footer.footerAbout}
+                    footerSocial={generalAttributes.footer.footerSocial}
+                />
+            )}
         </>
     );
-};
+}

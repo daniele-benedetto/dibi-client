@@ -104,7 +104,8 @@ export default function ProdottiCategoria({params}) {
       query: PRODUCTS_CATEGORY_QUERY,
         variables: {
             slug: params.categoria
-        }
+        },
+        staleTime: 60000,
     });
 
     const { data:prodotti, fetching, error } = results;

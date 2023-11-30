@@ -34,6 +34,7 @@ export default function Searchbar({setSearchIsOpen}) {
 
     const [results] = useQuery({
         query: PRODUCTS_QUERY,
+        staleTime: 60000
     });
 
     const { data:prodotti, fetching, error } = results;

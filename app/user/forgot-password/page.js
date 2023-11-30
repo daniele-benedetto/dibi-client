@@ -26,6 +26,7 @@ const forgotpassword = () => {
   const router = useRouter();
   const [results] = useQuery({
       query: GENERAL_QUERY,
+      staleTime: 60000,
   });
 
   const { data, fetching, error } = results;

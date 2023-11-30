@@ -18,17 +18,21 @@ export default function Home() {
 
     const [results] = useQuery({
         query: HOME_QUERY,
+        staleTime: 60000
     });
 
 
     const {data, fetching, error} = results;
     if(fetching) return <Loader />;
     if(error) return Error();
+
+    const { general, products, products2, categories, categories2 } = data;
+
     return (
         <>
-            {data?.general?.data.attributes.message?.active && <Alert message={data?.general?.data.attributes.message} />}
-            {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories2.data} /> }
+            {general?.data.attributes.message?.active && <Alert message={general?.data.attributes.message} />}
+            {general?.data.attributes.top_bar && <Topbar topbar={general.data.attributes.top_bar} />}
+            {general?.data.attributes.navbar && <Navbar navbar={general.data.attributes.navbar} categories={categories2.data} /> }
             <main className='bg-gray-100'>
                 <Hero
                     title="Un oggetto dopotutto, è ciò che rende privato l'infinito"
@@ -38,9 +42,9 @@ export default function Home() {
                     link="/prodotti"
                 />
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    { data.products.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3> }
+                    { products.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
-                        {data.products.data.map((product, idx) => (
+                        {products.data.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />
                         ))}
                     </div>
@@ -56,23 +60,23 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    { data.categories.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie</motion.h3> }
+                    { categories.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
-                        {data.categories.data.map((product, idx) => (
+                        {categories.data.map((product, idx) => (
                             <CardBg key={idx} category={product.attributes} size='1/3' />
                         ))}
                     </div>
                 </section>
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    {data.products2.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ultimi arrivi</motion.h3> }
+                    {products2.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ultimi arrivi</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
-                        {data.products2.data.map((product, idx) => (
+                        {products2.data.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />
                         ))}
                     </div>
                 </section>
             </main>
-            {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
+            {general?.data.attributes.footer && <Footer footerServizioClienti={general.data.attributes.footer.footerServizioClienti} footerAbout={general.data.attributes.footer.footerAbout} footerSocial={general.data.attributes.footer.footerSocial} />}
         </>
     );
 };

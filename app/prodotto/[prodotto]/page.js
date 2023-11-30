@@ -86,7 +86,8 @@ export default function Prodotto({params}) {
         query: PRODUCT_QUERY,
         variables: {
             slug: params.prodotto
-        }
+        },
+        staleTime: 60000
     });
 
     const {data, fetching, error} = results;

@@ -101,7 +101,8 @@ export default function ProdottiSottocategoria({params}) {
       query: PRODUCTS_SUBCATEGORY_QUERY,
         variables: {
             slug: params.sottocategoria
-        }
+        },
+        staleTime: 60000
     }); 
 
     const { data:prodotti, fetching, error } = results;

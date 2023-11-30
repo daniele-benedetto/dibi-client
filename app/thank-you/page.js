@@ -17,7 +17,8 @@ export default function ThankYou() {
     const { setCartItems } = useStateCartContext();
 
     const [results] = useQuery({
-        query: HOME_QUERY
+        query: HOME_QUERY,
+        staleTime: 60000
     });
 
     const { data, loading, error } = results;

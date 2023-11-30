@@ -99,7 +99,8 @@ export default function Prodotti() {
     }, [filters]); 
 
     const [results] = useQuery({
-      query: PRODUCTS_QUERY
+      query: PRODUCTS_QUERY,
+      staleTime: 60000,
     });
 
     const { data:prodotti, fetching, error } = results;

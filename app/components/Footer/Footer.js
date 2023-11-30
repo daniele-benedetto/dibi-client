@@ -41,7 +41,7 @@ export default function Footer({footerServizioClienti, footerSocial, footerAbout
             </div>
             <div className="flex items-center flex-col w-full justify-center p-2">
                 <p className="text-center text-sm">© {year} Cianfrusalia - Tutti i diritti riservati</p>
-                <p className="text-center text-sm">P.IVA: 04098340369 | Telefono: 3716275760 | Email: test@test.it</p>
+                <p className="text-center text-sm">P.IVA: 04098340369 | Telefono: 3716275760 | Email: mrciafrusalia@gmail.com</p>
             </div>
         </footer>
     );

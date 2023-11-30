@@ -30,8 +30,8 @@ export default function Home() {
 
     return (
         <>
-            {general?.data.attributes.message?.active && <Alert message={general?.data.attributes.message} />}
             {general?.data.attributes.top_bar && <Topbar topbar={general.data.attributes.top_bar} />}
+            {general?.data.attributes.message?.active && <Alert message={general?.data.attributes.message} />}
             {general?.data.attributes.navbar && <Navbar navbar={general.data.attributes.navbar} categories={categories2.data} /> }
             <main className='bg-gray-100'>
                 <Hero
@@ -63,7 +63,7 @@ export default function Home() {
                     { categories.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Categorie</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
                         {categories.data.map((product, idx) => (
-                            <CardBg key={idx} category={product.attributes} size='1/3' />
+                            <CardBg key={idx} category={product.attributes} size='1/5' />
                         ))}
                     </div>
                 </section>

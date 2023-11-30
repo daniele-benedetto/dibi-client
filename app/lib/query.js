@@ -79,29 +79,33 @@ export const PRODUCTS_QUERY = `
                 }
             }
         },
-        categories: categories(filters: { in_home: { eq: true } }) {
-            data {
-              attributes {
-                name
-                slug
-                image {
-                  data {
-                    attributes {
-                      url
-                    }
-                  }
-                },
-                subcategories {
-                  data {
-                      attributes {
-                          name,
-                          slug
-                      }
-                  }
-                }
-              }
+        categories(filters: {
+            in_evidence: {
+                eq: true
             }
-          },
+        }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
+                }
+            }
+        },
     }
 `;
 
@@ -197,29 +201,33 @@ export const PRODUCT_QUERY = `
                 }
             }
         },
-        categories: categories(filters: { in_home: { eq: true } }) {
-            data {
-              attributes {
-                name
-                slug
-                image {
-                  data {
-                    attributes {
-                      url
-                    }
-                  }
-                },
-                subcategories {
-                  data {
-                      attributes {
-                          name,
-                          slug
-                      }
-                  }
-                }
-              }
+        categories(filters: {
+            in_evidence: {
+                eq: true
             }
-          },
+        }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
+                }
+            }
+        },
     }
 `;
 
@@ -279,6 +287,33 @@ export const HOME_QUERY = `
           }
         }
       }
+    },
+    categories2: categories(filters: {
+        in_evidence: {
+            eq: true
+        }
+    }) {
+        data {
+            attributes {
+                name,
+                slug,
+                image {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                },
+                subcategories {
+                    data {
+                        attributes {
+                            name,
+                            slug
+                        }
+                    }
+                }
+            }
+        }
     },
     products: products(filters: { in_evidence: { eq: true } }) {
       data {
@@ -404,6 +439,33 @@ query getProductCategory($slug: String!) {
                     spedizione_gratuita
                 }
             }
+        },
+        categories(filters: {
+            in_evidence: {
+                eq: true
+            }
+        }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 `;
@@ -477,7 +539,34 @@ query getProductCategory($slug: String!) {
                     spedizione_gratuita
                 }
             }
-        }
+        },
+        categories(filters: {
+            in_evidence: {
+                eq: true
+            }
+        }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
+                }
+            }
+        },
     }
 `;
 
@@ -495,29 +584,33 @@ export const GENERAL_QUERY = `
                 }
             }
         },
-        categories: categories(filters: { in_home: { eq: true } }) {
-            data {
-              attributes {
-                name
-                slug
-                image {
-                  data {
-                    attributes {
-                      url
-                    }
-                  }
-                },
-                subcategories {
-                  data {
-                      attributes {
-                          name,
-                          slug
-                      }
-                  }
-                }
-              }
+        categories(filters: {
+            in_evidence: {
+                eq: true
             }
-          },
+        }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
+                }
+            }
+        },
     }
 `;
 
@@ -561,6 +654,33 @@ export const PAGE_QUERY = `
                     spedizione_gratuita
                 }
             }
-        }
+        },
+        categories(filters: {
+            in_evidence: {
+                eq: true
+            }
+        }) {
+            data {
+                attributes {
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    },
+                    subcategories {
+                        data {
+                            attributes {
+                                name,
+                                slug
+                            }
+                        }
+                    }
+                }
+            }
+        },
     }
 `;

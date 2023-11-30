@@ -38,7 +38,7 @@ export default function ThankYou() {
     return(
         <>
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} /> }
             <main className='bg-white p-5'>
                 <section className="flex w-full justify-center items-center flex-col">
                     <ImSmile size={64} />

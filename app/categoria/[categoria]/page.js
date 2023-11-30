@@ -5,7 +5,7 @@ import Products from '@/app/components/Products/Products';
 import Sidebar from '@/app/components/Sidebar/Sidebar';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { PRODUCTS_CATEGORY_QUERY, PRODUCTS_QUERY } from '@/app/lib/query';
+import { PRODUCTS_CATEGORY_QUERY } from '@/app/lib/query';
 import Loader from '@/app/components/Loader/Loader';
 import { useRouter } from 'next/navigation';
 import Topbar from '@/app/components/Topbar/Topbar';
@@ -122,7 +122,7 @@ export default function ProdottiCategoria({params}) {
     return (
       <>
         {prodotti?.general?.data.attributes.top_bar && <Topbar topbar={prodotti.general.data.attributes.top_bar} />}
-        {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} />}
+        {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} categories={prodotti.categories.data} /> }
         <main className='bg-white p-5'>
           {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
           <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />

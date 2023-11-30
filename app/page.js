@@ -28,7 +28,7 @@ export default function Home() {
         <>
             {data?.general?.data.attributes.message?.active && <Alert message={data?.general?.data.attributes.message} />}
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} /> }
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories2.data} /> }
             <main className='bg-gray-100'>
                 <Hero
                     title="Un oggetto dopotutto, è ciò che rende privato l'infinito"

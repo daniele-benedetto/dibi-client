@@ -26,7 +26,7 @@ export default function Page({params}) {
     return (
         <>
             {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} /> }
             <main className='bg-white p-5'>
                 <section className='max-w-6xl mx-auto'>
                     <div style={{position: 'relative', height: '40vh', width: '100%', clipPath: 'inset(0 0 0 0)'}}>

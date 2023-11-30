@@ -100,7 +100,6 @@ export default function Prodotti() {
 
     const [results] = useQuery({
       query: PRODUCTS_QUERY,
-      ,
     });
 
     const { data:prodotti, fetching, error } = results;

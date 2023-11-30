@@ -34,7 +34,6 @@ export default function Searchbar({setSearchIsOpen}) {
 
     const [results] = useQuery({
         query: PRODUCTS_QUERY,
-        
     });
 
     const { data:prodotti, fetching, error } = results;

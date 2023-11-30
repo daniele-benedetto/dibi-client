@@ -31,8 +31,7 @@ function Register() {
     }
 
     const [results] = useQuery({
-        query: GENERAL_QUERY,
-        ,
+        query: GENERAL_QUERY
     });
 
     const { data, fetching, error } = results;

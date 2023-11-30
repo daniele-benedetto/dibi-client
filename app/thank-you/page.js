@@ -18,7 +18,7 @@ export default function ThankYou() {
 
     const [results] = useQuery({
         query: HOME_QUERY,
-        staleTime: 60000
+        
     });
 
     const { data, loading, error } = results;

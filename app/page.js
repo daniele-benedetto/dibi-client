@@ -18,7 +18,7 @@ export default function Home() {
 
     const [results] = useQuery({
         query: HOME_QUERY,
-        staleTime: 60000
+        
     });
 
 

@@ -14,7 +14,6 @@ import { marked } from 'marked';
 export default function Page({ params }) {
     const [results] = useQuery({
         query: PAGE_QUERY,
-        staleTime: 60000,
         variables: {
             slug: params.page
         }

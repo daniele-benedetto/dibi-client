@@ -102,7 +102,6 @@ export default function ProdottiSottocategoria({params}) {
         variables: {
             slug: params.sottocategoria
         },
-        staleTime: 60000
     }); 
 
     const { data:prodotti, fetching, error } = results;

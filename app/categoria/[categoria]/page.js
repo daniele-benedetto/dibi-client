@@ -105,7 +105,6 @@ export default function ProdottiCategoria({params}) {
         variables: {
             slug: params.categoria
         },
-        staleTime: 60000,
     });
 
     const { data:prodotti, fetching, error } = results;

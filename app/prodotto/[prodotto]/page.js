@@ -87,7 +87,6 @@ export default function Prodotto({params}) {
         variables: {
             slug: params.prodotto
         },
-        staleTime: 60000
     });
 
     const {data, fetching, error} = results;

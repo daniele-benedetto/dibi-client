@@ -1,7 +1,7 @@
 
 export const PRODUCTS_QUERY = `
-    query {
-        products (sort: "createdAt:desc", pagination: { limit: 1000 }) {
+    query($limit: Int!, $start: Int!) {
+        products(sort: "createdAt:desc", pagination: { limit: $limit, start: $start }) {
             data {
                 attributes {
                     empty_visible,

@@ -10,8 +10,8 @@ import Loader from '@/app/components/Loader/Loader';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-import Error from 'next/error';
 
+const PAGE_SIZE = 15;
 
 export default function Prodotti() {
 
@@ -20,12 +20,34 @@ export default function Prodotti() {
     const [filters, setFilters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [firstAccess, setFirstAccess] = useState(true);
+
 
     const resetFilters = () => {
       setData(prodotti.products.data);
       setFilters([]);
       setSortType('');
     };
+
+    const handleInfiniteScroll = () => {
+      if (!fetching && hasMore) {
+        if (
+          window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.scrollHeight - 200
+        ) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      }
+    };
+    
+    useEffect(() => {
+      window.addEventListener('scroll', handleInfiniteScroll);
+      return () => {
+        window.removeEventListener('scroll', handleInfiniteScroll);
+      };
+    }, [handleInfiniteScroll]);
 
     useEffect(() => {
       setLoading(true);
@@ -72,16 +94,6 @@ export default function Prodotti() {
                 return product.attributes.subcategory.data.attributes.name === filter.item;
               });
               setData(prod);
-            } else if(filter.title === 'Colore') {
-              prod = prod.filter((product) => {
-                return product.attributes.colors === filter.item;
-              });
-              setData(prod);
-            } else if(filter.title === 'Taglia') {
-              prod = prod.filter((product) => {
-                return product.attributes.sizes === filter.item;
-              });
-              setData(prod);
             } else if(filter.title === 'Prezzo') {
               prod = prod.filter((product) => {
                 return product.attributes.price <= filter.item;
@@ -100,18 +112,24 @@ export default function Prodotti() {
 
     const [results] = useQuery({
       query: PRODUCTS_QUERY,
+      variables: {
+        limit: PAGE_SIZE + 1,
+        start: (page - 1) * PAGE_SIZE,
+      },
     });
 
     const { data:prodotti, fetching, error } = results;
 
     useEffect(() => {
       if(prodotti) {
-        setData(prodotti.products.data);
+        setHasMore(prodotti.products.data.length === PAGE_SIZE + 1);
+        setData((prevData) => [...prevData, ...prodotti.products.data.slice(0, PAGE_SIZE)]);
+        setFirstAccess(false);
       }
     }, [prodotti]);
 
-    if(fetching) return <Loader />;
-    if(error) return Error();
+    if(fetching && firstAccess) return <Loader />;
+    if(error) return <p>Errore...</p>
 
     return (
       <>
@@ -119,10 +137,12 @@ export default function Prodotti() {
         {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} categories={prodotti.categories.data} />}
         <main className='bg-white p-5'>
           {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
-          <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />
           <div className='flex flex-wrap container m-auto'>
-            { data && <Sidebar products={prodotti.products.data} filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} /> }
-            {!loading && data.length > 0 && <Products products={data} /> }
+            { data && prodotti && <Sidebar products={prodotti.products.data} filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} /> }
+            {!loading && data.length > 0 && <Products products={data} />}
+            { fetching && !firstAccess && <section className='flex flex-wrap w-full relative h-12'>
+              <svg className='absolute left-2/3 -translate-x-1/2' xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="#f7812a" d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg>
+            </section> }
             {!loading && data.length === 0 && <section className='flex flex-wrap w-full md:w-2/3'>
               <div className='w-full text-center mt-20'>
                 <h2 className='text-md'>Nessun prodotto rispecchia i criteri di ricerca</h2>

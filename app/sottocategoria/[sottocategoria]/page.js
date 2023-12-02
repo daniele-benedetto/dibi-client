@@ -71,16 +71,6 @@ export default function ProdottiSottocategoria({params}) {
                 return product.attributes.subcategory.data.attributes.name === filter.item;
               });
               setData(prod);
-            } else if(filter.title === 'Colore') {
-              prod = prod.filter((product) => {
-                return product.attributes.color === filter.item;
-              });
-              setData(prod);
-            } else if(filter.title === 'Taglia') {
-              prod = prod.filter((product) => {
-                return product.attributes.sizes === filter.item;
-              });
-              setData(prod);
             } else if(filter.title === 'Prezzo') {
               prod = prod.filter((product) => {
                 return product.attributes.price <= filter.item;

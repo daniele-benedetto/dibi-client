@@ -96,8 +96,6 @@ export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebar
             <aside className='w-1/3 flex flex-col p-10'>
                 { !pathname.includes('/categoria') && !pathname.includes('/sottocategoria') && <FilterMenu setFilters={setFilters} filters={filters} title='Categoria' items={categories} /> }
                 { !pathname.includes('/sottocategoria') && <FilterMenu setFilters={setFilters} filters={filters} title='Sottocategoria' items={subcategories} /> }
-                <FilterMenu setFilters={setFilters} filters={filters} title='Colore' items={colors} />
-                <FilterMenu setFilters={setFilters} filters={filters} title='Taglia' items={sizes} />
                 <FilterPrice setFilters={setFilters} filters={filters} rangeValue={rangeValue} setRangeValue={setRangeValue} rangeMin={rangeMin} rangeMax={rangeMax} title={'Prezzo'}/>
                 <div className="h-10"></div>
                 <Button type="container-center" text={"Rimuovi filtri"} action={() => resetFilters()} />
@@ -107,8 +105,6 @@ export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebar
                 <div className="w-3/4 h-full bg-white absolute right-0 top-0 p-5">
                     <FilterMenu setFilters={setFilters} filters={filters} title='Categoria' items={categories} />
                     <FilterMenu setFilters={setFilters} filters={filters} title='Sottocategoria' items={subcategories} />
-                    <FilterMenu setFilters={setFilters} filters={filters} title='Colore' items={colors} />
-                    <FilterMenu setFilters={setFilters} filters={filters} title='Taglia' items={sizes} />
                     <FilterPrice setFilters={setFilters} filters={filters} rangeValue={rangeValue} setRangeValue={setRangeValue} rangeMin={rangeMin} rangeMax={rangeMax} title={'Prezzo'}/>
                     <div className="h-10"></div>
                     <Button type="container-center" text={"Rimuovi filtri"} action={() => resetFilters()} />

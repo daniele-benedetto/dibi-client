@@ -93,7 +93,7 @@ function ContactForm() {
                         })}
                         className="border border-gray-300 rounded-md p-2 mb-2 w-5 h-5"
                     />
-                    <p className="mb-3 ml-3">Accetta la <Link href="/page/privacy-policy">privacy policy</Link> per registrarti</p>
+                    <p className="mb-3 ml-3">Accetta la <Link href="/privacy-policy">privacy policy</Link> per registrarti</p>
                 </div>
                 {errors.privacy && <p>{errors.privacy.message}</p>}
                 <button

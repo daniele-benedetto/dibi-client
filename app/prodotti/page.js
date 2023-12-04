@@ -11,7 +11,7 @@ import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 9;
 
 export default function Prodotti() {
 

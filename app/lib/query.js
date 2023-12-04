@@ -109,6 +109,48 @@ export const PRODUCTS_QUERY = `
     }
 `;
 
+export const FILTER_QUERY = `
+    query($search: String) {
+        products(sort: "createdAt:desc", pagination: { limit: 100 }, filters: {name: {containsi: $search}}) {
+            data {
+                attributes {
+                    empty_visible,
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
+export const NO_QUERY = `
+    query($search: String) {
+        products(sort: "createdAt:desc", pagination: { limit: 0 }, filters: {name: {containsi: $search}}) {
+            data {
+                attributes {
+                    empty_visible,
+                    name,
+                    slug,
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const PRODUCT_QUERY = `
     query getProduct($slug: String!) {
         products(filters: {

@@ -11,6 +11,7 @@ import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 import CardBg from './components/CardBg/CardBg';
+import Cookies from './components/Cookies/Cookies';
 import Alert from './components/Alert/Alert';
 import Error from 'next/error';
 
@@ -31,8 +32,8 @@ export default function Home() {
     return (
         <>
             {general?.data.attributes.top_bar && <Topbar topbar={general.data.attributes.top_bar} />}
-            {general?.data.attributes.message?.active && <Alert message={general?.data.attributes.message} />}
             {general?.data.attributes.navbar && <Navbar navbar={general.data.attributes.navbar} categories={categories2.data} /> }
+            {general?.data.attributes.message?.active && <Alert message={general?.data.attributes.message} />}
             <main className='bg-gray-100'>
                 <Hero
                     title="Un oggetto dopotutto, è ciò che rende privato l'infinito"
@@ -77,6 +78,7 @@ export default function Home() {
                 </section>
             </main>
             {general?.data.attributes.footer && <Footer footerServizioClienti={general.data.attributes.footer.footerServizioClienti} footerAbout={general.data.attributes.footer.footerAbout} footerSocial={general.data.attributes.footer.footerSocial} />}
+            <Cookies />
         </>
     );
 };

@@ -4,12 +4,14 @@ import { UserContext } from '@/app/context/user';
 import { BsFacebook, BsGoogle } from 'react-icons/bs';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // Nuove importazioni
 
 function LoginForm({setUserMenuIsOpen}) {
 
     const { setUser, doLogin, loggingIn, setLoggingIn } = useContext(UserContext);
     const { handleSubmit, register,  } = useForm();
     const [alert, setAlert] = useState(['', '']);
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
 
     const onSubmit = async (values) => {
@@ -40,15 +42,23 @@ function LoginForm({setUserMenuIsOpen}) {
                         required: true,
                     })}
                 />
-                <input
-                    className='border border-gray-300 rounded-md p-2 mb-2'
-                    type='password'
-                    name='password'
-                    placeholder='Password'
-                    {...register('password', {
-                        required: true,
-                    })}
-                />
+                <div className='relative'>
+                    <input
+                        className='border border-gray-300 rounded-md p-2 mb-2 w-full'
+                        type={passwordVisible ? 'text' : 'password'}
+                        name='password'
+                        placeholder='Password'
+                        {...register('password', {
+                            required: true,
+                        })}
+                    />
+                    <div
+                        className='absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer mb-4'
+                        onClick={() => setPasswordVisible((prev) => !prev)}
+                    >
+                        {passwordVisible ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+                    </div>
+                </div>
                 <button
                     className='background-first-color text-center text-sm text-white uppercase font-bold flex items-center justify-center p-3 rounded-md mb-2'
                     type='submit'

@@ -7,7 +7,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['res.cloudinary.com', '149.62.186.51'],
+    domains: ['res.cloudinary.com', 'www.cianfrusalia.it', 'cianfrusalia.it'],
     remotePatterns: [
       {
         protocol: 'http',

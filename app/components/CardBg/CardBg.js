@@ -33,7 +33,7 @@ const CardBg = ({ category, size }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Link href={`/prodotto/${category.slug}`} className='relative w-full border-custom-second-color'>
+      <Link href={`/categoria/${category.slug}`} className='relative w-full border-custom-second-color'>
         <motion.div
           className='w-full h-full'
           style={{
@@ -55,7 +55,7 @@ const CardBg = ({ category, size }) => {
         />
       </Link>
       <Link
-        href={`/prodotto/${category.slug}`}
+        href={`/categoria/${category.slug}`}
         className={`text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${
           isHovered ? 'visible' : 'invisible'
         }`}

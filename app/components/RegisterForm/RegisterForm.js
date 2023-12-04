@@ -3,6 +3,7 @@ import { UserContext } from '@/app/context/user';
 import Link from 'next/link';
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // Nuove importazioni
 
 function RegisterForm() {
     const { doRegister } = useContext(UserContext);
@@ -18,6 +19,8 @@ function RegisterForm() {
     password.current = watch('password', '');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [alert, setAlert] = useState(['', '']);
+    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false)
 
     const onSubmit = async (values) => {
         setIsSubmitting(true);
@@ -56,25 +59,41 @@ function RegisterForm() {
                     placeholder="Email"
                 />
                 {errors.email && <p>{errors.email.message}</p>}
-                <input
-                    type="password"
-                    {...register('password', {
-                        required: 'Per favore inserisci una password',
-                        minLength: { value: 8, message: 'La password deve essere lunga almeno 8 caratteri' },
-                    })}
-                    className="border border-gray-300 rounded-md p-2 mb-2"
-                    placeholder="Password"
-                />
+                <div className='relative'>
+                    <input
+                        type={passwordVisible ? 'text' : 'password'}
+                        {...register('password', {
+                            required: 'Per favore inserisci una password',
+                            minLength: { value: 8, message: 'La password deve essere lunga almeno 8 caratteri' },
+                        })}
+                        className="border border-gray-300 rounded-md p-2 mb-2 w-full"
+                        placeholder="Password"
+                    />
+                    <div
+                        className='absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer mb-4'
+                        onClick={() => setPasswordVisible((prev) => !prev)}
+                    >
+                        {passwordVisible ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+                    </div>
+                </div>
                 {errors.password && <p>{errors.password.message}</p>}
-                <input
-                    type="password"
-                    {...register('repeatpassword', {
-                    validate: (value) =>
-                        value === password.current || 'La password non corrisponde',
-                    })}
-                    className="border border-gray-300 rounded-md p-2 mb-2"
-                    placeholder="Ripeti password"
-                />
+                <div className='relative'>
+                    <input
+                        type={repeatPasswordVisible ? 'text' : 'password'}
+                        {...register('repeatpassword', {
+                        validate: (value) =>
+                            value === password.current || 'La password non corrisponde',
+                        })}
+                        className="border border-gray-300 rounded-md p-2 mb-2 w-full"
+                        placeholder="Ripeti password"
+                    />
+                    <div
+                        className='absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer mb-4'
+                        onClick={() => setRepeatPasswordVisible((prev) => !prev)}
+                    >
+                        {repeatPasswordVisible ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+                    </div>
+                </div>
                 {errors.repeatpassword && <p>{errors.repeatpassword.message}</p>}
                 <div className="flex items-center w-full">
                     <input 
@@ -85,7 +104,7 @@ function RegisterForm() {
                         })}
                         className="border border-gray-300 rounded-md p-2 mb-2 w-5 h-5"
                     />
-                    <p className="mb-3 ml-3">Accetta la <Link href="/page/privacy-policy">privacy policy</Link> per registrarti</p>
+                    <p className="mb-3 ml-3">Accetta la <Link href="/privacy-policy">privacy policy</Link> per registrarti</p>
                 </div>
                 {errors.privacy && <p>{errors.privacy.message}</p>}
                 <button
@@ -102,7 +121,7 @@ function RegisterForm() {
             <p className="text-gray-700 font-bold  rounded-md text-xs mt-2">
                 Hai già un account?
             </p>
-            <Link onClick={() => setUserMenuIsOpen(false)} href={"/user/login"} className="text-center text-sm uppercase background-second-color shadow text-white font-bold flex items-center justify-center p-3 rounded-md">
+            <Link href={"/user/login"} className="text-center text-sm uppercase background-second-color shadow text-white font-bold flex items-center justify-center p-3 rounded-md">
                 Accedi
             </Link>
         </div>

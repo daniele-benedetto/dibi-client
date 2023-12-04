@@ -23,10 +23,9 @@ export default function Cookies() {
                 <p className="text-sm font-bold max-w-5xl">
                     La tua privacy è importante per noi! Utilizziamo solo cookie tecnici indispensabili per garantire il corretto funzionamento del nostro sito e migliorare la tua esperienza di navigazione.<br/>
                     I cookie tecnici sono essenziali per attività quali l'autenticazione, la gestione della sessione e la memorizzazione delle preferenze dell'utente. Questi cookie non raccolgono informazioni personali e non possono essere disabilitati attraverso questa finestra di dialogo.<br/>
-                    Se desideri ulteriori informazioni, clicca su "Ulteriori informazioni" per accedere alla nostra informativa sulla privacy.<br/>
+                    Se desideri ulteriori informazioni, <Button text={'clicca su qui'} type={'underline'} action={() => router.push('/privacy-policy')} /> per accedere alla nostra informativa sulla privacy.<br/>
                 </p>
                 <div className="w-full max-w-5xl flex justify-end">
-                    <Button text={'ulteriori informazioni'} type={'underline'} action={() => router.push('/privacy-policy')} />
                     <Button text={'Chiudi'} type={'container'} action={handleClick} />
                 </div>
             </section> )}

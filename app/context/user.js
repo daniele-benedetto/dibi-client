@@ -38,7 +38,11 @@ const UserProvider = ({ children }) => {
   async function doGoogleCallback(values) {
     try {
       const resp = await linstance.post('/api/auth/google', values);
-      return ['OK', resp.data.message];
+      if(resp.data.jwt && resp.data.id) {
+        localStorage.setItem('token', resp.data.jwt);
+        localStorage.setItem('id', resp.data.id);
+      }
+      return resp.data;
     } catch (error) {
       return ['alert', error.response.data.message];
     }
@@ -46,8 +50,11 @@ const UserProvider = ({ children }) => {
 
   async function doFacebookCallback(values) {
     try {
-      const resp = await linstance.post('/api/auth/facebook', values);
-      return ['OK', resp.data.message];
+      if(resp.data.jwt && resp.data.id) {
+        localStorage.setItem('token', resp.data.jwt);
+        localStorage.setItem('id', resp.data.id);
+      }
+      return resp.data;
     } catch (error) {
       return ['alert', error.response.data.message];
     }

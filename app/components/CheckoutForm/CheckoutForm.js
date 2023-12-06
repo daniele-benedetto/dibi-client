@@ -31,6 +31,8 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
     if (!stripe || !clientSecret) return
   }, [stripe, clientSecret])
 
+  console.log(error)
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,9 +45,14 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
 
     let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if(!email || regexEmail.test(email)) {
+    if(!email) {
       setError(true)
       return
+    }
+
+    if(email && !regexEmail.test(email)) {
+      setError(true);
+      return;
     }
 
     if(fattura && Object.values(fatturaData).some((value) => value === '')) {

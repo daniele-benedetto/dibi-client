@@ -68,7 +68,7 @@ function LoginForm({setUserMenuIsOpen}) {
                 {alert[1]}
             </form>
             <hr />
-            <button onClick={() => (window.location = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/connect/google`)} className="text-center text-sm uppercase text-white bg-red-700 font-bold flex items-center justify-center p-3 rounded-md my-2">
+            <button onClick={() => (window.location = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/connect/google/callback`)} className="text-center text-sm uppercase text-white bg-red-700 font-bold flex items-center justify-center p-3 rounded-md my-2">
                 <BsGoogle size={20} color={'white'} className='pr-1' />Accedi con Google
             </button>
             <button  onClick={() =>(window.location = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/connect/facebook/callback`)} className="text-center text-sm uppercase text-white bg-blue-700 font-bold flex items-center justify-center p-3 rounded-md mb-2">
@@ -82,7 +82,7 @@ function LoginForm({setUserMenuIsOpen}) {
             <p className="text-gray-700 font-bold  rounded-md text-xs mt-2">
                 Non hai un account?
             </p>
-            <Link onClick={() => setUserMenuIsOpen(false)} href={"/user/register"} className="text-center text-sm uppercase background-second-color shadow font-bold flex items-center justify-center p-3 rounded-md">
+            <Link onClick={() => setUserMenuIsOpen ? setUserMenuIsOpen(false) : null} href={"/user/register"} className="text-center text-sm uppercase background-second-color shadow font-bold flex items-center justify-center p-3 rounded-md">
                 Registrati
             </Link>
         </motion.div>

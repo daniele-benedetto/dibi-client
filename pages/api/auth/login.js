@@ -12,7 +12,7 @@ export default async (req, res) => {
       })
       .catch((error) => {
         if (!error.response.data.error.message) {
-          return res.status(500).json({ message: 'Internal server error' });
+          return res.status(500).json({ message: "Errore, riprovare più tardi o contattare l'assistenza" });
         } else {
           const messages = error.response.data.error.message;
           return res.status(403).json({ message: messages });

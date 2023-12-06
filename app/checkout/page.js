@@ -33,7 +33,6 @@ export default function Checkout() {
     const [weightPrice, setWeightPrice] = useState(0);
     const [distancePrice, setDistancePrice] = useState(0);
     const [totalPriceWithSale, setTotalPriceWithSale] = useState(0);
-    const [paidFor, setPaidFor] = useState(false);
 
     const [results] = useQuery({
         query: GENERAL_QUERY,
@@ -41,9 +40,7 @@ export default function Checkout() {
 
     const { data, fetching, error } = results;
     
-    const handleApprove = (order, cartItems) => {
-        setPaidFor(true);
-
+    const handleApprove = async (order, cartItems) => {
         const products = [];
         cartItems.map((item) => {
             products.push({
@@ -52,11 +49,8 @@ export default function Checkout() {
                 quantity: item.quantity,
                 price: item.price,
             });
-        });
-
-        console.log(order);
-        
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
+        });        
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
             method: 'POST',
             mode: 'cors',
             headers: { "Content-Type": "application/json"},
@@ -67,6 +61,7 @@ export default function Checkout() {
                     address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code,
                     products: products,
                     total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+                    /*
                     fattura: fattura,
                     indirizzo: fatturaData.indirizzo,
                     codice_postale: fatturaData.codice_postale,
@@ -74,6 +69,7 @@ export default function Checkout() {
                     codice_univoco_sdi: fatturaData.codice_univoco_sdi,
                     ragione_sociale: fatturaData.ragione_sociale,
                     partita_iva: fatturaData.partita_iva
+                    */
                 }
             })
         }).then((result) => {
@@ -127,13 +123,16 @@ export default function Checkout() {
         fetch("/api/stripe/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
+            body: JSON.stringify({
                 items: cartItems,
                 payment_intent_id: paymentIntent,
                 shipping_price: weightPrice + distancePrice,
             }),
         })
         .then((res) => {
+            if (!res.ok) {
+                throw new Error(`Errore HTTP! Stato: ${res.status}`);
+            }
             return res.json();
         })
         .then((data) => {
@@ -141,8 +140,9 @@ export default function Checkout() {
             setPaymentIntent(data.paymentIntent.id);
         })
         .catch((err) => {
-            console.log(err);
+            console.error('Errore durante la fetch:', err);
         });
+        
     }, [cartItems, weightPrice, distancePrice, totalPrice]);
 
     const stripeOptions = {
@@ -150,7 +150,7 @@ export default function Checkout() {
     }
 
     const  paypalOptions  =  { 
-        "client-id" : "AT-bzXqJdHw3GSBE1yv4ReworPiDFoqO7-zOYvkHCQFSdvlLaTMg2Li67XZZ0peMFUh2ZB1tsfeD9UkQ", 
+        "client-id" : "ASFlM6CbsuiGqB7UymzqSVUadXQ-T5xOl1bzuLLi4MszrKjkBlr9yBvF0pqjPyX94Ot83QwUgH-jcofB", 
         "currency" : "EUR",
     } ; 
 
@@ -223,5 +223,5 @@ export default function Checkout() {
             </main>
             {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
         </>
-   );
+    );
 };

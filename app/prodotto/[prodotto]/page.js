@@ -92,44 +92,27 @@ export default function Prodotto({params}) {
     const {data, fetching, error} = results;
 
     useEffect(() => {
-        if(data) {                  
-            let categorySale = 0;
-            let subCategorySale = 0;
-            let productSale = 0;
-
-            if(data.products.data[0].attributes.category.data.attributes.sale.data) {
-                categorySale = data.products.data[0].attributes.category.data.attributes.sale.data.attributes.amount;
-            }
-
-            if(data.products.data[0].attributes.subcategory.data.attributes.sale.data) {
-                subCategorySale = data.products.data[0].attributes.subcategory.data.attributes.sale.data.attributes.amount;
-            }
-
-            if(data.products.data[0].attributes.sale.data) {
-                productSale = data.products.data[0].attributes.sale.data.attributes.amount;
-            }
-
+        if (data) {
+            const categorySale = data?.products?.data?.[0]?.attributes?.category?.data?.attributes?.sale?.data?.attributes?.amount || 0;
+            const subCategorySale = data?.products?.data?.[0]?.attributes?.subcategory?.data?.attributes?.sale?.data?.attributes?.amount || 0;
+            const productSale = data?.products?.data?.[0]?.attributes?.sale?.data?.attributes?.amount || 0;
+    
             setSale(Math.max(categorySale, subCategorySale, productSale));
-
-            if(cartItems.length > 0) {
-                cartItems.map((item) => {
-                    if(item.id == data.products.data[0].id) {
-                        setStock(data.products.data[0].attributes.stock - item.quantity);
-                    } else {
-                        setStock(data.products.data[0].attributes.stock);
-                    }
-                });
+    
+            if (cartItems.length > 0) {
+                const currentItem = cartItems.find(item => item.id === data.products.data[0].id);
+                const stock = currentItem ? data.products.data[0].attributes.stock - currentItem.quantity : data.products.data[0].attributes.stock;
+                setStock(stock);
             } else {
                 setStock(data.products.data[0].attributes.stock);
             }
-            
+    
             setProduct({
                 ...data.products.data[0].attributes,
                 id: data.products.data[0].id,
-            })
+            });
         }
-
-    }, [data]);
+    }, [data, cartItems]);    
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -185,7 +168,7 @@ export default function Prodotto({params}) {
     }, []);
 
     if(fetching) return <Loader />;
-    if(error) return Error();
+    if(error) return <p>... ops</p>;
     
     return (
         <>

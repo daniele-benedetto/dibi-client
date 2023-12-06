@@ -130,7 +130,7 @@ export default function Navbar({navbar, categories}) {
                         <FaUserAlt color="#F68129" onClick={() => setUserMenuIsOpen(!userMenuIsOpen)} size={24} className="cursor-pointer" />
                         { userMenuIsOpen && <div className="absolute top-full translate-y-3 right-3 bg-white shadow-md rounded-md p-5 w-72 max-w-md z-10">
                             <AiOutlineClose onClick={() => setUserMenuIsOpen(false)} size={16} className="cursor-pointer absolute top-1 right-1" />
-                            { !user  && <LoginForm /> }
+                            { !user  && <LoginForm setUserMenuIsOpen={setUserMenuIsOpen} /> }
                             { user && <div className="flex mt-5 flex-wrap">
                                 <div className="flex flex-col items-center justify-center">
                                     <Link onClick={() => setUserMenuIsOpen(false)} href="/user">

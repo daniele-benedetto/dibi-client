@@ -4,9 +4,12 @@ import { UserContext } from '@/app/context/user';
 import { BsFacebook, BsGoogle } from 'react-icons/bs';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // Nuove importazioni
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; 
+import { useRouter } from 'next/navigation';
 
 function LoginForm({setUserMenuIsOpen}) {
+
+    const router = useRouter();
 
     const { setUser, doLogin, loggingIn, setLoggingIn } = useContext(UserContext);
     const { handleSubmit, register,  } = useForm();
@@ -26,6 +29,7 @@ function LoginForm({setUserMenuIsOpen}) {
             if(setUserMenuIsOpen) {
                 setUserMenuIsOpen(false);
             }
+            router.push('/user');
         }
         setLoggingIn(false);
     };

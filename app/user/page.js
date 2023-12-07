@@ -16,7 +16,6 @@ import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 import Loader from '@/app/components/Loader/Loader';
-import Error from 'next/error';
 
 export default function User() {
     const {
@@ -66,7 +65,7 @@ export default function User() {
     const { data, fetching, error } = results;
 
     if (fetching) return <Loader />;
-    if (error) return Error();
+    if (error) return <p>Errore</p>;
 
     const renderToastFavorite = () => (
         toastFavorite && <Toast type={'success'} text={'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} />
@@ -74,8 +73,8 @@ export default function User() {
 
     return (
         <>
-      {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
-      {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
+            {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
+            {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
             <main className='bg-white p-5 min-h-[600px]'>
                 {renderToastFavorite()}
                 <div className='flex flex-wrap container m-auto'>

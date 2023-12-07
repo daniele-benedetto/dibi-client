@@ -121,9 +121,9 @@ export default function Navbar({navbar, categories}) {
                     { megaMenuVisible && <MegaMenu categories={categories} /> }
                 </div>
                 <div className="flex items-center justify-end w-80 absolute top-10 right-10">
-                    <BsSearch color="#F68129" onClick={() => setSearchIsOpen(!searchIsOpen)} size={20} className="cursor-pointer my-1" />
+                    <BsSearch color="#F68129" onClick={() => setSearchIsOpen(!searchIsOpen)} size={20} className="cursor-pointer mx-2" />
                     <div className="relative">
-                        <RiShoppingBagLine color="#F68129" onClick={openCart} size={24} className="cursor-pointer my-1" />
+                        <RiShoppingBagLine color="#F68129" onClick={openCart} size={24} className="cursor-pointer mx-2" />
                         { totalQty > 0 && <motion.span animate={{scale: 1}} initial={{scale: 0}} className="absolute -top-2 -left-2 -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">{totalQty}</motion.span> }
                     </div>
                     <div className="relative">

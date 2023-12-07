@@ -68,24 +68,15 @@ export default function User() {
     if (fetching) return <Loader />;
     if (error) return Error();
 
-    const {
-        top_bar,
-        navbar,
-        categories,
-        general: { data: generalData },
-    } = data;
-
-    const { attributes: generalAttributes } = generalData.data;
-
     const renderToastFavorite = () => (
         toastFavorite && <Toast type={'success'} text={'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} />
     );
 
     return (
         <>
-            {top_bar && <Topbar topbar={top_bar} />}
-            {navbar && <Navbar navbar={navbar} categories={categories.data} />}
-            <main className='bg-white p-5'>
+      {data?.general?.data.attributes.top_bar && <Topbar topbar={data.general.data.attributes.top_bar} />}
+      {data?.general?.data.attributes.navbar && <Navbar navbar={data.general.data.attributes.navbar} categories={data.categories.data} />}
+            <main className='bg-white p-5 min-h-[600px]'>
                 {renderToastFavorite()}
                 <div className='flex flex-wrap container m-auto'>
                     <div className='w-full md:w-1/3 flex flex-col p-10 justify-center items-center'>
@@ -136,13 +127,7 @@ export default function User() {
                     </section>
                 </div>
             </main>
-            {generalAttributes.footer && (
-                <Footer
-                    footerServizioClienti={generalAttributes.footer.footerServizioClienti}
-                    footerAbout={generalAttributes.footer.footerAbout}
-                    footerSocial={generalAttributes.footer.footerSocial}
-                />
-            )}
+            {data?.general?.data.attributes.footer && <Footer footerServizioClienti={data.general.data.attributes.footer.footerServizioClienti} footerAbout={data.general.data.attributes.footer.footerAbout} footerSocial={data.general.data.attributes.footer.footerSocial} />}
         </>
     );
 }

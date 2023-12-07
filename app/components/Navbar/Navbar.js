@@ -120,14 +120,15 @@ export default function Navbar({navbar, categories}) {
                     </ul>
                     { megaMenuVisible && <MegaMenu categories={categories} /> }
                 </div>
-                <div className="flex items-center justify-between w-32 absolute top-10 right-10">
+                <div className="flex items-center justify-between w-80 absolute top-10 right-10">
                     <BsSearch color="#F68129" onClick={() => setSearchIsOpen(!searchIsOpen)} size={20} className="cursor-pointer" />
                     <div className="relative">
                         <RiShoppingBagLine color="#F68129" onClick={openCart} size={24} className="cursor-pointer" />
                         { totalQty > 0 && <motion.span animate={{scale: 1}} initial={{scale: 0}} className="absolute -top-2 -left-2 -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">{totalQty}</motion.span> }
                     </div>
                     <div className="relative">
-                        <FaUserAlt color="#F68129" onClick={() => setUserMenuIsOpen(!userMenuIsOpen)} size={24} className="cursor-pointer" />
+                        {!user && <FaUserAlt color="#F68129" onClick={() => setUserMenuIsOpen(!userMenuIsOpen)} size={24} className="cursor-pointer" />}
+                        {user && <span onClick={() => setUserMenuIsOpen(!userMenuIsOpen)} className="flex items-center justify-center rounded-full text-gray-700 text-md cursor-pointer">{email}</span>}
                         { userMenuIsOpen && <div className="absolute top-full translate-y-3 right-3 bg-white shadow-md rounded-md p-5 w-72 max-w-md z-10">
                             <AiOutlineClose onClick={() => setUserMenuIsOpen(false)} size={16} className="cursor-pointer absolute top-1 right-1" />
                             { !user  && <LoginForm setUserMenuIsOpen={setUserMenuIsOpen} /> }

@@ -120,7 +120,7 @@ export default function Navbar({navbar, categories}) {
                     </ul>
                     { megaMenuVisible && <MegaMenu categories={categories} /> }
                 </div>
-                <div className="flex items-center justify-between w-80 absolute top-10 right-10">
+                <div className="flex items-center justify-end w-80 absolute top-10 right-10">
                     <BsSearch color="#F68129" onClick={() => setSearchIsOpen(!searchIsOpen)} size={20} className="cursor-pointer" />
                     <div className="relative">
                         <RiShoppingBagLine color="#F68129" onClick={openCart} size={24} className="cursor-pointer" />

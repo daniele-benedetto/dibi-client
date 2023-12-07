@@ -14,7 +14,7 @@ function ContactForm() {
     const onSubmit = async (values) => {
         setIsSubmitting(true);
 
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/contacts`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/contacts`, {
             method: 'POST',
             mode: 'cors',
             headers: { "Content-Type": "application/json"},
@@ -25,12 +25,19 @@ function ContactForm() {
                 message: values.messaggio
             }})
         })
-        .then((result) => {
-            setToast(true);
-        })
-        .catch((error) => {
+        .then(async (result) => {
+            const res = await result.json();
+            console.log(res);
+            await fetch('/api/mail/contact', {
+                method: 'POST',
+                body: JSON.stringify({ id: res.data.id })
+            }).then((result) => {
+                setToast(true);
+            }).catch((error) => {
+                console.log(error);
+            });
+        }).catch((error) => {
             console.log(error);
-            return Error();
         });
         setIsSubmitting(false);
     };

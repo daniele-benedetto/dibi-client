@@ -6,7 +6,9 @@ import { useStateCartContext } from "@/app/context/cart";
 import Button from "@/app/components/Button/Button";
 import { useRouter } from "next/navigation";
 
-export default function CheckoutForm({clientSecret, setCountry, weightPrice, distancePrice, totalPriceWithSale}) {
+const unionEurope = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'];
+
+export default function CheckoutForm({clientSecret, setCountry, weightPrice, distancePrice, totalPriceWithSale, country}) {
 
     const stripe = useStripe();
     const elements = useElements();
@@ -30,8 +32,6 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
   useEffect(() => {
     if (!stripe || !clientSecret) return
   }, [stripe, clientSecret])
-
-  console.log(error)
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,12 +60,18 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       return;
     }
 
+    if(country !== 'IT' && !unionEurope.includes(country)) {
+      alert('Ci dispiace, al momento non effettuiamo spedizioni al di fuori dell\'Unione Europea.')
+      setError(true)
+      return;
+    }
+
     setIsLoading(true);
 
     await stripe.confirmPayment({
       elements,
       redirect: "if_required",
-    }).then((result) => {
+    }).then(async(result) => {
       const products = [];
       cartItems.map((item) => {
           products.push({
@@ -76,7 +82,25 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
           });
       });
 
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
+    await fetch('/api/mail/sell', {
+      method: 'POST',
+      body: JSON.stringify({ name: result.paymentIntent.shipping.name, address: result.paymentIntent.shipping.address.line1 +' ' + result.paymentIntent.shipping.address.city + ' ' + result.paymentIntent.shipping.address.postal_code + ' ' + result.paymentIntent.shipping.address.country, products: products, email: email, total: (parseFloat((result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice))/100).toFixed(2)})
+    }).then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
+
+      await fetch('/api/mail/checkout', {
+        method: 'POST',
+        body: JSON.stringify({ products: products, email: email})
+    }).then((result) => {
+        console.log(result);
+    }).catch((error) => {
+        console.log(error);
+    });
+
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
         method: 'POST',
         mode: 'cors',
         headers: { "Content-Type": "application/json"},
@@ -86,7 +110,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
             email: email,
             address: result.paymentIntent.shipping.address.line1 +' ' + result.paymentIntent.shipping.address.city + ' ' + result.paymentIntent.shipping.address.postal_code + ' ' + result.paymentIntent.shipping.address.country,
             products: products,
-            total: (parseFloat(result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+            total: (parseFloat((result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice))/100).toFixed(2),
             fattura: fattura,
             indirizzo: fatturaData.indirizzo,
             codice_postale: fatturaData.codice_postale,
@@ -102,13 +126,11 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
           setTotalPrice(0);
           return router.push('/thank-you');
         }).catch((error) => {
-            console.log(error);
             alert('Ci dispiace, il tuo pagamento è stato rifiutato. Per favore, verifica i dettagli del pagamento e riprova. Se il problema persiste, contatta il nostro servizio clienti per assistenza.')
-            Error();
         });
       }).catch((error) => {
         setIsLoading(false);
-        console.log(error);
+        alert('Ci dispiace, il tuo pagamento è stato rifiutato. Per favore, verifica i dettagli del pagamento e riprova. Se il problema persiste, contatta il nostro servizio clienti per assistenza.')
       });
     }
 

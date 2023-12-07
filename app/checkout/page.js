@@ -49,7 +49,17 @@ export default function Checkout() {
                 quantity: item.quantity,
                 price: item.price,
             });
-        });        
+        });  
+
+        await fetch('/api/mail/sell', {
+            method: 'POST',
+            body: JSON.stringify({ name: order.purchase_units[0].shipping.name.full_name, address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code, products: products, email: order.payer.email_address, total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2) }),
+        }).then((result) => {
+            console.log(result);
+        }).catch((error) => {
+            console.log(error);
+        });
+
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
             method: 'POST',
             mode: 'cors',
@@ -203,16 +213,17 @@ export default function Checkout() {
                                         </PayPalScriptProvider>
                                     </div> }
                                     <Elements options={stripeOptions} stripe={stripePromise} >
-                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
+                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} country={country} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
                                     </Elements>
                                 </>
                             )}
                             {!clientSecret && (
                                 <div className="flex justify-center items-center h-screen">
-                                    <div className="flex flex-col justify-center items-center">
-                                        <BiLoaderAlt color={'black'} size={120} />
+                                    <div className="flex flex-col justify-center items-center animate-spin">
+                                        <BiLoaderAlt color={'black'} size={100} />
                                     </div>
                                 </div>
+
                             )}
                         </div>
                     </div>

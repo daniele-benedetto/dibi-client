@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 const unionEurope = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'];
 
-export default function CheckoutForm({clientSecret, setCountry, weightPrice, distancePrice, totalPriceWithSale, country}) {
+export default function CheckoutForm({clientSecret, setCountry, weightPrice, distancePrice, country}) {
 
     const stripe = useStripe();
     const elements = useElements();
@@ -160,7 +160,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
       })}
       <div className="w-full flex h-12 items-baseline">
           <p className="text-lg font-bold">Totale:</p>
-          <p className="text-lg font-bold">{ totalPriceWithSale > 0 ? (totalPriceWithSale + distancePrice + weightPrice).toFixed(2) : (totalPrice + distancePrice + weightPrice).toFixed(2)}€</p>
+          <p className="text-lg font-bold">{(totalPrice + distancePrice + weightPrice).toFixed(2)}€</p>
           <span className="ml-2 text-xs text-gray-400">Di cui {(distancePrice + weightPrice).toFixed(2)}€ di consegna</span>
       </div>
       { isLoading ? <Button type={'filled'} text={'Pagamento in corso'} /> : <Button type={'filled'} text={'Paga'} /> }

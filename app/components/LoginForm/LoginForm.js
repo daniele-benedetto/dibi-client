@@ -26,10 +26,10 @@ function LoginForm({setUserMenuIsOpen}) {
             setAlert(res);
         } else {
             setUser(res.message.username);
+            router.push('/user');
             if(setUserMenuIsOpen) {
                 setUserMenuIsOpen(false);
             }
-            router.push('/user');
         }
         setLoggingIn(false);
     };

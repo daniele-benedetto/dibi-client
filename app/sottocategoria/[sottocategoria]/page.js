@@ -103,7 +103,7 @@ export default function ProdottiSottocategoria({params}) {
     }, [prodotti]);
 
     if(fetching) return <Loader />;
-    if(error) return Error();
+    if(error) return <p>Errore</p>
 
     return (
       <>

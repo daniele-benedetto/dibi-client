@@ -112,7 +112,7 @@ export default function ProdottiCategoria({params}) {
     }, [prodotti]);
 
     if(fetching) return <Loader />;
-    if(error) return Error();
+    if(error) return <p>Errore</p>
 
     return (
       <>

@@ -32,7 +32,6 @@ export default function Checkout() {
     const [country, setCountry] = useState("IT");
     const [weightPrice, setWeightPrice] = useState(0);
     const [distancePrice, setDistancePrice] = useState(0);
-    const [totalPriceWithSale, setTotalPriceWithSale] = useState(0);
 
     const [results] = useQuery({
         query: GENERAL_QUERY,
@@ -88,7 +87,7 @@ export default function Checkout() {
             return router.push('/thank-you');
         }).catch((error) => {
             console.log(error);
-            return Error();
+            return <p>Errore</p>;
         }).catch((error) => {
             console.log(error);
         });
@@ -165,7 +164,7 @@ export default function Checkout() {
     } ; 
 
     if(fetching) return <Loader />;
-    if(error) return Error();
+    if(error) return <p>Errore</p>;
 
     return (
         <>
@@ -193,7 +192,7 @@ export default function Checkout() {
                                                             {
                                                                 amount: {
                                                                     currency_code: "EUR",
-                                                                    value: totalPriceWithSale > 0 ? totalPriceWithSale + weightPrice + distancePrice : totalPrice + weightPrice + distancePrice,
+                                                                    value: totalPrice + weightPrice + distancePrice,
                                                                 },
                                                             },
                                                         ],
@@ -213,7 +212,7 @@ export default function Checkout() {
                                         </PayPalScriptProvider>
                                     </div> }
                                     <Elements options={stripeOptions} stripe={stripePromise} >
-                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} country={country} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} totalPriceWithSale={totalPriceWithSale} />
+                                        <CheckoutForm clientSecret={clientSecret} setCountry={setCountry} country={country} weightPrice={weightPrice} distancePrice={distancePrice} userId={id} />
                                     </Elements>
                                 </>
                             )}
@@ -228,7 +227,7 @@ export default function Checkout() {
                         </div>
                     </div>
                     <div className='flex justify-center w-full md:w-1/3'>
-                        {cartItems.length > 0 && <ProductList cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} totalPriceWithSale={totalPriceWithSale} setTotalPriceWithSale={setTotalPriceWithSale} />}
+                        {cartItems.length > 0 && <ProductList cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} totalPrice={totalPrice} /> }
                     </div>
                 </section>
             </main>

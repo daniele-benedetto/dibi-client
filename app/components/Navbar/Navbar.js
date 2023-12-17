@@ -105,7 +105,7 @@ export default function Navbar({navbar, categories}) {
                     </Link>
                 </div>
                 <div onMouseLeave={() => setMegaMenuVisible(false)} className="flex items-center justify-center w-full p-2 ">
-                    <ul className="flex w-full max-w-xl justify-between text-md uppercase font-black text-lg relative">
+                    <ul className="flex w-full max-w-3xl justify-between text-md uppercase font-black text-lg relative">
                         {navbar.map(item => {
                             return (
                                 <li 
@@ -113,7 +113,8 @@ export default function Navbar({navbar, categories}) {
                                     className="itemMenu" 
                                     key={item.id}
                                 >
-                                    <Link href={item.link}>{item.text}</Link>
+                                    {!item.children && <Link href={item.link}>{item.text}</Link>}
+                                    {item.children && <span>{item.text}</span>}
                                 </li> 
                             );
                         })}
@@ -124,7 +125,7 @@ export default function Navbar({navbar, categories}) {
                     <BsSearch color="#F68129" onClick={() => setSearchIsOpen(!searchIsOpen)} size={20} className="cursor-pointer mx-2" />
                     <div className="relative">
                         <RiShoppingBagLine color="#F68129" onClick={openCart} size={24} className="cursor-pointer mx-2" />
-                        { totalQty > 0 && <motion.span animate={{scale: 1}} initial={{scale: 0}} className="absolute -top-2 -left-2 -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">{totalQty}</motion.span> }
+                        { totalQty > 0 && <motion.span animate={{scale: 1}} initial={{scale: 0}} className="absolute -top-2 left-0 -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">{totalQty}</motion.span> }
                     </div>
                     <div className="relative">
                         {!user && <FaUserAlt color="#F68129" onClick={() => setUserMenuIsOpen(!userMenuIsOpen)} size={24} className="cursor-pointer mx-2" />}

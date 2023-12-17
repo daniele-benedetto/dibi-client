@@ -10,8 +10,13 @@ const CardCategory = ({category, size}) => {
             <Link href={`/prodotto/${category.slug}`} className='relative w-full shadow drop-shadow-2xl border-custom-first-color'>
                 <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${category.image.data.attributes.url}`} alt={category.name} width={size === '1/4' ? 400 : 800} height={size === '1/4' ? 400 : 800} />
             </Link>
-            <Link href={`/prodotto/${category.slug}`} className='text-center font-bold'>
-                <h3 className='capitalize'>{category.name}</h3>
+            <Link href={`/prodotto/${category.slug}`} className='text-center'>
+                <h3 className='capitalize text-base'>{category.description}</h3>
+                {!category.prezzo_senza_sconto && <span className='font-bold text-lg'>{category.price}€</span>}
+                {category.prezzo_senza_sconto && <div className='flex items-center justify-center'>
+                    <span className='line-through font-bold text-lg'>{category.prezzo_senza_sconto}€</span>
+                    <span className='ml-2 font-bold text-lg'>{category.price}€</span>
+                </div>}
             </Link>
         </motion.div>
     );

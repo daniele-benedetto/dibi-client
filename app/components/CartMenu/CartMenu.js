@@ -10,8 +10,6 @@ import { motion } from 'framer-motion';
 
 export default function CartMenu({mobile}) {
 
-    const [totalPriceWithSale, setTotalPriceWithSale] = useState(0);
-
     const { 
         cartItems, 
         setShowCart, 
@@ -49,7 +47,7 @@ export default function CartMenu({mobile}) {
                             <p className="text-xl text-center">Il tuo carrello è vuoto</p>
                         </div>
                     )}
-                    {cartItems.length > 0 && <ProductList cartItems={cartItems} action={goToCheckout} totalPrice={totalPrice} onAdd={onAddProduct} onRemove={onRemoveProduct} totalPriceWithSale={totalPriceWithSale} setTotalPriceWithSale={setTotalPriceWithSale} />}
+                    {cartItems.length > 0 && <ProductList cartItems={cartItems} action={goToCheckout} totalPrice={totalPrice} onAdd={onAddProduct} onRemove={onRemoveProduct} />}
                 </div>
             </motion.div>
         </motion.aside>

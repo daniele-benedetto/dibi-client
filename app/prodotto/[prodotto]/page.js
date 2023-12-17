@@ -32,7 +32,6 @@ export default function Prodotto({params}) {
     const [stock, setStock] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
-    const [sale, setSale] = useState(0);
     const [toggler, setToggler] = useState(false);
     const [images, setImages] = useState([]);
 
@@ -93,12 +92,6 @@ export default function Prodotto({params}) {
 
     useEffect(() => {
         if (data) {
-            const categorySale = data?.products?.data?.[0]?.attributes?.category?.data?.attributes?.sale?.data?.attributes?.amount || 0;
-            const subCategorySale = data?.products?.data?.[0]?.attributes?.subcategory?.data?.attributes?.sale?.data?.attributes?.amount || 0;
-            const productSale = data?.products?.data?.[0]?.attributes?.sale?.data?.attributes?.amount || 0;
-    
-            setSale(Math.max(categorySale, subCategorySale, productSale));
-    
             if (cartItems.length > 0) {
                 const currentItem = cartItems.find(item => item.id === data.products.data[0].id);
                 const stock = currentItem ? data.products.data[0].attributes.stock - currentItem.quantity : data.products.data[0].attributes.stock;
@@ -195,11 +188,11 @@ export default function Prodotto({params}) {
                         <div className='flex flex-col w-full md:w-1/3 mt-10'>
                             <h2 className='text-3xl font-black mb-3'>{product && product.name}</h2>
                             { product?.description && <p className="text-md">{product.description}</p> }
-                            { sale > 0 && product && product.price && <div className='flex items-center'>
-                                <span className='font-black text-2xl line-through text-red-700'>{product?.price?.toFixed(2)}€</span>
-                                <span className='font-black text-2xl ml-2'>{(product.price - sale).toFixed(2)}€</span>
+                            { product?.prezzo_senza_sconto && product && product.price && <div className='flex items-center'>
+                                <span className='font-black text-2xl line-through text-red-700'>{product?.prezzo_senza_sconto?.toFixed(2)}€</span>
+                                <span className='font-black text-2xl ml-2'>{(product.price).toFixed(2)}€</span>
                             </div> }
-                            { sale == 0 && product && product.price && <div className='flex items-center'>
+                            { !product?.prezzo_senza_sconto && product && product.price && <div className='flex items-center'>
                                     <span className='font-black text-2xl'>{product.price.toFixed(2)}€</span>
                             </div> }
                             { product?.modello && <div className='flex items-center mt-5'>

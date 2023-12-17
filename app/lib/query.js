@@ -12,6 +12,7 @@ export const PRODUCTS_QUERY = `
                     sizes,
                     colors,
                     stock,
+                    prezzo_senza_sconto,
                     gallery {
                         data {
                             attributes {
@@ -23,14 +24,6 @@ export const PRODUCTS_QUERY = `
                         data {
                             attributes {
                                 name,
-                                sale {
-                                    data {
-                                        attributes {
-                                            name,
-                                            amount,
-                                        }
-                                    }
-                                }
                             }
                         }
                     },
@@ -38,14 +31,6 @@ export const PRODUCTS_QUERY = `
                         data {
                             attributes {
                                 name,
-                                sale {
-                                    data {
-                                        attributes {
-                                            name,
-                                            amount,
-                                        }
-                                    }
-                                }
                             }
                         }
                     },
@@ -56,14 +41,6 @@ export const PRODUCTS_QUERY = `
                             }
                         }
                     },
-                    sale {
-                        data {
-                            attributes {
-                                name,
-                                amount,
-                            }
-                        }
-                    }
                 }
             }
         },
@@ -138,7 +115,7 @@ export const NO_QUERY = `
                     empty_visible,
                     name,
                     slug,
-                    image {
+å                    image {
                         data {
                             attributes {
                                 url
@@ -169,6 +146,7 @@ export const PRODUCT_QUERY = `
                     sizes,
                     colors,
                     stock,
+                    prezzo_senza_sconto,
                     gallery {
                         data {
                             attributes {
@@ -187,14 +165,6 @@ export const PRODUCT_QUERY = `
                         data {
                             attributes {
                                 name,
-                                sale {
-                                    data {
-                                        attributes {
-                                            name,
-                                            amount,
-                                        }
-                                    }
-                                }
                             }
                         }
                     },
@@ -202,14 +172,6 @@ export const PRODUCT_QUERY = `
                         data {
                             attributes {
                                 name,
-                                sale {
-                                    data {
-                                        attributes {
-                                            name,
-                                            amount,
-                                        }
-                                    }
-                                }
                             }
                         }
                     },
@@ -220,14 +182,6 @@ export const PRODUCT_QUERY = `
                             }
                         }
                     },
-                    sale {
-                        data {
-                            attributes {
-                                name,
-                                amount,
-                            }
-                        }
-                    }
                 }
             }
         },
@@ -310,8 +264,8 @@ export const HOME_QUERY = `
     categories: categories(filters: { in_home: { eq: true } }) {
       data {
         attributes {
-          name
-          slug
+          name,
+          slug,
           image {
             data {
               attributes {
@@ -360,9 +314,12 @@ export const HOME_QUERY = `
     products: products(filters: { in_evidence: { eq: true } }) {
       data {
         attributes {
-          empty_visible
-          name
-          slug
+          empty_visible,
+          name,
+          slug,
+          price,
+          description,
+          prezzo_senza_sconto,
           image {
             data {
               attributes {
@@ -396,9 +353,10 @@ export const HOME_QUERY = `
     ) {
       data {
         attributes {
-          empty_visible
-          name
-          slug
+          empty_visible,
+          name,
+          slug,
+          prezzo_senza_sconto,
           image {
             data {
               attributes {
@@ -430,6 +388,7 @@ query getProductCategory($slug: String!) {
                     description,
                     sizes,
                     stock,
+                    prezzo_senza_sconto,
                     gallery {
                         data {
                             attributes {
@@ -442,14 +401,6 @@ query getProductCategory($slug: String!) {
                         data {
                             attributes {
                                 name,
-                                sale {
-                                    data {
-                                        attributes {
-                                            name,
-                                            amount,
-                                        }
-                                    }
-                                }
                             }
                         }
                     },
@@ -531,6 +482,7 @@ query getProductCategory($slug: String!) {
                     sizes,
                     colors,
                     stock,
+                    prezzo_senza_sconto,
                     gallery {
                         data {
                             attributes {
@@ -542,14 +494,6 @@ query getProductCategory($slug: String!) {
                         data {
                             attributes {
                                 name,
-                                sale {
-                                    data {
-                                        attributes {
-                                            name,
-                                            amount,
-                                        }
-                                    }
-                                }
                             }
                         }
                     },

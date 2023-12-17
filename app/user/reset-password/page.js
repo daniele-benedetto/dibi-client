@@ -32,7 +32,7 @@ const resetpassword = () => {
   const { data, fetching, error } = results;
 
   if(fetching) return <Loader />;
-  if(error) return Error();
+  if(error) return <p>Errore</p>;
 
   return (
     <>

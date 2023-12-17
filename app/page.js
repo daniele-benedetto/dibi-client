@@ -13,7 +13,6 @@ import Footer from '@/app/components/Footer/Footer';
 import CardBg from './components/CardBg/CardBg';
 import Cookies from './components/Cookies/Cookies';
 import Alert from './components/Alert/Alert';
-import Error from 'next/error';
 
 export default function Home() {
 
@@ -25,7 +24,7 @@ export default function Home() {
 
     const {data, fetching, error} = results;
     if(fetching) return <Loader />;
-    if(error) return Error();
+    if(error) return <p>Errore</p>;
 
     const { general, products, products2, categories, categories2 } = data;
 
@@ -43,7 +42,7 @@ export default function Home() {
                     link="/prodotti"
                 />
                 <section className="w-full bg-gray-100 p-5 container mx-auto">
-                    { products.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Ti potrebbero interessare</motion.h3> }
+                    { products.data.length > 0 && <motion.h3 animate={{opacity: 1, x: 0}} initial={{opacity: 0, x: -20}} transition={{ease: 'linear', duration: 0.75, delay: 0.5}} className="text-2xl font-black pt-5 border-b border-b-black">Prodotti in offerta</motion.h3> }
                     <div className="mx-auto pt-5 flex flex-wrap">
                         {products.data.map((product, idx) => (
                             <CardCategory key={idx} category={product.attributes} size='1/4' />

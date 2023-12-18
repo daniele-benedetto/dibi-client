@@ -11,114 +11,143 @@ import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
 
-export default function ProdottiSottocategoria({params}) {
+const PAGE_SIZE = 9;
+
+export default function Prodotti({ params }) {
 
     const [data, setData] = useState([]);
-    const [sortType, setSortType] = useState('');
+    const [sortType, setSortType] = useState("createdAt:desc");
+    const [rangeValue, setRangeValue] = useState(0);
+    const [value , setValue] = useState(0);
+    const [rangeMax, setRangeMax] = useState(0);
     const [filters, setFilters] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+    const [page, setPage] = useState(1);
+    const [firstAccess, setFirstAccess] = useState(true);
+    const [total, setTotal] = useState(0);
+
 
     const resetFilters = () => {
-      setData(prodotti.products.data);
+      setSortType("createdAt:desc");
       setFilters([]);
-      setSortType('');
     };
-
-    useEffect(() => {
-      setLoading(true);
-      const sortArray = type => {
-        const types = {
-          price: 'price',
-          name: 'name'
-        };
-        if(type[0] === 'price' && type[1] === 'desc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => b.attributes[sortProperty] - a.attributes[sortProperty]);
-          setData(sorted);
-        } else if(type[0] === 'price' && type[1] === 'asc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => a.attributes[sortProperty] - b.attributes[sortProperty]);
-          setData(sorted);
-        } else if(type[0] === 'name' && type[1] === 'desc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => b.attributes[sortProperty] > a.attributes[sortProperty] ? 1 : -1);
-          setData(sorted);
-        } else if(type[0] === 'name' && type[1] === 'asc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => a.attributes[sortProperty] > b.attributes[sortProperty] ? 1 : -1);
-          setData(sorted);
-        }
-      };  
-      sortArray(sortType);
-      setLoading(false);
-    }, [sortType]);
-
-    useEffect(() => {
-      setLoading(true);
-      const filterData = () => {
-        if(filters.length > 0) {
-          let prod = [...prodotti.products.data];
-          filters.map((filter) => {
-            if(filter.title === 'Categoria') {
-              prod = prod.filter((product) => {
-                return product.attributes.category.data.attributes.name === filter.item;
-              });
-              setData(prod);
-            } else if(filter.title === 'Sottocategoria') {
-              prod = prod.filter((product) => {
-                return product.attributes.subcategory.data.attributes.name === filter.item;
-              });
-              setData(prod);
-            } else if(filter.title === 'Prezzo') {
-              prod = prod.filter((product) => {
-                return product.attributes.price <= filter.item;
-              });
-              setData(prod);
-            }
-          });
-        } else if(data.length === 0 && filters.length > 0) {
-          setData([]);
-        }
-      }
-  
-      filterData();
-      setLoading(false);
-    }, [filters]); 
 
     const [results] = useQuery({
       query: PRODUCTS_SUBCATEGORY_QUERY,
-        variables: {
-            slug: params.sottocategoria
-        },
-    }); 
+      variables: {
+        slug: params.sottocategoria,
+        limit: PAGE_SIZE + 1,
+        start: (page - 1) * PAGE_SIZE,
+        sort: sortType,
+        rangeMax: value,
+      },
+    });
 
     const { data:prodotti, fetching, error } = results;
 
     useEffect(() => {
       if(prodotti) {
-        setData(prodotti.products.data);
+        setData(prodotti.products.data.slice(0, PAGE_SIZE));
+        setFirstAccess(false);
+        setTotal(prodotti.products.meta.pagination.total);
+        setRangeMax(prodotti.highestPrice?.data[0]?.attributes?.price ? prodotti.highestPrice.data[0].attributes.price : 0);
       }
     }, [prodotti]);
 
-    if(fetching) return <Loader />;
-    if(error) return <p>Errore</p>
+    useEffect(() => {
+      setRangeValue(rangeMax);
+    }, [rangeMax]);
+
+    useEffect(() => {
+
+    }, [rangeValue]);
+
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        setValue(rangeValue);
+        setPage(1);
+      }, 500);
+
+      return () => clearTimeout(timeout);
+  }, [rangeValue]);
+
+
+    useEffect(() => {
+      setPage(1);
+    }, [filters, sortType]);
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [page]);
+
+    if(fetching && firstAccess) return <Loader />;
+    if(error) return <p>Errore...</p>
 
     return (
       <>
         {prodotti?.general?.data.attributes.top_bar && <Topbar topbar={prodotti.general.data.attributes.top_bar} />}
-        {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} categories={prodotti.categories.data} /> }
+        {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} categories={prodotti.categories.data} />}
         <main className='bg-white p-5'>
-        {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
+          {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
           <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />
           <div className='flex flex-wrap container m-auto'>
-            { data && <Sidebar products={prodotti.products.data} filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} /> }
-            {!loading && data.length > 0 && <Products products={data} /> }
-            {!loading && data.length === 0 && <section className='flex flex-wrap w-full md:w-2/3'>
-              <div className='w-full text-center mt-20'>
-                <h2 className='text-md'>Nessun prodotto rispecchia i criteri di ricerca</h2>
-              </div>
-            </section> }
+            { data && prodotti && <Sidebar filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} categories={prodotti.categories2.data} subcategories={prodotti.subcategories.data} rangeValue={rangeValue} setRangeValue={setRangeValue} rangeMin={0} rangeMax={rangeMax} /> }
+            {data.length > 0 && <Products products={data} />}
+            {data.length === 0 && <section className='flex w-full md:w-2/3 justify-center'>
+              <p className='text-center'>Nessun prodotto rispecchia i criteri di ricerca</p>
+            </section>}
+            {data.length > 0 && (
+              <section className='flex w-full justify-center md:justify-end m-auto'>
+                <div className='flex flex-wrap md:w-2/3 justify-center'>
+                {page !== 1 && (
+                  <button
+                    className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 rounded-l ${page === 1 ? 'background-second-color text-white' : ''}`}
+                    onClick={() => setPage(1)}
+                  >
+                    1
+                  </button>
+                )}
+                {page > 2 && (
+                  <button className='bg-white border border-gray-300 text-gray-500  px-4 py-2'>
+                    ...
+                  </button>
+                )}
+                {page > 2 && (
+                  <button
+                    className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 ${page === page - 1 ? 'background-second-color text-white' : ''}`}
+                    onClick={() => setPage(page - 1)}
+                  >
+                    {page - 1}
+                  </button>
+                )}
+                <button
+                  className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 ${page === page ? 'background-second-color text-white' : ''}`}
+                  onClick={() => setPage(page)}
+                >
+                  {page}
+                </button>
+                { ((total / PAGE_SIZE).toFixed(0) > page && page < (total / PAGE_SIZE).toFixed(0) - 1) && <button
+                  className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 ${page === page + 1 ? 'background-second-color text-white' : ''}`}
+                  onClick={() => setPage(page + 1)}
+                >
+                  {page + 1}
+                </button> }
+                {((total / PAGE_SIZE).toFixed(0) > page) && (page < (total / PAGE_SIZE).toFixed(0) - 1) && (
+                  <button className='bg-white border border-gray-300 text-gray-500 px-4 py-2'>
+                    ...
+                  </button>
+                )}
+                {((total / PAGE_SIZE).toFixed(0) > page) && (page < (total / PAGE_SIZE).toFixed(0)) && (
+                  <button
+                    className={`bg-white border border-gray-300 text-gray-500 px-4 py-2 rounded-r ${page === (total / PAGE_SIZE).toFixed(0) ? 'background-second-color text-white' : ''}`}
+                    onClick={() => setPage((total / PAGE_SIZE).toFixed(0))}
+                  >
+                    {(total / PAGE_SIZE).toFixed(0)}
+                  </button>
+                )}
+                </div>
+              </section>
+            )}
           </div>
         </main>
         {prodotti?.general?.data.attributes.footer && <Footer footerServizioClienti={prodotti.general.data.attributes.footer.footerServizioClienti} footerAbout={prodotti.general.data.attributes.footer.footerAbout} footerSocial={prodotti.general.data.attributes.footer.footerSocial} />}

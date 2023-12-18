@@ -16,9 +16,11 @@ const PAGE_SIZE = 9;
 export default function Prodotti() {
 
     const [data, setData] = useState([]);
-    const [sortType, setSortType] = useState(null);
+    const [sortType, setSortType] = useState("createdAt:desc");
+    const [rangeValue, setRangeValue] = useState(0);
+    const [value , setValue] = useState(0);
+    const [rangeMax, setRangeMax] = useState(0);
     const [filters, setFilters] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const [page, setPage] = useState(1);
     const [firstAccess, setFirstAccess] = useState(true);
@@ -26,7 +28,7 @@ export default function Prodotti() {
 
 
     const resetFilters = () => {
-      setSortType(null);
+      setSortType("createdAt:desc");
       setFilters([]);
     };
 
@@ -41,6 +43,8 @@ export default function Prodotti() {
         subcategory: filters.find((filter) => {
           return filter.title === 'Sottocategoria';
         })?.item,
+        sort: sortType,
+        rangeMax: value,
       },
     });
 
@@ -51,8 +55,27 @@ export default function Prodotti() {
         setData(prodotti.products.data.slice(0, PAGE_SIZE));
         setFirstAccess(false);
         setTotal(prodotti.products.meta.pagination.total);
+        setRangeMax(prodotti.highestPrice?.data[0]?.attributes?.price ? prodotti.highestPrice.data[0].attributes.price : 0);
       }
     }, [prodotti]);
+
+    useEffect(() => {
+      setRangeValue(rangeMax);
+    }, [rangeMax]);
+
+    useEffect(() => {
+
+    }, [rangeValue]);
+
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        setValue(rangeValue);
+        setPage(1);
+      }, 500);
+
+      return () => clearTimeout(timeout);
+  }, [rangeValue]);
+
 
     useEffect(() => {
       setPage(1);
@@ -73,8 +96,11 @@ export default function Prodotti() {
           {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
           <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />
           <div className='flex flex-wrap container m-auto'>
-            { data && prodotti && <Sidebar filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} categories={prodotti.categories2.data} subcategories={prodotti.subcategories.data} /> }
-            {!loading && data.length > 0 && <Products products={data} />}
+            { data && prodotti && <Sidebar filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} categories={prodotti.categories2.data} subcategories={prodotti.subcategories.data} rangeValue={rangeValue} setRangeValue={setRangeValue} rangeMin={0} rangeMax={rangeMax} /> }
+            {data.length === 0 && !fetching && <section className='flex flex-wrap w-full md:w-2/3 justify-center'>
+              <p className='text-2xl mt-5'>Nessun prodotto rispetta i criteri di ricerca</p>
+            </section>}
+            {data.length > 0 && <Products products={data} />}
             {data.length > 0 && (
               <section className='flex w-full justify-center md:justify-end m-auto'>
                 <div className='flex flex-wrap md:w-2/3 justify-center'>
@@ -127,9 +153,6 @@ export default function Prodotti() {
                 </div>
               </section>
             )}
-            { fetching && !firstAccess && <section className='flex flex-wrap w-full relative h-12'>
-              <svg className='absolute left-2/3 -translate-x-1/2' xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="#f7812a" d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg>
-            </section> }
           </div>
         </main>
         {prodotti?.general?.data.attributes.footer && <Footer footerServizioClienti={prodotti.general.data.attributes.footer.footerServizioClienti} footerAbout={prodotti.general.data.attributes.footer.footerAbout} footerSocial={prodotti.general.data.attributes.footer.footerSocial} />}

@@ -1,6 +1,323 @@
+export const PRODUCTS_SUBCATEGORY_QUERY = `
+query getProductCategory($slug: String!, $limit: Int!, $start: Int!, $sort: [String], $rangeMax: Float) {
+    categories2: categories(pagination: { limit: 100 }) {
+        data {
+            attributes {
+                name
+            }
+        }
+    },
+    subcategories(
+        pagination: { 
+            limit: 100 
+        },
+        filters: {
+            categories: {
+                slug: {
+                    eq: $slug
+                }
+            }
+        }
+    ) {
+        data {
+            attributes {
+                name
+            }
+        }
+    },
+    highestPrice: products(
+        sort: "price:desc", 
+        pagination: { 
+            limit: 1
+        },
+        filters: {
+            subcategory: {
+                name: {
+                    eq: $slug
+                }
+            }
+        }
+    ) {
+        data {
+            attributes {
+                price
+            }
+        }
+    },
+    products(
+        sort: $sort,
+        pagination: { 
+            limit: $limit, 
+            start: $start 
+        },
+        filters: {
+            subcategory: {
+                slug: {
+                    eq: $slug
+                }
+            },
+            price: {
+                lte: $rangeMax
+            }
+        }
+    ) {
+        meta {
+            pagination {
+                page
+                pageSize
+                pageCount
+                total
+            }
+        }
+        data {
+            attributes {
+                empty_visible,
+                name,
+                slug,
+                price,
+                description,
+                sizes,
+                colors,
+                stock,
+                prezzo_senza_sconto,
+                gallery {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                }                    
+                category {
+                    data {
+                        attributes {
+                            name,
+                        }
+                    }
+                },
+                subcategory {
+                    data {
+                        attributes {
+                            name,
+                        }
+                    }
+                },
+                image {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                },
+            }
+        }
+    },
+    general {
+        data {
+            attributes {
+                navbar,
+                top_bar,
+                weight_price,
+                distance_price,
+                footer,
+                spedizione_gratuita
+            }
+        }
+    },
+    categories(filters: {
+        in_evidence: {
+            eq: true
+        }
+    }) {
+        data {
+            attributes {
+                name,
+                slug,
+                image {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                },
+                subcategories {
+                    data {
+                        attributes {
+                            name,
+                            slug
+                        }
+                    }
+                }
+            }
+        }
+    }
+}`;
+
+export const PRODUCTS_CATEGORY_QUERY = `
+query getProductCategory($slug: String!, $limit: Int!, $start: Int!, $subcategory: String, $sort: [String], $rangeMax: Float) {
+    categories2: categories(pagination: { limit: 100 }) {
+        data {
+            attributes {
+                name
+            }
+        }
+    },
+    subcategories(
+        pagination: { 
+            limit: 100 
+        },
+        filters: {
+            categories: {
+                slug: {
+                    eq: $slug
+                }
+            }
+        }
+    ) {
+        data {
+            attributes {
+                name
+            }
+        }
+    },
+    highestPrice: products(
+        sort: "price:desc", 
+        pagination: { 
+            limit: 1
+        },
+        filters: {
+            category: {
+                slug: {
+                    eq: $slug
+                }
+            },
+            subcategory: {
+                name: {
+                    eq: $subcategory
+                }
+            }
+        }
+    ) {
+        data {
+            attributes {
+                price
+            }
+        }
+    },
+    products(
+        sort: $sort,
+        pagination: { 
+            limit: $limit, 
+            start: $start 
+        },
+        filters: {
+            category: {
+                slug: {
+                    eq: $slug
+                }
+            },
+            subcategory: {
+                name: {
+                    eq: $subcategory
+                }
+            },
+            price: {
+                lte: $rangeMax
+            }
+        }
+    ) {
+        meta {
+            pagination {
+                page
+                pageSize
+                pageCount
+                total
+            }
+        }
+        data {
+            attributes {
+                empty_visible,
+                name,
+                slug,
+                price,
+                description,
+                sizes,
+                colors,
+                stock,
+                prezzo_senza_sconto,
+                gallery {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                }                    
+                category {
+                    data {
+                        attributes {
+                            name,
+                        }
+                    }
+                },
+                subcategory {
+                    data {
+                        attributes {
+                            name,
+                        }
+                    }
+                },
+                image {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                },
+            }
+        }
+    },
+    general {
+        data {
+            attributes {
+                navbar,
+                top_bar,
+                weight_price,
+                distance_price,
+                footer,
+                spedizione_gratuita
+            }
+        }
+    },
+    categories(filters: {
+        in_evidence: {
+            eq: true
+        }
+    }) {
+        data {
+            attributes {
+                name,
+                slug,
+                image {
+                    data {
+                        attributes {
+                            url
+                        }
+                    }
+                },
+                subcategories {
+                    data {
+                        attributes {
+                            name,
+                            slug
+                        }
+                    }
+                }
+            }
+        }
+    }
+}`;
 
 export const PRODUCTS_QUERY = `
-    query($limit: Int!, $start: Int!, $category: String, $subcategory: String) {
+    query($limit: Int!, $start: Int!, $category: String, $subcategory: String, $sort: [String], $rangeMax: Float) {
         categories2: categories(pagination: { limit: 100 }) {
             data {
                 attributes {
@@ -15,8 +332,32 @@ export const PRODUCTS_QUERY = `
                 }
             }
         },
+        highestPrice: products(
+            sort: "price:desc", 
+            pagination: { 
+                limit: 1
+            },
+            filters: {
+                category: {
+                    name: {
+                        eq: $category
+                    }
+                },
+                subcategory: {
+                    name: {
+                        eq: $subcategory
+                    }
+                }
+            }
+        ) {
+            data {
+                attributes {
+                    price
+                }
+            }
+        },
         products(
-            sort: "createdAt:desc",
+            sort: $sort,
             pagination: { 
                 limit: $limit, 
                 start: $start 
@@ -31,6 +372,9 @@ export const PRODUCTS_QUERY = `
                     name: {
                         eq: $subcategory
                     }
+                },
+                price: {
+                    lte: $rangeMax
                 }
             }
         ) {
@@ -410,192 +754,6 @@ export const HOME_QUERY = `
       }
     }
   }
-`;
-
-export const PRODUCTS_CATEGORY_QUERY = `
-query getProductCategory($slug: String!) {
-    products(filters: {
-        category: {
-            slug: {
-                eq: $slug
-            }
-        }
-    }) {       
-            data {
-                attributes {
-                    empty_visible,
-                    name,
-                    slug,
-                    price,
-                    description,
-                    sizes,
-                    stock,
-                    prezzo_senza_sconto,
-                    gallery {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    }
-                    colors,
-                    category {
-                        data {
-                            attributes {
-                                name,
-                            }
-                        }
-                    },
-                    subcategory {
-                        data {
-                            attributes {
-                                name
-                            }
-                        }
-                    },
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                }
-            }
-        },
-        general {
-            data {
-                attributes {
-                    navbar,
-                    top_bar,
-                    weight_price,
-                    distance_price,
-                    footer,
-                    spedizione_gratuita
-                }
-            }
-        },
-        categories(filters: {
-            in_evidence: {
-                eq: true
-            }
-        }) {
-            data {
-                attributes {
-                    name,
-                    slug,
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                    subcategories {
-                        data {
-                            attributes {
-                                name,
-                                slug
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-`;
-
-export const PRODUCTS_SUBCATEGORY_QUERY = `
-query getProductCategory($slug: String!) {
-    products(filters: {
-        subcategory: {
-            slug: {
-                eq: $slug
-            }
-        }
-    }) {       
-            data {
-                attributes {
-                    empty_visible,
-                    name,
-                    slug,
-                    price,
-                    description,
-                    sizes,
-                    colors,
-                    stock,
-                    prezzo_senza_sconto,
-                    gallery {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                    category {
-                        data {
-                            attributes {
-                                name,
-                            }
-                        }
-                    },
-                    subcategory {
-                        data {
-                            attributes {
-                                name
-                            }
-                        }
-                    },
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                }
-            }
-        },
-        general {
-            data {
-                attributes {
-                    navbar,
-                    top_bar,
-                    weight_price,
-                    distance_price,
-                    footer,
-                    spedizione_gratuita
-                }
-            }
-        },
-        categories(filters: {
-            in_evidence: {
-                eq: true
-            }
-        }) {
-            data {
-                attributes {
-                    name,
-                    slug,
-                    image {
-                        data {
-                            attributes {
-                                url
-                            }
-                        }
-                    },
-                    subcategories {
-                        data {
-                            attributes {
-                                name,
-                                slug
-                            }
-                        }
-                    }
-                }
-            }
-        },
-    }
 `;
 
 export const GENERAL_QUERY = `

@@ -7,14 +7,9 @@ import FilterMenu from "@/app/components/FilterMenu/FilterMenu";
 import FilterPrice from "@/app/components/FilterPrice/FilterPrice";
 import { usePathname } from 'next/navigation';
 
-export default function Sidebar({setFilters, sidebarIsOpen, setSidebarIsOpen, filters, resetFilters, categories = [], subcategories = []}) {
+export default function Sidebar({setFilters, sidebarIsOpen, setSidebarIsOpen, filters, resetFilters, categories = [], subcategories = [], rangeValue, rangeMax, rangeMin, setRangeValue}) {
 
     const pathname = usePathname();
-
-    const [rangeValue, setRangeValue] = useState(0);
-    const [rangeMin, setRangeMin] = useState(0);
-    const [rangeMax, setRangeMax] = useState(0);
-
     const size = useWindowSize();
 
     return (

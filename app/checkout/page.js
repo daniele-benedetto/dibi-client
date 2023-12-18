@@ -15,7 +15,6 @@ import Footer from '@/app/components/Footer/Footer';
 import Loader from '../components/Loader/Loader';
 import { GENERAL_QUERY } from '../lib/query';
 import { useQuery } from 'urql';
-import Error from 'next/error';
 
 const stripePromise = getStripe();
 
@@ -140,7 +139,7 @@ export default function Checkout() {
         })
         .then((res) => {
             if (!res.ok) {
-                throw new Error(`Errore HTTP! Stato: ${res.status}`);
+                console.error('Errore durante la fetch:', res);
             }
             return res.json();
         })

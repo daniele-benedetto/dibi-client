@@ -7,7 +7,6 @@ import { FILTER_QUERY, NO_QUERY } from "@/app/lib/query";
 import SearchItem from "@/app/components/SearchItem/SearchItem";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Error from "next/error";
 
 export default function Searchbar({setSearchIsOpen}) {
 

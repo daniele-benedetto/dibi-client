@@ -19,7 +19,6 @@ import ProductPrimaryImage from "@/app/components/ProductPrimaryImage/ProductPri
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-import Error from "next/error";
 import FsLightbox from "fslightbox-react";
 
 export default function Prodotto({params}) {
@@ -32,13 +31,23 @@ export default function Prodotto({params}) {
     const [stock, setStock] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
-    const [toggler, setToggler] = useState(false);
     const [images, setImages] = useState([]);
+    const [lightboxController, setLightboxController] = useState({
+		toggler: false,
+		slide: 1
+	});
 
     const {onAdd, cartItems} = useStateCartContext();
     const { checkLogin, userWishlist, doWishList, user  } = useContext(UserContext);
 
     const size = useWindowSize();
+
+	function openLightboxOnSlide(number) {
+		setLightboxController({
+			toggler: !lightboxController.toggler,
+			slide: number
+		});
+	}
 
     const toogleFavorite = async () => {
         if(!user) {
@@ -160,8 +169,10 @@ export default function Prodotto({params}) {
         checkUser();
     }, []);
 
+
+
     if(fetching) return <Loader />;
-    if(error) return <p>... ops</p>;
+    if(error) return <p>Errore</p>;
     
     return (
         <>
@@ -172,16 +183,22 @@ export default function Prodotto({params}) {
                 { toastFavorite && <Toast type={isFavorite ? 'success' : 'alert'} text={isFavorite ? 'Prodotto aggiunto alla tua wishlist' : 'Prodotto rimosso dalla tua wishlist'} setToast={setToastFavorite} /> }
                 { isNotUser && <Toast type={'danger'} text={'Devi essere loggato per aggiungere un prodotto alla tua wishlist'} setToast={setIsNotUser} /> }
                 <FsLightbox
-                    toggler={toggler}
+                    toggler={lightboxController.toggler}
                     sources={images}
+                    slide={lightboxController.slide}
                 />
                 <div className='m-auto w-full max-w-[1400px]'>
                     <div className='flex flex-wrap'>
                         <div className='w-full md:w-2/3'>
                             <div className='flex flex-wrap'>
-                                { size.width < 768 && product && <ProductPrimaryImage image={product.gallery.data[0].attributes.url} name={product.name} /> }
+                                { size.width < 768 && product && <ProductPrimaryImage image={product.gallery.data[0].attributes.url} name={product.name} onClick={() => openLightboxOnSlide(1)} /> }
                                 {product && product.gallery.data.map((image, idx) => (
-                                    <ProductSingleImage handleClick={() => setToggler((prevState) => !toggler)} key={idx} idx={idx} image={image.attributes.url} name={product.name} />
+                                    <ProductSingleImage handleClick={
+                                        () => {
+                                            console.log(idx)
+                                            openLightboxOnSlide(idx + 1)
+                                        }
+                                    } key={idx} idx={idx} image={image.attributes.url} name={product.name} />
                                 ))}
                             </div>
                         </div>

@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
-import Error from 'next/error';
 
 export default function ProdottiCategoria({params}) {
 

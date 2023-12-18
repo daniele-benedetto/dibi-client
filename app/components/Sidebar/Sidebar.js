@@ -7,87 +7,13 @@ import FilterMenu from "@/app/components/FilterMenu/FilterMenu";
 import FilterPrice from "@/app/components/FilterPrice/FilterPrice";
 import { usePathname } from 'next/navigation';
 
-export default function Sidebar({products, setFilters, sidebarIsOpen, setSidebarIsOpen, filters, resetFilters}) {
+export default function Sidebar({setFilters, sidebarIsOpen, setSidebarIsOpen, filters, resetFilters, categories = [], subcategories = []}) {
 
     const pathname = usePathname();
 
-    const [categories, setCategories] = useState([]);
-    const [subcategories, setSubcategories] = useState([]);
-    const [colors, setColors] = useState([]);
-    const [sizes, setSizes] = useState([]);
     const [rangeValue, setRangeValue] = useState(0);
     const [rangeMin, setRangeMin] = useState(0);
     const [rangeMax, setRangeMax] = useState(0);
-
-    useEffect(() => {
-        const getCategories = () => {
-            const categories = products.map((product) => {
-                return product.attributes.category.data.attributes.name;
-            }).filter((category, index, self) => {
-                return self.indexOf(category) === index;
-            }).map((category) => {
-                return category;
-            });
-            setCategories(categories);
-        };
-
-        const getSubcategories = () => {
-            const subcategories = products.map((product) => {
-                return product.attributes.subcategory.data.attributes.name;
-            }).filter((subcategory, index, self) => {
-                return self.indexOf(subcategory) === index;
-            }).map((subcategory) => {
-                return subcategory;
-            });
-            setSubcategories(subcategories);
-        };
-
-        const getColors = () => {
-            if(products.length === 0) return;
-            const allCalors = [];
-            products.map((product) => {
-                allCalors.push(product.attributes.colors);
-            });
-            const colors = allCalors.filter((color, index, self) => {
-                return self.indexOf(color) === index;
-            }).map((color) => {
-                return color;
-            });
-            setColors(colors);
-        };
-
-        const getSizes = () => {
-            if(products.length === 0) return;
-            const allSizes = [];
-            products.map((product) => {
-                allSizes.push(product.attributes.sizes);
-            });
-            const sizes = allSizes.filter((size, index, self) => {
-                return self.indexOf(size) === index;
-            }).map((size) => {
-                return size;
-            });
-            setSizes(sizes);
-        };
-
-        const getRange = () => {
-            if(products.length === 0) return;
-            const prices = products.map((product) => {
-                return product.attributes.price;
-            });
-            const min = Math.min(...prices);
-            const max = Math.max(...prices);
-            setRangeMin(min);
-            setRangeMax(max);
-            setRangeValue(max);
-        };
-
-        getRange();
-        getColors();
-        getSizes();
-        getCategories();
-        getSubcategories();
-    }, []);
 
     const size = useWindowSize();
 

@@ -1,7 +1,47 @@
 
 export const PRODUCTS_QUERY = `
-    query($limit: Int!, $start: Int!) {
-        products(sort: "createdAt:desc", pagination: { limit: $limit, start: $start }) {
+    query($limit: Int!, $start: Int!, $category: String, $subcategory: String) {
+        categories2: categories(pagination: { limit: 100 }) {
+            data {
+                attributes {
+                    name
+                }
+            }
+        },
+        subcategories(pagination: { limit: 100 }) {
+            data {
+                attributes {
+                    name
+                }
+            }
+        },
+        products(
+            sort: "createdAt:desc",
+            pagination: { 
+                limit: $limit, 
+                start: $start 
+            },
+            filters: {
+                category: {
+                    name: {
+                        eq: $category
+                    }
+                },
+                subcategory: {
+                    name: {
+                        eq: $subcategory
+                    }
+                }
+            }
+        ) {
+            meta {
+                pagination {
+                    page
+                    pageSize
+                    pageCount
+                    total
+                }
+            }
             data {
                 attributes {
                     empty_visible,
@@ -356,6 +396,8 @@ export const HOME_QUERY = `
           empty_visible,
           name,
           slug,
+          description,
+          price,
           prezzo_senza_sconto,
           image {
             data {

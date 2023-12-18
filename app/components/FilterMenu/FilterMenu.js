@@ -61,9 +61,9 @@ export default function FilterMenu({title, items, setFilters, filters}) {
                 </li>
                 {items && items.length > 0 && items.map((item, index) => {
                     return (
-                        <li key={index} onClick={() => handleSelect(item)} className='py-2 text-gray-600 hover:text-gray-800 cursor-pointer relative'>
-                            {selectedItem === item ? <ImCheckmark className="absolute top-0 translate-y-3/4 left-0 -translate-x-full" /> : null}
-                            <a>{item}</a>
+                        <li key={index} onClick={() => handleSelect(item.attributes.name)} className='py-2 text-gray-600 hover:text-gray-800 cursor-pointer relative capitalize'>
+                            {selectedItem === item.attributes.name ? <ImCheckmark className="absolute top-0 translate-y-3/4 left-0 -translate-x-full" /> : null}
+                            <a>{item.attributes.name}</a>
                         </li>
                     );
                 })}

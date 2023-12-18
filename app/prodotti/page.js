@@ -16,105 +16,31 @@ const PAGE_SIZE = 9;
 export default function Prodotti() {
 
     const [data, setData] = useState([]);
-    const [sortType, setSortType] = useState('');
+    const [sortType, setSortType] = useState(null);
     const [filters, setFilters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
     const [firstAccess, setFirstAccess] = useState(true);
+    const [total, setTotal] = useState(0);
 
 
     const resetFilters = () => {
-      setData(prodotti.products.data);
+      setSortType(null);
       setFilters([]);
-      setSortType('');
     };
-
-    const handleInfiniteScroll = () => {
-      if (!fetching && hasMore) {
-        if (
-          window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.scrollHeight - 200
-        ) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      }
-    };
-    
-    useEffect(() => {
-      window.addEventListener('scroll', handleInfiniteScroll);
-      return () => {
-        window.removeEventListener('scroll', handleInfiniteScroll);
-      };
-    }, [handleInfiniteScroll]);
-
-    useEffect(() => {
-      setLoading(true);
-      const sortArray = type => {
-        const types = {
-          price: 'price',
-          name: 'name'
-        };
-        if(type[0] === 'price' && type[1] === 'desc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => b.attributes[sortProperty] - a.attributes[sortProperty]);
-          setData(sorted);
-        } else if(type[0] === 'price' && type[1] === 'asc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => a.attributes[sortProperty] - b.attributes[sortProperty]);
-          setData(sorted);
-        } else if(type[0] === 'name' && type[1] === 'desc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => b.attributes[sortProperty] > a.attributes[sortProperty] ? 1 : -1);
-          setData(sorted);
-        } else if(type[0] === 'name' && type[1] === 'asc') {
-          const sortProperty = types[type[0]];
-          const sorted = [...data].sort((a, b) => a.attributes[sortProperty] > b.attributes[sortProperty] ? 1 : -1);
-          setData(sorted);
-        }
-      };  
-      sortArray(sortType);
-      setLoading(false);
-    }, [sortType]);
-
-    useEffect(() => {
-      setLoading(true);
-      const filterData = () => {
-        if(filters.length > 0) {
-          let prod = [...prodotti.products.data];
-          filters.map((filter) => {
-            if(filter.title === 'Categoria') {
-              prod = prod.filter((product) => {
-                return product.attributes.category.data.attributes.name === filter.item;
-              });
-              setData(prod);
-            } else if(filter.title === 'Sottocategoria') {
-              prod = prod.filter((product) => {
-                return product.attributes.subcategory.data.attributes.name === filter.item;
-              });
-              setData(prod);
-            } else if(filter.title === 'Prezzo') {
-              prod = prod.filter((product) => {
-                return product.attributes.price <= filter.item;
-              });
-              setData(prod);
-            }
-          });
-        } else if(data.length === 0 && filters.length > 0) {
-          setData([]);
-        }
-      }
-  
-      filterData();
-      setLoading(false);
-    }, [filters]); 
 
     const [results] = useQuery({
       query: PRODUCTS_QUERY,
       variables: {
         limit: PAGE_SIZE + 1,
         start: (page - 1) * PAGE_SIZE,
+        category: filters.find((filter) => {
+          return filter.title === 'Categoria';
+        })?.item,
+        subcategory: filters.find((filter) => {
+          return filter.title === 'Sottocategoria';
+        })?.item,
       },
     });
 
@@ -122,11 +48,19 @@ export default function Prodotti() {
 
     useEffect(() => {
       if(prodotti) {
-        setHasMore(prodotti.products.data.length === PAGE_SIZE + 1);
-        setData((prevData) => [...prevData, ...prodotti.products.data.slice(0, PAGE_SIZE)]);
+        setData(prodotti.products.data.slice(0, PAGE_SIZE));
         setFirstAccess(false);
+        setTotal(prodotti.products.meta.pagination.total);
       }
     }, [prodotti]);
+
+    useEffect(() => {
+      setPage(1);
+    }, [filters, sortType]);
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [page]);
 
     if(fetching && firstAccess) return <Loader />;
     if(error) return <p>Errore...</p>
@@ -137,16 +71,64 @@ export default function Prodotti() {
         {prodotti?.general?.data.attributes.navbar && <Navbar navbar={prodotti.general.data.attributes.navbar} categories={prodotti.categories.data} />}
         <main className='bg-white p-5'>
           {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
+          <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />
           <div className='flex flex-wrap container m-auto'>
-            { data && prodotti && <Sidebar products={prodotti.products.data} filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} /> }
+            { data && prodotti && <Sidebar filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} categories={prodotti.categories2.data} subcategories={prodotti.subcategories.data} /> }
             {!loading && data.length > 0 && <Products products={data} />}
+            {data.length > 0 && (
+              <section className='flex w-full justify-center md:justify-end m-auto'>
+                <div className='flex flex-wrap md:w-2/3 justify-center'>
+                {page !== 1 && (
+                  <button
+                    className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 rounded-l ${page === 1 ? 'background-second-color text-white' : ''}`}
+                    onClick={() => setPage(1)}
+                  >
+                    1
+                  </button>
+                )}
+                {page > 2 && (
+                  <button className='bg-white border border-gray-300 text-gray-500  px-4 py-2'>
+                    ...
+                  </button>
+                )}
+                {page > 2 && (
+                  <button
+                    className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 ${page === page - 1 ? 'background-second-color text-white' : ''}`}
+                    onClick={() => setPage(page - 1)}
+                  >
+                    {page - 1}
+                  </button>
+                )}
+                <button
+                  className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 ${page === page ? 'background-second-color text-white' : ''}`}
+                  onClick={() => setPage(page)}
+                >
+                  {page}
+                </button>
+                { ((total / PAGE_SIZE).toFixed(0) > page && page < (total / PAGE_SIZE).toFixed(0) - 1) && <button
+                  className={`bg-white border border-gray-300 text-gray-500  px-4 py-2 ${page === page + 1 ? 'background-second-color text-white' : ''}`}
+                  onClick={() => setPage(page + 1)}
+                >
+                  {page + 1}
+                </button> }
+                {((total / PAGE_SIZE).toFixed(0) > page) && (page < (total / PAGE_SIZE).toFixed(0) - 1) && (
+                  <button className='bg-white border border-gray-300 text-gray-500 px-4 py-2'>
+                    ...
+                  </button>
+                )}
+                {((total / PAGE_SIZE).toFixed(0) > page) && (page < (total / PAGE_SIZE).toFixed(0)) && (
+                  <button
+                    className={`bg-white border border-gray-300 text-gray-500 px-4 py-2 rounded-r ${page === (total / PAGE_SIZE).toFixed(0) ? 'background-second-color text-white' : ''}`}
+                    onClick={() => setPage((total / PAGE_SIZE).toFixed(0))}
+                  >
+                    {(total / PAGE_SIZE).toFixed(0)}
+                  </button>
+                )}
+                </div>
+              </section>
+            )}
             { fetching && !firstAccess && <section className='flex flex-wrap w-full relative h-12'>
               <svg className='absolute left-2/3 -translate-x-1/2' xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><path fill="#f7812a" d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg>
-            </section> }
-            {!loading && data.length === 0 && <section className='flex flex-wrap w-full md:w-2/3'>
-              <div className='w-full text-center mt-20'>
-                <h2 className='text-md'>Nessun prodotto rispecchia i criteri di ricerca</h2>
-              </div>
             </section> }
           </div>
         </main>

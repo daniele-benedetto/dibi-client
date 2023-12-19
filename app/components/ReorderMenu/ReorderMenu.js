@@ -1,6 +1,6 @@
 "use client";
 
-export default function ReorderMenu({setSortType, action, sortType}) {
+export default function ReorderMenu({setSortType, action}) {
 
     return (
         <div className="absolute top-100 left-100 w-80 bg-white border border-gray-300 rounded-md shadow-md md:-translate-x-3/4">

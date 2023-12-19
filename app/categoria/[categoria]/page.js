@@ -41,8 +41,12 @@ export default function Prodotti({ params }) {
         slug: params.categoria,
         limit: PAGE_SIZE + 1,
         start: (page - 1) * PAGE_SIZE,
-        subcategory: filters.find((filter) => {
-          return filter.title === 'Sottocategoria';
+        subcategory:filters.find((filter) => {
+          if(filter.title === 'Sottocategoria') {
+            return filter.item;
+          } else {
+            return null;
+          }
         })?.item,
         sort: sortType,
         rangeMax: value,

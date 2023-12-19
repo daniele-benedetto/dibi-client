@@ -81,25 +81,7 @@ export default function CheckoutForm({clientSecret, setCountry, weightPrice, dis
               price: item.price,
           });
       });
-
-    await fetch('/api/mail/sell', {
-      method: 'POST',
-      body: JSON.stringify({ name: result.paymentIntent.shipping.name, address: result.paymentIntent.shipping.address.line1 +' ' + result.paymentIntent.shipping.address.city + ' ' + result.paymentIntent.shipping.address.postal_code + ' ' + result.paymentIntent.shipping.address.country, products: products, email: email, total: (parseFloat((result.paymentIntent.amount) + parseFloat(distancePrice) + parseFloat(weightPrice))/100).toFixed(2)})
-    }).then((result) => {
-      console.log(result);
-    }).catch((error) => {
-      console.log(error);
-    });
-
-      await fetch('/api/mail/checkout', {
-        method: 'POST',
-        body: JSON.stringify({ products: products, email: email})
-    }).then((result) => {
-        console.log(result);
-    }).catch((error) => {
-        console.log(error);
-    });
-
+      
       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
         method: 'POST',
         mode: 'cors',

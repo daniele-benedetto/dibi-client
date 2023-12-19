@@ -49,15 +49,6 @@ export default function Checkout() {
             });
         });  
 
-        await fetch('/api/mail/sell', {
-            method: 'POST',
-            body: JSON.stringify({ name: order.purchase_units[0].shipping.name.full_name, address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code, products: products, email: order.payer.email_address, total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2) }),
-        }).then((result) => {
-            console.log(result);
-        }).catch((error) => {
-            console.log(error);
-        });
-
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`, {
             method: 'POST',
             mode: 'cors',

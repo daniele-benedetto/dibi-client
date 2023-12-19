@@ -10,6 +10,7 @@ import Loader from '@/app/components/Loader/Loader';
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 const PAGE_SIZE = 9;
 
@@ -25,9 +26,11 @@ export default function Prodotti({ params }) {
     const [page, setPage] = useState(1);
     const [firstAccess, setFirstAccess] = useState(true);
     const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(false);
 
 
     const resetFilters = () => {
+      setLoading(true);
       setSortType("createdAt:desc");
       setFilters([]);
     };
@@ -50,6 +53,7 @@ export default function Prodotti({ params }) {
 
     useEffect(() => {
       if(prodotti) {
+        setLoading(false);
         setData(prodotti.products.data.slice(0, PAGE_SIZE));
         setFirstAccess(false);
         setTotal(prodotti.products.meta.pagination.total);
@@ -58,14 +62,12 @@ export default function Prodotti({ params }) {
     }, [prodotti]);
 
     useEffect(() => {
+      setLoading(true);
       setRangeValue(rangeMax);
     }, [rangeMax]);
 
     useEffect(() => {
-
-    }, [rangeValue]);
-
-    useEffect(() => {
+      setLoading(true);
       const timeout = setTimeout(() => {
         setValue(rangeValue);
         setPage(1);
@@ -76,10 +78,12 @@ export default function Prodotti({ params }) {
 
 
     useEffect(() => {
+      setLoading(true);
       setPage(1);
     }, [filters, sortType]);
 
     useEffect(() => {
+      setLoading(true);
       window.scrollTo(0, 0);
     }, [page]);
 
@@ -94,12 +98,15 @@ export default function Prodotti({ params }) {
           {prodotti?.general?.data.attributes.popup && <Popup popup={prodotti.general.data.attributes.popup} />}
           <ActionsMenu setSortType={setSortType} setSidebarIsOpen={setSidebarIsOpen} sortType={sortType} sidebarIsOpen={sidebarIsOpen} />
           <div className='flex flex-wrap container m-auto'>
-            { data && prodotti && <Sidebar filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} categories={prodotti.categories2.data} subcategories={prodotti.subcategories.data} rangeValue={rangeValue} setRangeValue={setRangeValue} rangeMin={0} rangeMax={rangeMax} /> }
-            {data.length > 0 && <Products products={data} />}
-            {data.length === 0 && <section className='flex w-full md:w-2/3 justify-center'>
+            <Sidebar filters={filters} setFilters={setFilters} sidebarIsOpen={sidebarIsOpen} setSidebarIsOpen={setSidebarIsOpen} resetFilters={resetFilters} categories={prodotti.categories2.data} subcategories={prodotti.subcategories.data} rangeValue={rangeValue} setRangeValue={setRangeValue} rangeMin={0} rangeMax={rangeMax} />
+            { loading && <section className='flex flex-wrap w-full md:w-2/3 justify-center'>
+              <BiLoaderAlt className='animate-spin text-4xl m-auto' />
+            </section>}
+            {!loading && data.length > 0 && <Products products={data} />}
+            {!loading && data.length === 0 && <section className='flex w-full md:w-2/3 justify-center'>
               <p className='text-center'>Nessun prodotto rispecchia i criteri di ricerca</p>
             </section>}
-            {data.length > 0 && (
+            {!loading && data.length > 0 && (
               <section className='flex w-full justify-center md:justify-end m-auto'>
                 <div className='flex flex-wrap md:w-2/3 justify-center'>
                 {page !== 1 && (

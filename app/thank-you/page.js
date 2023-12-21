@@ -9,6 +9,7 @@ import { HOME_QUERY } from "@/app/lib/query";
 import Topbar from '@/app/components/Topbar/Topbar';
 import Navbar from '@/app/components/Navbar/Navbar';
 import Footer from '@/app/components/Footer/Footer';
+import Loader from "../components/Loader/Loader";
 
 export default function ThankYou() {
 
@@ -20,7 +21,7 @@ export default function ThankYou() {
         query: HOME_QUERY
     });
 
-    const { data, loading, error } = results;
+    const { data, fetching, error } = results;
 
     useEffect(() => {
         if(data) {
@@ -29,10 +30,11 @@ export default function ThankYou() {
     }, [data]);
 
     useEffect(() => {
+        localStorage.removeItem('cart');
         setCartItems([]);
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    if (fetching) return <Loader />;
     if (error) return <p>Oh no... {error.message}</p>;
 
     return(

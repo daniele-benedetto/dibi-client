@@ -30,7 +30,7 @@ export default function VerticalMenu({navbar, setMenuIsOpen, categories, email, 
                 } else {
                     return (
                         <li className="my-1 border-b border-b-black relative max-w-[275px]" key={item.id}>
-                            <Link onClick={() => setMenuIsOpen(false)} href={item.link}>{item.text}</Link>
+                            <span onClick={() => setShowSubMenu(!showSubMenu)} >{item.text}</span>
                                 {!showSubMenu && <FaChevronRight onClick={() => setShowSubMenu(!showSubMenu)} size={20} className="absolute top-0 right-0 transform -translate-y-1/2 mt-3" /> }                            
                                 {showSubMenu && <FaChevronDown onClick={() => setShowSubMenu(!showSubMenu)} size={20} className="absolute top-0 right-0 transform -translate-y-1/2 mt-3" /> }                            
                                 {showSubMenu && <motion.ul 

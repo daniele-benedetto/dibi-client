@@ -499,7 +499,7 @@ export const NO_QUERY = `
                     empty_visible,
                     name,
                     slug,
-å                    image {
+                    image {
                         data {
                             attributes {
                                 url

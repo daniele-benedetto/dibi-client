@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { useQuery } from "urql";
 import { FILTER_QUERY, NO_QUERY } from "@/app/lib/query";
 import SearchItem from "@/app/components/SearchItem/SearchItem";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export default function Searchbar({setSearchIsOpen}) {
 
     const [search, setSearch] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
-
-    const router = useRouter();
 
     const handleSearch = (e) => {
         setSearch(e.target.value);

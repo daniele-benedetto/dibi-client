@@ -18,7 +18,6 @@ export default function Home() {
 
     const [results] = useQuery({
         query: HOME_QUERY,
-        
     });
 
 
@@ -36,7 +35,7 @@ export default function Home() {
             <main className='bg-gray-100'>
                 <Hero
                     title="Un oggetto dopotutto, è ciò che rende privato l'infinito"
-                    subtitle="Cit. Losif Brodskij"
+                    subtitle="Cit. Iosif Brodskij"
                     description="Spulciando tra le nostre proposte riscoprirai tanti oggetti del tuo passato, pronti ad aprire il cassetto dei ricordi, dando un nuovo e caldo colore alla tua casa."
                     cta="Scopri i prodotti"
                     link="/prodotti"

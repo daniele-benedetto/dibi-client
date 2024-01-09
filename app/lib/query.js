@@ -668,11 +668,16 @@ export const HOME_QUERY = `
         }
       }
     },
-    categories2: categories(filters: {
-        in_evidence: {
-            eq: true
+    categories2: categories(
+        filters: {
+            in_evidence: {
+                eq: true
+            }
+        },
+        pagination: { 
+            limit: 100 
         }
-    }) {
+    ) {
         data {
             attributes {
                 name,

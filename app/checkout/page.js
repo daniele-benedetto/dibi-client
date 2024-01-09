@@ -59,6 +59,8 @@ export default function Checkout() {
                     email: order.payer.email_address,
                     address: order.purchase_units[0].shipping.address.address_line_1 +' ' + order.purchase_units[0].shipping.address.admin_area_2 + ' ' + order.purchase_units[0].shipping.address.postal_code + ' ' + order.purchase_units[0].shipping.address.country_code,
                     products: products,
+                    totale_costo_di_spedizione: (parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
+                    totale_costo_prodotti: parseFloat(order.purchase_units[0].amount.value).toFixed(2),
                     total: (parseFloat(order.purchase_units[0].amount.value) + parseFloat(distancePrice) + parseFloat(weightPrice)).toFixed(2),
                     /*
                     fattura: fattura,

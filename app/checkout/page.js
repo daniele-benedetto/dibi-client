@@ -114,7 +114,7 @@ export default function Checkout() {
                 }
             }
         }
-    }, [totalWeight, country, data]);
+    }, [totalWeight, country, data, cartItems]);
 
     useEffect(() => {
         if(cartItems && cartItems.length < 1) {
